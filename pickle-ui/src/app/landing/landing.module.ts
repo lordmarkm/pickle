@@ -15,7 +15,7 @@ import { HeaderModule } from '../header/header.module';
     LandingRoutingModule,
     FullCalendarModule,
 
-    HeaderModule
+    HeaderModule,
   ]
 })
 export class LandingModule { }

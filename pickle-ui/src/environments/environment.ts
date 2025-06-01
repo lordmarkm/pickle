@@ -7,5 +7,8 @@ export const environment = {
     messagingSenderId: "543833787066",
     appId: "1:543833787066:web:34d5f200ffab98fd02d083",
     measurementId: "G-LV4Z0NXC4L"
+  },
+  functions: {
+    baseUrl: "http://127.0.0.1:5001/dumaget-me/us-central1"
   }
 };
