@@ -1,0 +1,11 @@
+New user
+1. Backend checks
+   - Is user logged in
+   - Does user have saved favorites in the backend
+   - If no, does user have saved favorites in the browser
+2. Hello new user! You are not logged in. Registering as a user offers these perks:
+   - Save your favorite courts and payments accross devices
+   - Create and manage your own courts
+   If you don't care about any of that, select some courts from the sidebar to get started!
+   
+3. 

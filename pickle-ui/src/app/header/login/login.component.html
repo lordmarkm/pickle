@@ -1,0 +1,12 @@
+<!-- Show login buttons if NOT logged in -->
+<div *ngIf="!user">
+  <button (click)="loginWithGoogle()">Login with Google</button>
+  <button (click)="loginWithFacebook()">Login with Facebook</button>
+</div>
+
+<!-- Show profile picture if logged in -->
+<div *ngIf="user">
+  <p>Welcome, {{ user.displayName }}</p>
+  <img [src]="user.photoURL" alt="Profile Picture" width="50" height="50" />
+  <button (click)="logout()">Logout</button>
+</div>
