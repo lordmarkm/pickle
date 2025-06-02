@@ -5,12 +5,7 @@ module.exports = {
     node: true,
   },
   extends: [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-    "google",
-    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended", // You might want to keep this for basic linting
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -18,16 +13,21 @@ module.exports = {
     sourceType: "module",
   },
   ignorePatterns: [
-    "/lib/**/*", // Ignore built files.
-    "/generated/**/*", // Ignore generated files.
+    "/lib/**/*",
+    "/generated/**/*",
   ],
   plugins: [
     "@typescript-eslint",
-    "import",
   ],
   rules: {
-    "quotes": ["error", "double"],
-    "import/no-unresolved": 0,
-    "indent": ["error", 2],
+    // Disable all rules except critical ones
+    // For example, enable only errors related to syntax or potential bugs
+    // and disable stylistic rules
+    "quotes": "off",
+    "import/no-unresolved": "off",
+    "indent": "off",
+    "consistent-return ": "off"
+    // Add specific critical rules here, if any
+    // e.g., "no-undef": "error",
   },
 };

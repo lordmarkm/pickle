@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express";
 import * as functions from "firebase-functions";
+import { authenticateToken } from "../auth/auth";
 
 const app = express();
 app.use(express.json()); // for parsing JSON request bodies
@@ -34,7 +35,10 @@ app.post("/favorites", (req: Request, res: Response) => {
 
 
 // GET /courts/favorites?userId=123 — get favorite courts for a user
-app.get("/favorites", (req: Request, res: Response) => {
+app.get("/favorites", authenticateToken, (req: Request, res: Response) => {
+  const uid = (req as any).uid;
+  const name = (req as any).name;
+  console.log(`Retrieving favorite courts. User name: ${name}, UID: ${uid}`);
   const userId = req.query.userId as string;
 
   if (!userId) {
