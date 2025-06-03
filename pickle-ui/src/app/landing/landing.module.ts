@@ -5,6 +5,7 @@ import { LandingRoutingModule } from './landing-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LandingComponent } from './landing/landing.component';
 import { HeaderModule } from '../header/header.module';
+import { CourtcalendarComponent } from '../components/courtcalendar/courtcalendar.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,9 @@ import { HeaderModule } from '../header/header.module';
     FullCalendarModule,
 
     HeaderModule,
+
+    //standalone components
+    CourtcalendarComponent
   ]
 })
 export class LandingModule { }
