@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService, CourtService } from '@services';
 import { filter, switchMap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { Court, Master } from '@models';
 
 @Component({
   standalone: false,
@@ -10,19 +12,32 @@ import { filter, switchMap } from 'rxjs/operators';
 })
 export class FavoritesComponent implements OnInit {
   favoriteCourtIds: string[] = [];
+  favorites: Court[] = [];
+  @Output() master = new EventEmitter<Master>(); // <-- event emitter
 
   constructor(private authService: AuthService, private courts: CourtService) {}
 
   ngOnInit(): void {
     this.authService.currentUser$
       .pipe(
-        filter(user => !!user), // only continue if user is not null
-        switchMap(() => this.courts.getFavorites())
+        filter(user => !!user),
+        switchMap(() =>
+          forkJoin({
+            favorites: this.courts.getFavorites(),
+            master: this.courts.getMaster()
+          })
+        )
       )
       .subscribe({
-        next: favs => this.favoriteCourtIds = favs,
-        error: err => console.error('Error loading favorites:', err)
-      });  
+        next: ({ favorites, master }) => {
+          this.favoriteCourtIds = favorites;
+          //TODO add the favorites here from master
+          this.favorites = [];
+          //TODO filter out the favorites
+          this.master.emit(master);
+        },
+        error: err => console.error('Error loading court data:', err)
+      });
   }
 
 }

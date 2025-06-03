@@ -1,1 +1,1 @@
-export {courts} from "./courts/favorites";
+export {courts} from "./courts";

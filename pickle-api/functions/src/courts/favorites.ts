@@ -1,12 +1,10 @@
 import { admin } from "../firebase";
-import express, {Request, Response} from "express";
-import * as functions from "firebase-functions";
+import {Router, Request, Response} from "express";
 import { authenticateToken } from "../auth/auth";
 
-const app = express();
-app.use(express.json()); // for parsing JSON request bodies
+export const favoritesRouter = Router();
 
-app.put("/favorites", authenticateToken, async (req: Request, res: Response) => {
+favoritesRouter.put("/", authenticateToken, async (req: Request, res: Response) => {
   const uid = (req as any).uid;
   const { courtId } = req.body;
   const name = (req as any).name;
@@ -40,7 +38,7 @@ app.put("/favorites", authenticateToken, async (req: Request, res: Response) => 
 
 
 // GET /courts/favorites?userId=123 — get favorite courts for a user
-app.get("/favorites", authenticateToken, async (req: Request, res: Response) => {
+favoritesRouter.get("/", authenticateToken, async (req: Request, res: Response) => {
   const uid = (req as any).uid;
   const name = (req as any).name;
   console.log(`Retrieving favorite courts. User name: ${name}, UID: ${uid}`);
@@ -67,4 +65,3 @@ app.get("/favorites", authenticateToken, async (req: Request, res: Response) => 
 
 
 
-export const courts = functions.https.onRequest(app);

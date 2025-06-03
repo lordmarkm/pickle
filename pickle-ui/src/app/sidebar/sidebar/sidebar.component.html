@@ -1,2 +1,3 @@
 <p>sidebar works!</p>
-<app-favorites></app-favorites>
+<app-favorites (master)="afterFavoritesDisplayed($event)"></app-favorites>
+<app-master [master]="master"></app-master>

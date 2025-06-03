@@ -1,31 +1,48 @@
 import { admin } from "../firebase";
-import express, {Request, Response} from "express";
-import * as functions from "firebase-functions";
+import {Router, Request, Response} from "express";
 
-const app = express();
-app.use(express.json()); // for parsing JSON request bodies
+export const masterRouter = Router();
 
 const defaultMaster = {
-  "ICB": [
-    "abc",
-    "123"
-  ],
-  "Deco": [
-    "abc",
-    "123"
+  orgs : [
+    {
+      name: "ICB",
+      courts: [
+        {
+          id: "icb-outdoor",
+          org: "ICB",
+          name: "Outdoor"
+        },
+        {
+          id: "indoor1",
+          org: "ICB",
+          name: "Indoor 1"
+        }
+      ]
+    },
+    {
+      name: "Deco",
+      courts: [
+        {
+          id: "deco1",
+          org: "Deco",
+          name: "Decourt 1"
+        }
+      ]
+    }
   ]
 };
 
 // GET master list of all courts for the sidebar
 // TODO require recaptcha on public APIs to prevent automated abuse
-app.get("/master", async (req: Request, res: Response) => {
+masterRouter.get("/", async (req: Request, res: Response) => {
   const db = admin.firestore();
   const col = db.collection("master");
 
   try {
     const docRef = col.doc("master");
     const doc = await docRef.get();
-    let master = defaultMaster;
+    let master: any = defaultMaster;
     if (!doc.exists) {
       await docRef.set(defaultMaster);
     } else {
@@ -48,4 +65,3 @@ app.get("/master", async (req: Request, res: Response) => {
 
 
 
-export const courts = functions.https.onRequest(app);

@@ -1,0 +1,18 @@
+<section *ngIf="master">
+<h3>Courts</h3>
+<div>{{master|json}}</div>
+
+<div *ngFor="let org of master.orgs">
+    <h3>{{org.name}}</h3>
+    <ol>
+        <li *ngFor="let court of org.courts">
+            <div>            <input
+              type="checkbox"
+              (change)="onCheckUncheck(court, $event)"
+            />
+{{court.name}}</div>
+        </li>
+    </ol>
+</div>
+
+</section>

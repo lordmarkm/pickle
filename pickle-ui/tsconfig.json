@@ -19,7 +19,8 @@
     "module": "ES2022",
     "baseUrl": "src",
     "paths": {
-      "@services": ["app/services/index.ts"]
+      "@services": ["app/services/index.ts"],
+      "@models": ["app/models/index.ts"]
     }
   },
   "angularCompilerOptions": {
