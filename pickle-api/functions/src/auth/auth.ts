@@ -1,9 +1,5 @@
-import * as admin from "firebase-admin";
+import { admin } from "../firebase";
 import {Request, Response, NextFunction} from "express";
-
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-});
 
 export async function authenticateToken(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
