@@ -1,3 +1,8 @@
-1. Get reference to user login
-2. Get reference to court calendar
-3. Simulate a google cloud function
+To do:
+- Checkout page
+- Persistent sidebar status
+
+Done:
+- Get reference to user login
+- Get reference to court calendar
+- Simulate a google cloud function

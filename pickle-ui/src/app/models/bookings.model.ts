@@ -1,3 +1,7 @@
+/**
+ * List of bookings for the day
+ */
+
 export interface Bookings {
   courtId: string;
   date: Date;
