@@ -35,4 +35,9 @@ export class BookingService {
     };
     return this.http.post<Booking>(`${this.baseUrl}`, booking);
   }
+
+  pay(bookingId: string) {
+    return this.http.put<Booking>(`${this.baseUrl}/${bookingId}/pay`, {});
+  }
+
 }

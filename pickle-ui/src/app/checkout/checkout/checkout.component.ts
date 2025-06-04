@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService, CourtService } from '@services';
 import { Booking, Court } from '@models';
+import { MessageComponent } from 'app/components/message.component';
 
 @Component({
   selector: 'app-checkout',
@@ -9,12 +10,13 @@ import { Booking, Court } from '@models';
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })
-export class CheckoutComponent implements OnInit {
-  bookingId?: string;
+export class CheckoutComponent extends MessageComponent implements OnInit {
+  bookingId!: string;
   booking: Booking | null = null;
   court: Court | null = null;
-  error?: string;
-  constructor(private route: ActivatedRoute, private courts: CourtService, private bookings: BookingService) {}
+  constructor(private route: ActivatedRoute, private router: Router, private courts: CourtService, private bookings: BookingService) {
+    super();
+  }
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const bookingId = params['bookingId'];
@@ -44,6 +46,17 @@ export class CheckoutComponent implements OnInit {
     });
   }
   pay() {
-    this.bookings.pay(this.bookingId);
+    this.bookings.pay(this.bookingId).subscribe(booking => {
+      if (booking.paid) {
+        this.setMessage("Payment successful");
+        setTimeout(() => {
+          this.router.navigate(['/booking', booking.id]);
+        }, 1000);
+      } else {
+        this.setError("The put request was successful but Payment failed!");
+      }
+    }, err => {
+      this.setError("Payment failed! " + err);
+    });
   }
 }

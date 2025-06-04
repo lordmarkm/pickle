@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
-import { Booking, MasterCourt } from '@models';
+import { Booking } from '@models';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 @Component({
@@ -17,8 +17,10 @@ export class CheckoutcalendarComponent implements OnInit {
 
     constructor() {}
     ngOnInit(): void {
+      const booking = this.booking;
+      booking.color = booking.paid ? 'green' : 'blue';
       this.calendarOptions = {
-        events: [ this.booking ],
+        events: [ booking ],
         initialView: 'timeGridDay',
         allDaySlot: false,
         plugins: [ timeGridPlugin ],
