@@ -1,1 +1,15 @@
 <p>checkout works!</p>
+<div *ngIf="error" style="color: red">{{error}}</div>
+<div>Booking id: {{bookingId}}</div>
+
+<h3>Checkout details</h3>
+<ul>
+    <li>Date: {{booking?.start | date: 'MMMM d' }}</li>
+    <li>Start: {{ booking?.start | date: 'h:mm a' }}</li>
+    <li>End: {{ booking?.end | date: 'h:mm a' }}</li>
+    <li>Location: {{court?.org}}</li>
+    <li>Court: {{court?.name}}</li>
+    <li><button (click)="pay()">Pay now</button></li>
+</ul>
+
+<app-checkoutcalendar *ngIf="booking" [booking]="booking"></app-checkoutcalendar>

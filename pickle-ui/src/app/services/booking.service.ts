@@ -19,6 +19,10 @@ export class BookingService {
     return this.http.get<Bookings>(`${this.baseUrl}`, { params });
   }
 
+  findOne(bookingId: string) {
+    return this.http.get<Booking>(`${this.baseUrl}/${bookingId}`);
+  }
+
   newBooking(courtId: string, date: string, start: string, end: string) {
     const booking: Booking = {
       title: 'New booking',

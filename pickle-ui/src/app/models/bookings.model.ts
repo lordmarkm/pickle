@@ -9,6 +9,7 @@ export interface Bookings {
 }
 
 export interface Booking {
+  id?: string;
   courtId: string;
   date: string;
   start: string;

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { MasterCourt, Bookings } from '@models';
 
@@ -32,7 +33,7 @@ export class CourtcalendarComponent implements OnInit {
   start: Date | null = null;
   end: Date | null = null;
 
-  constructor(private bookings: BookingService) {}
+  constructor(private router: Router, private bookings: BookingService) {}
   ngOnInit() {
     this.loadEvents();
   }
@@ -96,5 +97,29 @@ export class CourtcalendarComponent implements OnInit {
       console.log('booking success. res: ', res);
     });
   }
-
+  //todo protect w/ captcha
+  checkout() {
+    if (null == this.start || null == this.end || null == this.court) {
+      this.error = "something is null";
+    }
+    this.setMessage('Creating reservation...');
+    const start = moment(this.start).format(dateTimeFormat);
+    const end = moment(this.end).format(dateTimeFormat);
+    const date = moment(this.end).format(dateFormat);
+    this.bookings.newBooking(this.court.id, date, start, end).subscribe(res => {
+      console.log('booking success. res: ', res);
+      //send to payment page here
+      this.router.navigate(['/checkout'], {queryParams: {bookingId: res.id}});
+    }, err => {
+        this.setError('Error creating reservation. Please try again later');
+    });
+  }
+  setMessage(msg: string) {
+    this.error = null;
+    this.message = msg;
+  }
+  setError(err: string) {
+    this.message = null;
+    this.error = err;
+  }
 }
