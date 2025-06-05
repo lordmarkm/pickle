@@ -3,14 +3,14 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
 import { Booking, EventColors } from '@models';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { CommonModule } from '@angular/common';
+
 import { MessageComponent } from '../message.component';
 import moment from 'moment';
 
 @Component({
   standalone: true,
   selector: 'app-bookingcalendar',
-  imports: [ CommonModule, FullCalendarModule ],
+  imports: [FullCalendarModule],
   templateUrl: './bookingcalendar.component.html',
   styleUrl: './bookingcalendar.component.scss'
 })

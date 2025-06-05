@@ -1,11 +1,19 @@
 <h2 matTooltip="{{date | date: 'MMMM d, yyyy'}}">{{court.name}} ({{court.org}})</h2>
 
-<div *ngIf="message">{{message}}</div>
-<div *ngIf="error" style="color: red">{{error}}</div>
-<div *ngIf="start">
-  <button (click)="book()">Book now</button>
-  <button (click)="checkout()">Checkout now</button>
-</div>
+@if (message) {
+  <div>{{message}}</div>
+}
+@if (error) {
+  <div style="color: red">{{error}}</div>
+}
+@if (start) {
+  <div>
+    <button (click)="book()">Book now</button>
+    <button (click)="checkout()">Checkout now</button>
+  </div>
+}
 <div class="calendar-wrapper">
-  <full-calendar #fullcalendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
+  @if (calendarOptions) {
+    <full-calendar #fullcalendar [options]="calendarOptions"></full-calendar>
+  }
 </div>
