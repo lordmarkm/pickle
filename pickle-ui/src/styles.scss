@@ -19,5 +19,18 @@
 .flex-grow {
   flex-grow: 1;
 }
+
+.gap5 {
+  gap: 5px;
+}
+
+.alignleft {
+  justify-content: flex-start;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,15 +1,13 @@
 import { Component, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
 import { MasterCourt, Bookings, BookingRequest, EventColors } from '@models';
-
+import { BookingService, CourtService } from '@services';
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, Calendar } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventApi } from '@fullcalendar/core';
-import { BookingService } from '@services';
 import moment from 'moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -34,10 +32,13 @@ export class CourtcalendarComponent implements OnInit {
   error: string | null = null;
   calendarOptions: CalendarOptions | null = null;
   @Output() slotSelected = new EventEmitter<any>();
+  favorite = false;
+  spinning = false;
 
-  constructor(private router: Router, private bookings: BookingService) {}
+  constructor(private router: Router, private bookings: BookingService, private courts: CourtService) {}
   ngOnInit() {
     this.loadEvents();
+    this.courts.isFavorite(this.court.id).subscribe(favorite => this.favorite = favorite);
   }
   loadEvents() {
     this.bookings.getBookings(this.court.id, moment().format(dateFormat)).subscribe((bookings: Bookings) => {
@@ -120,5 +121,20 @@ export class CourtcalendarComponent implements OnInit {
   nextDay() {
     this.calendarApi.next();
     this.date = this.calendarApi.getDate();
+  }
+  addToFavorites() {
+   this.spinning = true;
+   setTimeout(() => {
+    this.spinning = false;
+   }, 300)
+   this.favorite = true; 
+   this.courts.addFavoriteCourt(this.court.id).subscribe(res => {
+    this.setMessage(res.message);
+   }, err => {
+    this.setError(err);
+   });
+  }
+  removeFromFavorites() {
+   this.favorite = false; 
   }
 }

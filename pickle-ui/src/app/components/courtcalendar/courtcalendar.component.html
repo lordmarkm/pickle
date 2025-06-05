@@ -1,4 +1,8 @@
-<h2 matTooltip="{{date | date: 'MMMM d, yyyy'}}">{{court.name}} ({{court.org}})</h2>
+<h2 class="flex-row gap5 alignleft">
+    <span matTooltip="{{date | date: 'MMMM d, yyyy'}}">{{court.name}} ({{court.org}})</span>
+    <i *ngIf="!favorite" class="fa-regular fa-star pointer" matTooltip="Add to favorites" (click)="addToFavorites()"></i>
+    <i *ngIf="favorite" class="fa-solid fa-star pointer gold" matTooltip="Remove from favorites" (click)="removeFromFavorites()" [class.spin]="spinning"></i>
+</h2>
 
 <div *ngIf="message">{{message}}</div>
 <div *ngIf="error" style="color: red">{{error}}</div>

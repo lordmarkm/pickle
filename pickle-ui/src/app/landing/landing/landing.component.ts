@@ -59,9 +59,9 @@ export class LandingComponent extends MessageComponent implements OnInit {
     const startTime = booking.start.toLocaleTimeString('en-PH', optionsTime);
     const endTime = booking.end.toLocaleTimeString('en-PH', optionsTime);
     const date = booking.end.toLocaleDateString('en-PH', optionsDate);
-    this.checkoutMessage = `Selected slot is available! From ${startTime} to ${endTime} on ${date}.`;
-    this.booking = booking;
     this.court = court;
+    this.booking = booking;
+    this.checkoutMessage = `Selected slot is available! From ${startTime} to ${endTime} on ${date} @ ${this.court?.org} ${this.court?.name}`;
   }
 
   //todo protect w/ captcha

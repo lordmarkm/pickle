@@ -10,7 +10,7 @@ import { Master, MasterCourt } from '@models';
 })
 export class CourtService {
   private baseUrl = `${environment.functions.baseUrl}/courts`;
-  private favoritesCache: string[] | null = null;
+  private favoritesCache: any | null = null;
   private masterCache: Master | null = null;
 
   constructor(private http: HttpClient) {}
@@ -29,13 +29,21 @@ export class CourtService {
     );
   }
 
-  getFavorites(): Observable<string[]> {
+  getFavorites(): Observable<any> {
     if (this.favoritesCache) {
       return of(this.favoritesCache); // return cached
     }
 
-    return this.http.get<string[]>(`${this.baseUrl}/favorites`).pipe(
+    return this.http.get<any>(`${this.baseUrl}/favorites`).pipe(
       tap(favorites => this.favoritesCache = favorites)
+    );
+  }
+
+  isFavorite(courtId: string): Observable<boolean> {
+    return this.getFavorites().pipe(
+      map(favorites => {
+        return favorites.courts.includes(courtId);
+      })
     );
   }
 
@@ -49,8 +57,8 @@ export class CourtService {
   }
 
   addFavoriteCourt(courtId: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.baseUrl}/favorites`, {
-      courtId,
+    return this.http.put<{ message: string }>(`${this.baseUrl}/favorites`, {
+      courtId
     });
   }
 

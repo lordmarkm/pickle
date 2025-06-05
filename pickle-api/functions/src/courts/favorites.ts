@@ -16,13 +16,18 @@ favoritesRouter.put("/", authenticateToken, async (req: Request, res: Response) 
 
   const db = admin.firestore();
   const userDoc = db.collection("favorites").doc(uid);
+  const docSnapshot = await userDoc.get();
 
   try {
     // Atomically add to array (avoids duplicates)
-    await userDoc.set(
-      { courts: admin.firestore.FieldValue.arrayUnion(courtId) },
-      { merge: true } // Important to preserve existing fields
-    );
+    if (!docSnapshot.exists) {
+      await userDoc.set({ courts: [courtId] });
+    } else {
+      await userDoc.set(
+        { courts: admin.firestore.FieldValue.arrayUnion(courtId) },
+        { merge: true } // Important to preserve existing fields
+      );
+    }
 
     console.log(`Added court ${courtId} to favorites for UID: ${uid}`);
     return res.status(200).json({ message: "Court added to favorites" });

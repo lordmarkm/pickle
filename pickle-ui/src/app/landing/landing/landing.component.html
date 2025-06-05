@@ -9,10 +9,12 @@
     </div>
     <div class="checkout-container" *ngIf="booking" @fadeIn>
       <h1>Checkout</h1>
-      <div>
+      <div class="flex-col gap5">
         <div>{{checkoutMessage}}</div>
-        <button mat-raised-button (click)="checkout()">Checkout now</button>
-        <button mat-flat-button (click)="cancel()">Cancel</button>
+        <div class="flex-row gap5 alignleft">
+          <button mat-raised-button (click)="checkout()">Checkout now</button>
+          <button mat-flat-button (click)="cancel()">Cancel</button>
+        </div>
       </div>
     </div>
     <div class="calendar-container flex-row">

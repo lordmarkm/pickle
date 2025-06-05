@@ -19,7 +19,6 @@ export class MasterComponent implements OnInit {
 
   onCheckUncheck(court: MasterCourt, evt: Event) {
     const checked = (evt.target as HTMLInputElement).checked;
-    console.log(`court: ${court.name}, checked: ${checked}`);
     if (checked) {
         this.courtDisplay.addDisplayedCourt(court);
         this.checkedCourts.add(court.id);

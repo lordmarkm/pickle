@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService, CourtService } from '@services';
 import { filter, switchMap } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
-import { Court, Master } from '@models';
+import { MasterCourt, Master } from '@models';
 
 @Component({
   standalone: false,
@@ -12,7 +12,7 @@ import { Court, Master } from '@models';
 })
 export class FavoritesComponent implements OnInit {
   favoriteCourtIds: string[] = [];
-  favorites: Court[] = [];
+  favorites: MasterCourt[] = [];
   @Output() master = new EventEmitter<Master>(); // <-- event emitter
 
   constructor(private authService: AuthService, private courts: CourtService) {}
@@ -30,10 +30,21 @@ export class FavoritesComponent implements OnInit {
       )
       .subscribe({
         next: ({ favorites, master }) => {
-          this.favoriteCourtIds = favorites;
-          //TODO add the favorites here from master
+          this.favoriteCourtIds = favorites.courts;
           this.favorites = [];
-          //TODO filter out the favorites
+          master.orgs = master.orgs.filter(org => {
+            const favoriteCourtsInOrg = org.courts.filter(court => this.favoriteCourtIds.includes(court.id));
+            const nonFavoriteCourtsInOrg = org.courts.filter(court => !this.favoriteCourtIds.includes(court.id));
+
+            // Add favorite courts to this.favorites
+            this.favorites.push(...favoriteCourtsInOrg);
+
+            // Update org's courts to only non-favorites
+            org.courts = nonFavoriteCourtsInOrg;
+
+            // Keep the org only if it still has courts after removing favorites
+            return org.courts.length > 0;
+          });
           this.master.emit(master);
         },
         error: err => console.error('Error loading court data:', err)

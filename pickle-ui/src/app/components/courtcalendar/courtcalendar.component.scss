@@ -5,4 +5,22 @@ h2 {
   width: 400px;        /* fixed width */
 }
 ::ng-deep .fc-toolbar {
+  display: none !important;
+}
+@keyframes spin {
+    0% {
+      transform: rotate(0deg) scale(2);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.5);
+    }
+    100% {
+      transform: rotate(360deg) scale(1);
+    }
+}
+.spin {
+  animation: spin 0.35s linear infinite;
+}
+.gold {
+  color: gold;
 }

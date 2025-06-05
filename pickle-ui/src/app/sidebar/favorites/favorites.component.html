@@ -1,1 +1,14 @@
-<p>favorites works!</p>
+<h3>Favorites</h3>
+<div *ngIf="!favorites || favorites.length == 0">No favorites added</div>
+<div *ngIf="favorites && favorites.length > 0">
+    <ol>
+      <li *ngFor="let court of favorites">
+        <div>
+          <input
+            type="checkbox"
+          />
+          {{ court.name }} ({{court.org}})
+        </div>
+      </li>
+    </ol>
+</div>
