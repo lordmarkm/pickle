@@ -1,24 +1,20 @@
-@if (master) {
-  <section>
-    <h3>Courts</h3>
-    @for (org of master.orgs; track org) {
+<section *ngIf="master">
+<h3>Courts</h3>
+
+<div *ngFor="let org of master.orgs">
+  <h3>{{ org.name }}</h3>
+  <ol>
+    <li *ngFor="let court of org.courts">
       <div>
-        <h3>{{ org.name }}</h3>
-        <ol>
-          @for (court of org.courts; track court) {
-            <li>
-              <div>
-                <input
-                  type="checkbox"
-                  [checked]="isChecked(court.id)"
-                  (change)="onCheckUncheck(court, $event)"
-                  />
-                {{ court.name }}
-              </div>
-            </li>
-          }
-        </ol>
+        <input
+          type="checkbox"
+          [checked]="isChecked(court.id)"
+          (change)="onCheckUncheck(court, $event)"
+        />
+        {{ court.name }}
       </div>
-    }
-  </section>
-}
+    </li>
+  </ol>
+</div>
+
+</section>
