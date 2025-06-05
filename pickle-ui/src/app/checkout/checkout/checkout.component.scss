@@ -1,0 +1,14 @@
+.checkout {
+  justify-content: flex-start;
+  align-items: start;
+  gap: 50px;
+}
+.details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  align-items: center;
+}
+.calendar-wrapper {
+  width: 500px;
+}

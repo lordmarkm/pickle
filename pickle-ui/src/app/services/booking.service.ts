@@ -40,4 +40,7 @@ export class BookingService {
     return this.http.put<Booking>(`${this.baseUrl}/${bookingId}/pay`, {});
   }
 
+  cancel(bookingId: string) {
+    return this.http.delete<Booking>(`${this.baseUrl}/${bookingId}`);
+  }
 }

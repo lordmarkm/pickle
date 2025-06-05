@@ -7,6 +7,13 @@ import { CheckoutRoutingModule } from './checkout-routing.module';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { CheckoutcalendarComponent } from './checkoutcalendar/checkoutcalendar.component';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+const MaterialModules = [
+  MatButtonModule,
+  MatTooltipModule
+]
 
 @NgModule({
   declarations: [
@@ -14,6 +21,7 @@ import { CheckoutcalendarComponent } from './checkoutcalendar/checkoutcalendar.c
     CheckoutcalendarComponent
   ],
   imports: [
+    ...MaterialModules,
     CommonModule,
     FullCalendarModule,
     CheckoutRoutingModule

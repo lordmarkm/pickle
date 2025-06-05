@@ -29,6 +29,12 @@ export class CheckoutcalendarComponent implements OnInit {
         slotMinTime: '16:00:00',
         slotMaxTime: '22:00:00',
         slotDuration: '01:00:00',
+        headerToolbar: {
+          start: 'title',
+          center: '',
+          end: ''
+        },
+        height: 400
       };
     }
 

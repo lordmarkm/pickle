@@ -67,6 +67,10 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
   console.log(`Booking save request. user: ${name} booking: `, booking);
   booking.title = name;
   booking.paid = false;
+  booking.createdBy = (req as any).uid;
+  booking.createdByEmail = (req as any).email;
+  booking.createdByName = name;
+
   //TODO verify no overlap
 
   if (booking.id) {
@@ -80,5 +84,39 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
   } catch (error) {
     console.error("Error saving booking:", error);
     return res.status(500).json({ error: "Failed to save booking"});
+  }
+});
+
+
+
+bookingsRouter.delete("/:id", authenticateToken, async (req: Request, res: Response) => {
+  const bookingId = req.params.id;
+  const uid = (req as any).uid; // optional: use to check ownership
+
+  if (!bookingId) {
+    return res.status(400).json({ error: "Missing booking ID" });
+  }
+
+  try {
+    const docRef = db.collection("bookings").doc(bookingId);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+
+    //check if the user owns the booking
+    const booking = doc.data();
+    if (booking?.createdBy !== uid) {
+     return res.status(403).json({ error: "Not authorized to delete this booking" });
+    }
+
+    await docRef.delete();
+
+    console.log(`Booking ${bookingId} deleted`);
+    return res.json({ message: "Booking deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting booking:", error);
+    return res.status(500).json({ error: "Failed to delete booking" });
   }
 });

@@ -1,13 +1,18 @@
 To do:
-- Favorites display
-- Fix moment error on some operations
-- Allow booking cancellation from checkout screen
 - Allow booking cancellation from landing
 - Add court schedules (e.g. allow booking from 4pm -12mn)
 - Hide favorites if anonymous
 - Hide favorite stars if anonymous
+- Load events in future dates
+- Prevent browsing to past dates in landing screen
+- Handle event click (if owner, allow view, otherwise sorry message)
+- Handle funky favorites vs non-favorites checked/unchecked behavior
+- Actually cancel unpaid bookings after 15 minutes
 
 Done:
+- Allow booking cancellation from checkout screen
+- Favorites display
+- Fix moment error on some operations
 - Single checkout control for all calendars in landing
 - Single control for all calendars in landing
 - Green calendar event for paid bookings

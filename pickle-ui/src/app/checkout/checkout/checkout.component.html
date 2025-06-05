@@ -1,16 +1,27 @@
-<p>checkout works!</p>
-<div *ngIf="error" style="color: red">{{error}}</div>
-<div>Booking id: {{bookingId}}</div>
+<div class="flex-row checkout">
 
-<h3>Checkout details</h3>
-<ul>
-    <li>Date: {{booking?.start | date: 'MMMM d' }}</li>
-    <li>Start: {{ booking?.start | date: 'h:mm a' }}</li>
-    <li>End: {{ booking?.end | date: 'h:mm a' }}</li>
-    <li>Location: {{court?.org}}</li>
-    <li>Court: {{court?.name}}</li>
-    <li>Paid: {{booking?.paid ? 'Yes' : 'No'}}</li>
-    <li *ngIf="!booking?.paid"><button (click)="pay()">Pay now</button></li>
-</ul>
+<div>
+  <h3>Booking details</h3>
+  <div *ngIf="booking" class="details">
+    <div><strong>Date</strong></div><div>{{booking.start | date: 'MMMM d' }}</div>
+    <div><strong>Start</strong></div><div>{{ booking.start | date: 'h:mm a' }}</div>
+    <div><strong>End</strong></div><div>{{ booking.end | date: 'h:mm a' }}</div>
+    <div><strong>Location</strong></div><div>{{court?.org}}</div>
+    <div><strong>Court</strong></div><div>{{court?.name}}</div>
+    <div><strong>Paid</strong></div><div>{{booking.paid ? 'Yes' : 'No'}}</div>
+    <div *ngIf="!booking.paid" class="flex-row gap5 alignleft" style="grid-column: 1 / -1;">
+      <button mat-raised-button (click)="pay()">Pay now</button>
+      <button mat-flat-button (click)="cancel()">Cancel Booking</button>
+    </div>
+  </div>
+  <div *ngIf="error" style="color: red">{{error}}</div>
+  <div *ngIf="message">{{message}}</div>
+  <p>This booking is created and will be confirmed upon payment. Unpaid bookings will be cancelled by the system after 15 minutes</p>
+  <a routerLink="/landing">Home</a>
+</div>
 
-<app-checkoutcalendar *ngIf="booking" [booking]="booking"></app-checkoutcalendar>
+<div class="calendar-wrapper">
+  <app-checkoutcalendar *ngIf="booking" [booking]="booking"></app-checkoutcalendar>
+</div>
+
+</div>

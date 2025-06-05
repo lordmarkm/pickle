@@ -20,7 +20,6 @@ export class CheckoutComponent extends MessageComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       const bookingId = params['bookingId'];
-      console.log('Received bookingId:', bookingId);
       this.bookingId = bookingId;
       if (bookingId) {
         this.loadBooking();
@@ -32,7 +31,6 @@ export class CheckoutComponent extends MessageComponent implements OnInit {
   loadCourt() {
     this.courts.findOne(this.booking!.courtId).subscribe(court => {
       if (court) {
-        console.log('found court: ' + court.name);
         this.court = court;
       }
     });
@@ -59,4 +57,16 @@ export class CheckoutComponent extends MessageComponent implements OnInit {
       this.setError("Payment failed! " + err);
     });
   }
+  cancel() {
+    this.bookings.cancel(this.bookingId).subscribe({
+      next: booking => {
+              this.setMessage("Booking has been cancelled");
+              setTimeout(() => {
+                this.router.navigate(['/landing']);
+              }, 1000);
+            },
+      error: err => this.setError("Cancel failed! err=" + err)
+    });
+  }
+
 }
