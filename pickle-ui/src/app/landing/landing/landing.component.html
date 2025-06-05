@@ -8,7 +8,7 @@
         <button mat-flat-button matTooltip="Move forward 1 day" (click)="nextDay()"><i class="fa fa-chevron-right"></i></button>
     </div>
     <div class="calendar-container flex-row">
-      <div *ngFor="let court of courts"><app-courtcalendar [court]="court"></app-courtcalendar></div>
+      <div *ngFor="let court of courts"><app-courtcalendar [court]="court" [@fadeInOut]></app-courtcalendar></div>
     </div>
 </div>
 </div>

@@ -12,7 +12,6 @@ import { EventApi } from '@fullcalendar/core';
 import { BookingService } from '@services';
 import moment from 'moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 const optionsTime: Intl.DateTimeFormatOptions = { hour: 'numeric', hour12: true };
 const optionsDate: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
@@ -24,18 +23,7 @@ const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ss';
   selector: 'app-courtcalendar',
   templateUrl: './courtcalendar.component.html',
   styleUrl: './courtcalendar.component.scss',
-  imports: [ CommonModule, FullCalendarModule, MatTooltipModule ]  ,
-    animations: [
-      trigger('fadeInOut', [
-        transition(':enter', [   // when element is added to DOM
-          style({ opacity: 0 }),
-          animate('300ms ease-in', style({ opacity: 1 })),
-        ]),
-        transition(':leave', [   // when element is removed from DOM
-          animate('300ms ease-out', style({ opacity: 0 })),
-        ]),
-      ]),
-    ]
+  imports: [ CommonModule, FullCalendarModule, MatTooltipModule ]
 })
 export class CourtcalendarComponent implements OnInit {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
@@ -84,7 +72,7 @@ export class CourtcalendarComponent implements OnInit {
       setTimeout(() => {
         this.calendarApi = this.calendarComponent.getApi();
         this.date = this.calendarApi.getDate();
-      }, 500);
+      }, 100);
     });
   }
   handleSelect(selectionInfo: DateSelectArg) {

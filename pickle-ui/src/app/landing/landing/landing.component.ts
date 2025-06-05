@@ -5,12 +5,24 @@ import { CourtDisplayService } from '@services';
 import { Court } from '@models';
 import { CourtcalendarComponent } from '../../components/courtcalendar/courtcalendar.component';
 import moment from 'moment';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   standalone: false,
   selector: 'app-landing',
   templateUrl: './landing.component.html',
-  styleUrl: './landing.component.scss'
+  styleUrl: './landing.component.scss',
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [   // when element is added to DOM
+        style({ opacity: 0 }),
+        animate('300ms ease-in', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [   // when element is removed from DOM
+        animate('300ms ease-out', style({ opacity: 0 })),
+      ]),
+    ]),
+  ]
 })
 export class LandingComponent implements OnInit {
   courts: Court[] = [];
