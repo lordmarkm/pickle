@@ -7,5 +7,5 @@
   <button (click)="checkout()">Checkout now</button>
 </div>
 <div class="calendar-wrapper">
-  <full-calendar #fullcalendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
+  <full-calendar #fullcalendar *ngIf="calendarOptions" [options]="calendarOptions" @fadeInOut></full-calendar>
 </div>
