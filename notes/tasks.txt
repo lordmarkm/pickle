@@ -1,8 +1,9 @@
 To do:
-- Single checkout control for all calendars in landing
 - Favorites display
+- Fix moment error on some operations
 
 Done:
+- Single checkout control for all calendars in landing
 - Single control for all calendars in landing
 - Green calendar event for paid bookings
 - Collapsible sidebar in landing

@@ -2,10 +2,6 @@
 
 <div *ngIf="message">{{message}}</div>
 <div *ngIf="error" style="color: red">{{error}}</div>
-<div *ngIf="start">
-  <button (click)="book()">Book now</button>
-  <button (click)="checkout()">Checkout now</button>
-</div>
 <div class="calendar-wrapper">
   <full-calendar #fullcalendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
 </div>

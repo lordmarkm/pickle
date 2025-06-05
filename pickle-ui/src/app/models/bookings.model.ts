@@ -25,3 +25,7 @@ export const EventColors = {
   paid: '#4CAF50',   // light green
 };
 
+export interface BookingRequest {
+  start: Date,
+  end: Date
+}

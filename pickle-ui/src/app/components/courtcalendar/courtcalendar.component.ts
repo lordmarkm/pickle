@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { MasterCourt, Bookings, EventColors } from '@models';
+import { MasterCourt, Bookings, BookingRequest, EventColors } from '@models';
 
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, Calendar } from '@fullcalendar/core';
@@ -33,8 +33,7 @@ export class CourtcalendarComponent implements OnInit {
   message: string | null = null;
   error: string | null = null;
   calendarOptions: CalendarOptions | null = null;
-  start: Date | null = null;
-  end: Date | null = null;
+  @Output() slotSelected = new EventEmitter<any>();
 
   constructor(private router: Router, private bookings: BookingService) {}
   ngOnInit() {
@@ -61,7 +60,7 @@ export class CourtcalendarComponent implements OnInit {
         slotDuration: '01:00:00',
         select: this.handleSelect.bind(this),
         unselect: () => {
-          //do nothing?
+          this.message = null;
         },
         headerToolbar: {
             left: '',
@@ -93,46 +92,15 @@ export class CourtcalendarComponent implements OnInit {
       this.message = null;
       this.error = 'Sorry that time slot is not available.';
     } else {
-      console.log('Selected slot is available:', start, 'to', end);
-      this.start = start;
-      this.end = end;
-      const startTime = start.toLocaleTimeString('en-PH', optionsTime);
-      const endTime = end.toLocaleTimeString('en-PH', optionsTime);
-      const date = end.toLocaleDateString('en-PH', optionsDate);
-      this.message = `Selected slot is available! From ${startTime} to ${endTime} on ${date}. Book now`;
       this.error = null;
-      // your custom logic here
+      const booking: BookingRequest = {
+        start: start,
+        end: end
+      }
+      this.slotSelected.emit(booking);
     }
   }
-  //this should through checkout and payment first
-  book() {
-    if (null == this.start || null == this.end || null == this.court) {
-      this.error = "something is null";
-    }
-    const start = moment(this.start).format(dateTimeFormat);
-    const end = moment(this.end).format(dateTimeFormat);
-    const date = moment(this.end).format(dateFormat);
-    this.bookings.newBooking(this.court.id, date, start, end).subscribe(res => {
-      console.log('booking success. res: ', res);
-    });
-  }
-  //todo protect w/ captcha
-  checkout() {
-    if (null == this.start || null == this.end || null == this.court) {
-      this.error = "something is null";
-    }
-    this.setMessage('Creating reservation...');
-    const start = moment(this.start).format(dateTimeFormat);
-    const end = moment(this.end).format(dateTimeFormat);
-    const date = moment(this.end).format(dateFormat);
-    this.bookings.newBooking(this.court.id, date, start, end).subscribe(res => {
-      console.log('booking success. res: ', res);
-      //send to payment page here
-      this.router.navigate(['/checkout'], {queryParams: {bookingId: res.id}});
-    }, err => {
-        this.setError('Error creating reservation. Please try again later');
-    });
-  }
+
   setMessage(msg: string) {
     this.error = null;
     this.message = msg;
