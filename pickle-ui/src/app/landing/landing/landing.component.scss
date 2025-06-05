@@ -3,6 +3,9 @@
   align-items: start;
   gap: 50px;
 }
+.calendar-controls {
+  justify-content: flex-start;
+}
 .calendar-container {
   gap: 26px;
 }
