@@ -1,3 +1,17 @@
-<p>sidebar works!</p>
+<div class="flex-column collapsible-sidebar" [class.collapsed]="isCollapsed">
+
+<div class="flex-row header" (click)="toggleCollapse()">
+  <h4 *ngIf="!isCollapsed">Hide</h4>
+  <i 
+    class="fa-solid" 
+    [class.fa-chevron-left]="!isCollapsed" 
+    [class.fa-chevron-right]="isCollapsed"
+  ></i>
+  <h5 *ngIf="isCollapsed">Show</h5>
+</div>
+
 <app-favorites (master)="afterFavoritesDisplayed($event)"></app-favorites>
 <app-master [master]="master"></app-master>
+
+
+</div>

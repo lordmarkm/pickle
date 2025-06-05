@@ -18,7 +18,7 @@ export class CheckoutcalendarComponent implements OnInit {
     constructor() {}
     ngOnInit(): void {
       const booking = this.booking;
-      booking.color = booking.paid ? 'green' : 'blue';
+      booking.color = booking.paid ? 'green' : '#3788d8';
       this.calendarOptions = {
         events: [ booking ],
         initialView: 'timeGridDay',

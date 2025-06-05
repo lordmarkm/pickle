@@ -1,0 +1,30 @@
+.collapsible-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+
+  &.collapsed {
+    width: 60px;
+
+    h4 {
+      display: none;
+    }
+
+    app-favorites,
+    app-master {
+      display: none;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: #f0f0f0;
+    gap: 5px;
+  }
+}

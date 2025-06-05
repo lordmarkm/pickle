@@ -29,6 +29,16 @@ const defaultMaster = {
           name: "Decourt 1"
         }
       ]
+    },
+    {
+      name: "DE Apartments",
+      courts: [
+        {
+          id: "de-outdoor",
+          org: "DE Apartments",
+          name: "DE Outdoor"
+        }
+      ]
     }
   ]
 };

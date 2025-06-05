@@ -9,7 +9,11 @@ import { Court, Master } from '@models';
 })
 export class SidebarComponent {
   master: Master | null = null;
+  isCollapsed = false;
   afterFavoritesDisplayed($event: Master) {
     this.master = $event;
+  }
+  toggleCollapse() {
+    this.isCollapsed = !this.isCollapsed;
   }
 }

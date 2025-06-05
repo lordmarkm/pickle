@@ -1,5 +1,9 @@
 To do:
 - Collapsible sidebar in landing
+- Green calendar event for paid bookings
+- Single control for all calendars in landing
+- Single checkout control for all calendars in landing
+- Favorites display
 
 Done:
 - Checkout page
