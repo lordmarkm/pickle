@@ -39,7 +39,8 @@ export class BookingcalendarComponent extends MessageComponent implements OnInit
           start: 'title',
           center: '',
           end: ''
-        }
+        },
+        height: 400
       };
     }
 }

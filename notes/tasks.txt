@@ -1,8 +1,9 @@
 To do:
-- Checkout page
-- Persistent sidebar status
+- Collapsible sidebar in landing
 
 Done:
+- Checkout page
+- Persistent sidebar status
 - Get reference to user login
 - Get reference to court calendar
 - Simulate a google cloud function

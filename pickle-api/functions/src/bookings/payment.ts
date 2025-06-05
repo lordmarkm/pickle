@@ -13,14 +13,17 @@ paymentsRouter.put("/", authenticateToken, async (req: Request, res: Response) =
   try {
     const docRef = db.collection('bookings').doc(bookingId);
     const doc = await docRef.get();
-
-    if (!doc.exists) {
-      return res.status(404).json({ error: 'Booking not found' });
+    const booking = doc.data();
+    if (!booking) {
+        return res.status(404).json({ error: 'Booking not found' });
     }
+    if (booking.paid) {
+        return res.status(400).json({ error: 'Booking is already paid '});
+    }
+    booking.paid = true;
 
     await docRef.update({ paid: true});
-    const updatedDoc = await docRef.get(); 
-    return res.json({ id: updatedDoc.id, ...updatedDoc.data() });
+    return res.json({ id: doc.id, ...booking });
   } catch (error) {
     console.error('Error retrieving booking:', error);
     return res.status(500).json({ error: 'Internal server error' });

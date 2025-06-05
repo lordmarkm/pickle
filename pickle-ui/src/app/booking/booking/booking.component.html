@@ -3,13 +3,16 @@
 <section *ngIf="booking">
 <h3>Booking details</h3>
 <ul>
-    <li>Date: {{booking?.start | date: 'MMMM d' }}</li>
-    <li>Start: {{ booking?.start | date: 'h:mm a' }}</li>
-    <li>End: {{ booking?.end | date: 'h:mm a' }}</li>
+    <li>Date: {{booking.start | date: 'MMMM d' }}</li>
+    <li>Start: {{ booking.start | date: 'h:mm a' }}</li>
+    <li>End: {{ booking.end | date: 'h:mm a' }}</li>
     <li>Location: {{court?.org}}</li>
     <li>Court: {{court?.name}}</li>
-    <li>Paid: {{booking?.paid ? 'Yes' : 'No'}}</li>
+    <li>Paid: {{booking.paid ? 'Yes' : 'No'}}</li>
 </ul>
 
 <app-bookingcalendar *ngIf="booking" [booking]="booking"></app-bookingcalendar>
+
+<a [routerLink]="['/landing']">Home</a>
+
 </section>

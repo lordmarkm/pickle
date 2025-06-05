@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LandingRoutingModule } from './landing-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { LandingComponent } from './landing/landing.component';
-import { HeaderModule } from '../header/header.module';
+import { SidebarModule } from '../sidebar/sidebar.module';
 import { CourtcalendarComponent } from '../components/courtcalendar/courtcalendar.component';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { CourtcalendarComponent } from '../components/courtcalendar/courtcalenda
     LandingRoutingModule,
     FullCalendarModule,
 
-    HeaderModule,
+    SidebarModule,
 
     //standalone components
     CourtcalendarComponent

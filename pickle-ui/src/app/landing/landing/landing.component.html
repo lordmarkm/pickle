@@ -1,4 +1,6 @@
-<app-header></app-header>
-<div class="calendar-container">
+<div class="flex-row">
+<app-sidebar></app-sidebar>
+<div class="flex-row">
   <div *ngFor="let court of courts"><app-courtcalendar [court]="court"></app-courtcalendar></div>
+</div>
 </div>
