@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core/index.js';
-import { Booking } from '@models';
+import { Booking, EventColors } from '@models';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { CommonModule } from '@angular/common';
 import { MessageComponent } from '../message.component';
@@ -23,7 +23,7 @@ export class BookingcalendarComponent extends MessageComponent implements OnInit
     }
     ngOnInit(): void {
       const booking = this.booking;
-      booking.color = booking.paid ? 'green' : 'blue';
+      booking.color = booking.paid ? EventColors.paid : EventColors.booked;
       this.calendarOptions = {
         events: [ booking ],
         initialDate: moment(booking.date).toDate(),

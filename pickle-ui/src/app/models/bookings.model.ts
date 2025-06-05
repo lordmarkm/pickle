@@ -19,3 +19,9 @@ export interface Booking {
   paid: boolean;
   color?: string;
 }
+
+export const EventColors = {
+  booked: '#3788d8', // FC default blue
+  paid: '#4CAF50',   // light green
+};
+

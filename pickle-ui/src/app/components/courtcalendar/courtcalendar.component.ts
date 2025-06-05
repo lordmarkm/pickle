@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { MasterCourt, Bookings } from '@models';
+import { MasterCourt, Bookings, EventColors } from '@models';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg } from '@fullcalendar/core';
@@ -39,6 +39,13 @@ export class CourtcalendarComponent implements OnInit {
   }
   loadEvents() {
     this.bookings.getBookings(this.court.id, moment().format(dateFormat)).subscribe((bookings: Bookings) => {
+      bookings.bookings.forEach(booking => {
+        if (booking.paid) {
+            booking.color = EventColors.paid;
+        } else {
+            booking.color = EventColors.booked;
+        }
+      });
       this.calendarOptions = {
         events: bookings.bookings,
         initialView: 'timeGridDay',

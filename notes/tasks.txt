@@ -1,11 +1,11 @@
 To do:
-- Collapsible sidebar in landing
-- Green calendar event for paid bookings
 - Single control for all calendars in landing
 - Single checkout control for all calendars in landing
 - Favorites display
 
 Done:
+- Green calendar event for paid bookings
+- Collapsible sidebar in landing
 - Checkout page
 - Persistent sidebar status
 - Get reference to user login
