@@ -1,17 +1,16 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { MasterCourt, Bookings, EventColors } from '@models';
 
-import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, Calendar } from '@fullcalendar/core';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventApi } from '@fullcalendar/core';
 import { BookingService } from '@services';
 import moment from 'moment';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 const optionsTime: Intl.DateTimeFormatOptions = { hour: 'numeric', hour12: true };
 const optionsDate: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
@@ -23,12 +22,10 @@ const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ss';
   selector: 'app-courtcalendar',
   templateUrl: './courtcalendar.component.html',
   styleUrl: './courtcalendar.component.scss',
-  imports: [ CommonModule, FullCalendarModule, MatTooltipModule ]
+  imports: [ CommonModule, FullCalendarModule ]
 })
 export class CourtcalendarComponent implements OnInit {
-  @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
-  calendarApi!: Calendar;
-  date: Date | null = null;
+  
   @Input() court!: MasterCourt;
   message: string | null = null;
   error: string | null = null;
@@ -62,17 +59,8 @@ export class CourtcalendarComponent implements OnInit {
         select: this.handleSelect.bind(this),
         unselect: () => {
           //do nothing?
-        },
-        headerToolbar: {
-            left: '',
-            center: '',
-            right: ''
         }
       };
-      setTimeout(() => {
-        this.calendarApi = this.calendarComponent.getApi();
-        this.date = this.calendarApi.getDate();
-      }, 500);
     });
   }
   handleSelect(selectionInfo: DateSelectArg) {
@@ -140,17 +128,5 @@ export class CourtcalendarComponent implements OnInit {
   setError(err: string) {
     this.message = null;
     this.error = err;
-  }
-  today() {
-    this.calendarApi.today();
-    this.date = this.calendarApi.getDate();
-  }
-  previousDay() {
-    this.calendarApi.prev();
-    this.date = this.calendarApi.getDate();
-  }
-  nextDay() {
-    this.calendarApi.next();
-    this.date = this.calendarApi.getDate();
   }
 }

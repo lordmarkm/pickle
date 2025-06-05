@@ -6,20 +6,12 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { LandingComponent } from './landing/landing.component';
 import { SidebarModule } from '../sidebar/sidebar.module';
 import { CourtcalendarComponent } from '../components/courtcalendar/courtcalendar.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-
-const MaterialImports = [
-  MatButtonModule,
-  MatTooltipModule
-]
 
 @NgModule({
   declarations: [
     LandingComponent
   ],
   imports: [
-    ...MaterialImports,
     CommonModule,
     LandingRoutingModule,
     FullCalendarModule,

@@ -1,10 +1,9 @@
 To do:
+- Single control for all calendars in landing
 - Single checkout control for all calendars in landing
 - Favorites display
-- Landing: Load bookings on date change
 
 Done:
-- Single control for all calendars in landing
 - Green calendar event for paid bookings
 - Collapsible sidebar in landing
 - Checkout page
