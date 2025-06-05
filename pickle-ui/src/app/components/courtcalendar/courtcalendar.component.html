@@ -1,4 +1,5 @@
-<h3>{{court.name}}</h3>
+<h2 matTooltip="{{date | date: 'MMMM d, yyyy'}}">{{court.name}} ({{court.org}})</h2>
+
 <div *ngIf="message">{{message}}</div>
 <div *ngIf="error" style="color: red">{{error}}</div>
 <div *ngIf="start">
@@ -6,5 +7,5 @@
   <button (click)="checkout()">Checkout now</button>
 </div>
 <div class="calendar-wrapper">
-  <full-calendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
+  <full-calendar #fullcalendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
 </div>

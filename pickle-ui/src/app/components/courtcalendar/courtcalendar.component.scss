@@ -1,3 +1,9 @@
+h2 {
+  margin-bottom: 5px;
+}
 .calendar-wrapper {
   width: 400px;        /* fixed width */
+}
+::ng-deep .fc-toolbar {
+  display: none !important;
 }
