@@ -2,12 +2,13 @@ import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { BookingService, CourtDisplayService } from '@services';
-import { BookingRequest, Court } from '@models';
+import { BookingRequest, Court, MasterCourt } from '@models';
 import { CourtcalendarComponent } from '../../components/courtcalendar/courtcalendar.component';
 import moment from 'moment';
 import { MessageComponent } from 'app/components/message.component';
 import { Router } from '@angular/router';
 import { fadeIn, fadeInOut } from 'app/misc/animations';
+import { Observable } from 'rxjs';
 
 const optionsTime: Intl.DateTimeFormatOptions = { hour: 'numeric', hour12: true };
 const optionsDate: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
@@ -22,7 +23,7 @@ const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ss';
   animations: [ fadeInOut, fadeIn]
 })
 export class LandingComponent extends MessageComponent implements OnInit {
-  courts: Court[] = [];
+  courts$: Observable<MasterCourt[]> | null = null;
   date = moment().toDate();
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridDay',
@@ -38,9 +39,7 @@ export class LandingComponent extends MessageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.courtDisplay.displayedCourts$.subscribe(courts => {
-      this.courts = courts;
-    });
+    this.courts$ = this.courtDisplay.displayedCourts$;
   }
   today() {
     this.calendars.forEach(c => c.today());

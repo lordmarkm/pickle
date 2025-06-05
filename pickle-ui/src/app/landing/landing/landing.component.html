@@ -12,13 +12,13 @@
       <div class="flex-col gap5">
         <div>{{checkoutMessage}}</div>
         <div class="flex-row gap5 alignleft">
-          <button mat-raised-button (click)="checkout()">Checkout now</button>
-          <button mat-flat-button (click)="cancel()">Cancel</button>
+          <button mat-raised-button color="accent" (click)="checkout()">Checkout now</button>
+          <button mat-flat-button color="default" (click)="cancel()">Cancel</button>
         </div>
       </div>
     </div>
     <div class="calendar-container flex-row">
-      <div *ngFor="let court of courts"><app-courtcalendar [court]="court" (slotSelected)="onSlotSelected(court, $event)" [@fadeInOut]></app-courtcalendar></div>
+      <div *ngFor="let court of courts$ | async"><app-courtcalendar [court]="court" (slotSelected)="onSlotSelected(court, $event)" [@fadeInOut]></app-courtcalendar></div>
     </div>
 </div>
 </div>

@@ -1,6 +1,7 @@
 import { admin } from "../firebase";
 import {Router, Request, Response} from "express";
 import { authenticateToken } from "../auth/auth";
+import { FieldValue } from 'firebase-admin/firestore';
 
 export const favoritesRouter = Router();
 
@@ -24,7 +25,7 @@ favoritesRouter.put("/", authenticateToken, async (req: Request, res: Response) 
       await userDoc.set({ courts: [courtId] });
     } else {
       await userDoc.set(
-        { courts: admin.firestore.FieldValue.arrayUnion(courtId) },
+        { courts: FieldValue.arrayUnion(courtId) },
         { merge: true } // Important to preserve existing fields
       );
     }
@@ -65,6 +66,32 @@ favoritesRouter.get("/", authenticateToken, async (req: Request, res: Response) 
 
 
 
+favoritesRouter.delete("/:courtId", authenticateToken, async (req: Request, res: Response) => {
+  const uid = (req as any).uid;
+  const courtId = req.params.courtId;
+
+  console.log(`Removing favorite court. UID: ${uid}, courtId: ${courtId}`);
+
+  if (!courtId || typeof courtId !== "string") {
+    return res.status(400).json({ error: "Missing or invalid 'courtId' in URL parameter" });
+  }
+
+  const db = admin.firestore();
+  const userDoc = db.collection("favorites").doc(uid);
+
+  try {
+    await userDoc.set(
+      { courts: FieldValue.arrayRemove(courtId) },
+      { merge: true }
+    );
+
+    console.log(`Removed court ${courtId} from favorites for UID: ${uid}`);
+    return res.status(200).json({ message: "Court removed from favorites" });
+  } catch (error) {
+    console.error("Error removing favorite court:", error);
+    return res.status(500).json({ error: "Failed to remove court from favorites" });
+  }
+});
 
 
 

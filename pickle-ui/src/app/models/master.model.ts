@@ -11,4 +11,5 @@ export interface MasterCourt {
   id: string;
   name: string;
   org: string;
+  checked?: boolean;
 }

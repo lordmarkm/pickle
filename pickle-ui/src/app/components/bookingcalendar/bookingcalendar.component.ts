@@ -6,6 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { CommonModule } from '@angular/common';
 import { MessageComponent } from '../message.component';
 import moment from 'moment';
+import { dateFormat } from '../../misc/dateformats';
 
 @Component({
   standalone: true,
@@ -26,7 +27,7 @@ export class BookingcalendarComponent extends MessageComponent implements OnInit
       booking.color = booking.paid ? EventColors.paid : EventColors.booked;
       this.calendarOptions = {
         events: [ booking ],
-        initialDate: moment(booking.date).toDate(),
+        initialDate: moment(booking.date, dateFormat).toDate(),
         initialView: 'timeGridDay',
         allDaySlot: false,
         plugins: [ timeGridPlugin ],

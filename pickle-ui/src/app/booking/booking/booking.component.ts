@@ -37,7 +37,6 @@ export class BookingComponent extends MessageComponent implements OnInit {
   loadCourt() {
     this.courts.findOne(this.booking!.courtId).subscribe(court => {
       if (court) {
-        console.log('found court: ' + court.name);
         this.court = court;
       }
     });

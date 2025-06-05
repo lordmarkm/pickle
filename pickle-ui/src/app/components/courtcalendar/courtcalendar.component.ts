@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild, EventEmitter, Output } from '@angu
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MasterCourt, Bookings, BookingRequest, EventColors } from '@models';
-import { BookingService, CourtService } from '@services';
+import { BookingService, CourtService, AuthService } from '@services';
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, Calendar } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -10,11 +10,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { EventApi } from '@fullcalendar/core';
 import moment from 'moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-const optionsTime: Intl.DateTimeFormatOptions = { hour: 'numeric', hour12: true };
-const optionsDate: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
-const dateFormat = 'YYYY-MMM-DD';
-const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ss';
+import { filter, take, switchMap } from 'rxjs/operators';
+import { dateFormat } from '../../misc/dateformats';
 
 @Component({
   standalone: true,
@@ -35,10 +32,16 @@ export class CourtcalendarComponent implements OnInit {
   favorite = false;
   spinning = false;
 
-  constructor(private router: Router, private bookings: BookingService, private courts: CourtService) {}
+  constructor(private router: Router, private bookings: BookingService, private courts: CourtService, private auth: AuthService) {}
   ngOnInit() {
     this.loadEvents();
-    this.courts.isFavorite(this.court.id).subscribe(favorite => this.favorite = favorite);
+    this.auth.currentUser$.pipe(
+      filter(user => !!user),
+      take(1), // only act once
+      switchMap(() => this.courts.isFavorite(this.court.id))
+    ).subscribe(favorite => {
+      this.favorite = favorite;
+    });
   }
   loadEvents() {
     this.bookings.getBookings(this.court.id, moment().format(dateFormat)).subscribe((bookings: Bookings) => {
@@ -128,13 +131,16 @@ export class CourtcalendarComponent implements OnInit {
     this.spinning = false;
    }, 300)
    this.favorite = true; 
-   this.courts.addFavoriteCourt(this.court.id).subscribe(res => {
-    this.setMessage(res.message);
-   }, err => {
-    this.setError(err);
+   this.courts.addFavoriteCourt(this.court.id).subscribe({
+     next: res => this.setMessage(res.message),
+     error: err => this.setError('Failed to add favorite: ' + err.message)
    });
   }
   removeFromFavorites() {
-   this.favorite = false; 
+   this.favorite = false;
+   this.courts.removeFavoriteCourt(this.court.id).subscribe({
+     next: res => this.setMessage(res.message),
+     error: err => this.setError('Failed to remove favorite: ' + err.message)
+   });
   }
 }

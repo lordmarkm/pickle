@@ -6,6 +6,8 @@
         <div>
           <input
             type="checkbox"
+            [checked]="court.checked"
+            (change)="onCheckUncheck(court, $event)"
           />
           {{ court.name }} ({{court.org}})
         </div>
