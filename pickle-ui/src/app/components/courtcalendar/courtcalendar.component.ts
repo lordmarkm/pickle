@@ -1,17 +1,17 @@
 import { Component, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MasterCourt, Bookings, BookingRequest, EventColors } from '@models';
+import { MasterCourt, Bookings, Booking, BookingRequest, EventColors } from '@models';
 import { BookingService, CourtService, AuthService } from '@services';
 import { FullCalendarModule, FullCalendarComponent } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, Calendar } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectArg, Calendar, EventClickArg } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventApi } from '@fullcalendar/core';
 import moment from 'moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { filter, take, switchMap } from 'rxjs/operators';
-import { dateFormat } from '../../misc/dateformats';
+import { dateFormat, dateTimeFormat } from '../../misc/dateformats';
 
 @Component({
   standalone: true,
@@ -29,6 +29,7 @@ export class CourtcalendarComponent implements OnInit {
   error: string | null = null;
   calendarOptions: CalendarOptions | null = null;
   @Output() slotSelected = new EventEmitter<any>();
+  @Output() eventSelected = new EventEmitter<any>();
   favorite = false;
   spinning = false;
 
@@ -70,7 +71,8 @@ export class CourtcalendarComponent implements OnInit {
             left: '',
             center: '',
             right: ''
-        }
+        },
+        eventClick: this.handleEventClick.bind(this)
       };
       setTimeout(() => {
         this.calendarApi = this.calendarComponent.getApi();
@@ -104,7 +106,23 @@ export class CourtcalendarComponent implements OnInit {
       this.slotSelected.emit(booking);
     }
   }
-
+  handleEventClick(selectionInfo: EventClickArg) {
+    const evt = selectionInfo.event;
+    const ep = evt.extendedProps;
+    const booking: Booking = {
+      id: evt.id,
+      courtId: ep['courtId'],
+      date: moment(evt.start).format(dateFormat),
+      start: moment(evt.start).format(dateTimeFormat),
+      end: moment(evt.end).format(dateTimeFormat),
+      title: evt.title,
+      type: ep['type'],
+      paid: ep['paid'],
+      createdBy: ep['createdBy'],
+      createdDate: ep['createdDate']
+    };
+    this.eventSelected.emit(booking);
+  }
   setMessage(msg: string) {
     this.error = null;
     this.message = msg;

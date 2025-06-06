@@ -9,6 +9,9 @@ import { CourtcalendarComponent } from '../components/courtcalendar/courtcalenda
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SlotcontrolComponent } from './slotcontrol/slotcontrol.component';
+import { EventcontrolComponent } from './eventcontrol/eventcontrol.component';
+import { BookingdetailsComponent } from '../components/bookingdetails/bookingdetails.component';
 
 const MaterialModules = [
   MatButtonModule,
@@ -17,7 +20,9 @@ const MaterialModules = [
 
 @NgModule({
   declarations: [
-    LandingComponent
+    LandingComponent,
+    SlotcontrolComponent,
+    EventcontrolComponent,
   ],
   imports: [
     ...MaterialModules,
@@ -28,7 +33,8 @@ const MaterialModules = [
     SidebarModule,
 
     //standalone components
-    CourtcalendarComponent
+    CourtcalendarComponent,
+    BookingdetailsComponent
   ]
 })
 export class LandingModule { }

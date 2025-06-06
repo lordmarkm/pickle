@@ -18,6 +18,8 @@ export interface Booking {
   type: 'Private' | 'Open Play';
   paid: boolean;
   color?: string;
+  createdBy?: string;
+  createdDate?: string;
 }
 
 export const EventColors = {

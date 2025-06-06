@@ -1,0 +1,12 @@
+<div class="checkout-container" @fadeIn>
+  <h1>Checkout</h1>
+  <div class="flex-col gap5">
+    <div>{{message}}</div>
+    <div *ngIf="error">{{error}}</div>
+    <div>{{checkoutMessage}}</div>
+    <div class="flex-row gap5 alignleft">
+      <button mat-raised-button color="accent" (click)="checkout()">Checkout now</button>
+      <button mat-flat-button color="default" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

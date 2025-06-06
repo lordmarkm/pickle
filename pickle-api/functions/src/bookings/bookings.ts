@@ -70,6 +70,7 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
   booking.createdBy = (req as any).uid;
   booking.createdByEmail = (req as any).email;
   booking.createdByName = name;
+  booking.createdDate = new Date().toISOString();
 
   //TODO verify no overlap
 

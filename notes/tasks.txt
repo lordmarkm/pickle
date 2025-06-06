@@ -8,6 +8,10 @@ To do:
 - Handle event click (if owner, allow view, otherwise sorry message)
 - Handle funky favorites vs non-favorites checked/unchecked behavior
 - Actually cancel unpaid bookings after 15 minutes
+- Add beta banner
+- Test deployment of existing functions
+- Allow open play
+- Handle non-owner clicking on an event
 
 Done:
 - Allow booking cancellation from checkout screen
