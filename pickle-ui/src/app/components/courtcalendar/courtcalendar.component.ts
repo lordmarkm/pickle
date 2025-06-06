@@ -10,7 +10,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { EventApi } from '@fullcalendar/core';
 import moment from 'moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { filter, take, switchMap } from 'rxjs/operators';
+import { filter, take, switchMap, tap } from 'rxjs/operators';
 import { dateFormat, dateTimeFormat, simpleTimeFormat, fcTimeFormat } from '../../misc/dateformats';
 import { CourtDisplayService } from '../../services/courtdisplay.service';
 
@@ -35,13 +35,14 @@ export class CourtcalendarComponent implements OnInit {
   spinning = false;
   schedStart?: string;
   schedEnd?: string;
+  anonymous = true;
 
   constructor(private router: Router, private bookings: BookingService, private courts: CourtService, private auth: AuthService, private courtDisplayService: CourtDisplayService) {}
   ngOnInit() {
     this.loadEvents();
     this.auth.currentUser$.pipe(
+      tap(user => this.anonymous = !user),
       filter(user => !!user),
-      take(1), // only act once
       switchMap(() => this.courts.isFavorite(this.court.id))
     ).subscribe(favorite => {
       this.favorite = favorite;

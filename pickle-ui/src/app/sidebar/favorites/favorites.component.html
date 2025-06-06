@@ -1,3 +1,5 @@
+<ng-container *ngIf="!anonymous">
+
 <h3>Favorites</h3>
 <div *ngIf="!favorites || favorites.length == 0">No favorites added</div>
 <div *ngIf="favorites && favorites.length > 0">
@@ -14,3 +16,15 @@
       </li>
     </ol>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+</ng-container>

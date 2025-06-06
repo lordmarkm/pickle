@@ -1,6 +1,4 @@
 To do:
-- Hide favorites if anonymous
-- Hide favorite stars if anonymous
 - Load events in future dates
 - Prevent browsing to past dates in landing screen
 - Handle event click (if owner, allow view, otherwise sorry message)
@@ -10,8 +8,11 @@ To do:
 - Test deployment of existing functions
 - Allow open play
 - Handle non-owner clicking on an event
+- Only include createdBy (userId) in publicly available api calls and remove email, name
 
 Done:
+- Hide favorite stars if anonymous
+- Hide favorites if anonymous
 - Add court schedules (e.g. allow booking from 4pm -12mn)
 - Allow booking cancellation from landing
 - Allow booking cancellation from checkout screen

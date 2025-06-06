@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService, CourtService, CourtDisplayService } from '@services';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
-import { MasterCourt, Master } from '@models';
+import { MasterCourt, Master, MasterOrg } from '@models';
 
 @Component({
   standalone: false,
@@ -15,57 +15,74 @@ export class FavoritesComponent implements OnInit {
   favorites: MasterCourt[] = [];
   @Output() master = new EventEmitter<Master>();
   checkedFavorites = new Set<string>();
+  anonymous = true;
 
   constructor(private authService: AuthService, private courts: CourtService, private courtDisplay: CourtDisplayService) {}
 
   ngOnInit(): void {
     this.authService.currentUser$
       .pipe(
+        tap(user => {
+          if (!user) {
+            this.handleNoUser();
+          }
+        }),
         filter(user => !!user),
-        switchMap(() =>
-          forkJoin({
-            favorites: this.courts.getFavorites(),
-            master: this.courts.getMaster()
-          })
-        )
+        switchMap(() => this.loadCourtDataForUser())
       )
-    .subscribe({
-      next: ({ favorites, master }) => {
-        this.favoriteCourtIds = favorites.courts;
-        this.favorites = [];
-    
-        // Clone orgs deeply to avoid mutating original `master.orgs`
-        const clonedOrgs = master.orgs.map(org => ({
-          ...org,
-          courts: [...org.courts]
-        }));
-    
-        // Filter and separate favorites
-        const filteredOrgs = clonedOrgs.filter(org => {
-          const favoriteCourtsInOrg = org.courts.filter(court => this.favoriteCourtIds.includes(court.id));
-          const nonFavoriteCourtsInOrg = org.courts.filter(court => !this.favoriteCourtIds.includes(court.id));
-    
-          this.favorites.push(...favoriteCourtsInOrg);
-          org.courts = nonFavoriteCourtsInOrg;
-    
-          return org.courts.length > 0;
-        });
-    
-        // Emit a new master object with filtered orgs
-        this.master.emit({
-          ...master,
-          orgs: filteredOrgs
-        });
-    
-        this.loadCheckedFavorites();
-      },
-      error: err => console.error('Error loading court data:', err)
-    });
-
-    //reload favorites if modified
+      .subscribe({
+        next: ({ favorites, master }) => this.handleUserCourtData(favorites, master),
+        error: err => console.error('Error loading court data:', err)
+      });
+  
     this.courts.favoritesModified$.subscribe(() => {
       this.loadCheckedFavorites();
     });
+  }
+  
+  private handleNoUser(): void {
+    this.favorites = [];
+    this.favoriteCourtIds = [];
+    this.anonymous = true;
+    this.courts.getMaster().subscribe({
+      next: completeMaster => this.master.emit(completeMaster),
+      error: err => console.error('Could not load master for anonymous user')
+    })
+  }
+  
+  private loadCourtDataForUser() {
+    this.anonymous = false;
+    return forkJoin({
+      favorites: this.courts.getFavorites(),
+      master: this.courts.getMaster()
+    });
+  }
+  
+  private handleUserCourtData(favorites: any, master: any): void {
+    this.favoriteCourtIds = favorites.courts;
+    this.favorites = [];
+  
+    const clonedOrgs = master.orgs.map((org: MasterOrg) => ({
+      ...org,
+      courts: [...org.courts]
+    }));
+  
+    const filteredOrgs = clonedOrgs.filter((org: MasterOrg) => {
+      const favoriteCourtsInOrg = org.courts.filter(court => this.favoriteCourtIds.includes(court.id));
+      const nonFavoriteCourtsInOrg = org.courts.filter(court => !this.favoriteCourtIds.includes(court.id));
+  
+      this.favorites.push(...favoriteCourtsInOrg);
+      org.courts = nonFavoriteCourtsInOrg;
+  
+      return org.courts.length > 0;
+    });
+  
+    this.master.emit({
+      ...master,
+      orgs: filteredOrgs
+    });
+
+    this.loadCheckedFavorites();
   }
 
   onCheckUncheck(court: MasterCourt, evt: Event) {
