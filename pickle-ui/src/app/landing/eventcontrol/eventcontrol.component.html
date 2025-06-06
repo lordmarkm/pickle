@@ -1,18 +1,20 @@
 <div class="event-container">
-  <h1>Your {{booking.start | date: 'MMMM d'}} Booking</h1>
+  <h1 *ngIf="owner">Your {{booking.start | date: 'MMMM d'}} Booking</h1>
+  <h1 *ngIf="!owner">{{booking.title}} Booking</h1>
   <div class="flex-col gap5">
     <app-bookingdetails [booking]="booking" [court]="court"></app-bookingdetails>
     <div>{{message}}</div>
     <div *ngIf="booking.paid">
       <p>This is a confirmed booking. You created it {{fromNow(booking.createdDate)}}</p>
-      <a [routerLink]="['/booking', booking.id]">View details</a><br><br>
+      <a *ngIf="owner" [routerLink]="['/booking', booking.id]">View details</a><br><br>
       <button mat-flat-button (click)="backToCalendar()">Back to calendar</button>
     </div>
     <div *ngIf="!booking.paid" class="flex-column gap5 alignleft">
-      <p>This is an unconfirmed booking. You created it {{fromNow(booking.createdDate)}}. Unpaid bookings will be cancelled by the system after 15 minutes.</p>
+      <p *ngIf="owner">This is an unconfirmed booking. You created it {{fromNow(booking.createdDate)}}. Unpaid bookings will be cancelled by the system after 15 minutes.</p>
+      <p *ngIf="!owner">This is an unconfirmed booking created {{fromNow(booking.createdDate)}}. Unpaid bookings will be cancelled by the system after 15 minutes.</p>
       <div class="flex-row gap5 alignleft">
-        <button mat-raised-button color="accent" (click)="checkout()">Checkout now</button>
-        <button mat-flat-button color="default" (click)="cancel()">Cancel booking</button>
+        <button *ngIf="owner" mat-raised-button color="accent" (click)="checkout()">Checkout now</button>
+        <button *ngIf="owner" mat-flat-button color="default" (click)="cancel()">Cancel booking</button>
         <button mat-flat-button (click)="backToCalendar()">Back to calendar</button>
       </div>
     </div>

@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Booking, Court } from '@models';
-import { BookingService } from '@services';
+import { BookingService, CourtDisplayService, AuthService } from '@services';
 import { MessageComponent } from 'app/components/message.component';
-import { CourtDisplayService } from '../../services/courtdisplay.service';
 
 @Component({
   selector: 'app-eventcontrol',
@@ -11,14 +10,21 @@ import { CourtDisplayService } from '../../services/courtdisplay.service';
   templateUrl: './eventcontrol.component.html',
   styleUrl: './eventcontrol.component.scss'
 })
-export class EventcontrolComponent extends MessageComponent {
+export class EventcontrolComponent extends MessageComponent implements OnInit {
 
   @Input() booking!: Booking;
   @Input() court!: Court;
   @Output() cancelEvent = new EventEmitter<void>();
+  owner = false;
 
-  constructor(private bookings: BookingService, private router: Router, private courtDisplayService: CourtDisplayService) {
+  constructor(private bookings: BookingService, private router: Router, private courtDisplayService: CourtDisplayService, private auth: AuthService) {
     super();
+  }
+
+  ngOnInit() {
+    this.auth.currentUser$.subscribe(user => {
+      this.owner = user?.uid === this.booking?.createdBy;
+    });
   }
 
   checkout() {

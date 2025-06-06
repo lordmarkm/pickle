@@ -37,10 +37,13 @@ bookingsRouter.get("/", async (req: Request, res: Response) => {
       .where("courtId", "==", courtId)
       .where("date", "==", date)
       .get();
-    const bookings = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const bookings = snapshot.docs.map(doc => {
+      const { createdByEmail, createdByName, ...rest } = doc.data();
+      return {
+        id: doc.id,
+        ...rest
+      };
+    });
     return res.json({
       courtId,
       date,

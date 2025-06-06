@@ -12,12 +12,12 @@
     <div *ngIf="!booking.paid" class="flex-row gap5 alignleft" style="grid-column: 1 / -1;">
       <button mat-raised-button (click)="pay()">Pay now</button>
       <button mat-flat-button (click)="cancel()">Cancel Booking</button>
+      <button mat-flat-button routerLink="/landing">Back to calendar</button>
     </div>
   </div>
   <div *ngIf="error" style="color: red">{{error}}</div>
   <div *ngIf="message">{{message}}</div>
   <p>This booking is created and will be confirmed upon payment. Unpaid bookings will be cancelled by the system after 15 minutes</p>
-  <a routerLink="/landing">Home</a>
 </div>
 
 <div class="calendar-wrapper">

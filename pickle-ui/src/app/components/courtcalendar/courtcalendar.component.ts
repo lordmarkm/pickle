@@ -58,7 +58,8 @@ export class CourtcalendarComponent implements OnInit {
     this.schedEnd = moment(this.court.end || '22:00:00', fcTimeFormat).format(simpleTimeFormat);
   }
   loadEvents() {
-    this.bookings.getBookings(this.court.id, moment().format(dateFormat)).subscribe((bookings: Bookings) => {
+    const date = this.date ?? new Date();
+    this.bookings.getBookings(this.court.id, moment(date).format(dateFormat)).subscribe((bookings: Bookings) => {
       bookings.bookings.forEach(booking => {
         if (booking.paid) {
             booking.color = EventColors.paid;
@@ -69,6 +70,7 @@ export class CourtcalendarComponent implements OnInit {
       this.calendarOptions = {
         events: bookings.bookings,
         initialView: 'timeGridDay',
+        initialDate: date,
         allDaySlot: false,
         plugins: [ interactionPlugin, timeGridPlugin ],
         selectable: true,
@@ -144,17 +146,10 @@ export class CourtcalendarComponent implements OnInit {
     this.message = null;
     this.error = err;
   }
-  today() {
-    this.calendarApi.today();
+  setDate(date: Date) {
+    this.calendarApi.gotoDate(date);
     this.date = this.calendarApi.getDate();
-  }
-  previousDay() {
-    this.calendarApi.prev();
-    this.date = this.calendarApi.getDate();
-  }
-  nextDay() {
-    this.calendarApi.next();
-    this.date = this.calendarApi.getDate();
+    this.loadEvents();
   }
   addToFavorites() {
    this.spinning = true;

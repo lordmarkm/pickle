@@ -30,6 +30,7 @@ export class LandingComponent extends MessageComponent implements OnInit {
   court: Court | null = null;
   checkoutMessage?: string;
   selectionType?: 'slot' | 'event';
+  atCurrentDate = true;
 
   constructor(private courtDisplay: CourtDisplayService, private bookings: BookingService, private router: Router) {
     super();
@@ -39,16 +40,23 @@ export class LandingComponent extends MessageComponent implements OnInit {
     this.courts$ = this.courtDisplay.displayedCourts$;
   }
   today() {
-    this.calendars.forEach(c => c.today());
     this.date = moment().toDate();
+    this.calendars.forEach(c => c.setDate(this.date));
+    this.atCurrentDate = true;
   }
   previousDay() {
-    this.calendars.forEach(c => c.previousDay());
-    this.date = moment(this.date).subtract(1, 'days').toDate();
+    const date = moment(this.date).subtract(1, 'days');
+    if (date.isBefore(moment().startOf('day'))) {
+      return;
+    }
+    this.date = date.toDate();
+    this.calendars.forEach(c => c.setDate(this.date));
+    this.atCurrentDate = date.isSame(moment(), 'day');
   }
   nextDay() {
-    this.calendars.forEach(c => c.nextDay());
     this.date = moment(this.date).add(1, 'days').toDate();
+    this.calendars.forEach(c => c.setDate(this.date));
+    this.atCurrentDate = false;
   }
   onSlotSelected(court: Court, bookingRequest: BookingRequest) {
     this.bookingRequest = bookingRequest;
