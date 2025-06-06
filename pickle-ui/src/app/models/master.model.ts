@@ -12,4 +12,6 @@ export interface MasterCourt {
   name: string;
   org: string;
   checked?: boolean;
+  start?: string; //'16:00:00' formatted for fullcalendar slotMinTime
+  end?: string; //'22:00:00'
 }

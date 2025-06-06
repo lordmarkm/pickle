@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Booking, Court } from '@models';
 import { BookingService } from '@services';
 import { MessageComponent } from 'app/components/message.component';
+import { CourtDisplayService } from '../../services/courtdisplay.service';
 
 @Component({
   selector: 'app-eventcontrol',
@@ -16,7 +17,7 @@ export class EventcontrolComponent extends MessageComponent {
   @Input() court!: Court;
   @Output() cancelEvent = new EventEmitter<void>();
 
-  constructor(private bookings: BookingService, private router: Router) {
+  constructor(private bookings: BookingService, private router: Router, private courtDisplayService: CourtDisplayService) {
     super();
   }
 
@@ -27,8 +28,11 @@ export class EventcontrolComponent extends MessageComponent {
   cancel() {
     this.bookings.cancel(this.booking.id!).subscribe({
       next: booking => {
-        this.setMessage('Booking has been cancelled: ' + booking.title);
-        this.cancelEvent.emit();
+        this.setMessage('Booking has been cancelled: ' + this.booking.title);
+        setTimeout(() => {
+          this.cancelEvent.emit();
+          this.courtDisplayService.triggerRefresh(this.court.id);
+        }, 1000);
       },
       error: err => this.setError('Cancel failed: ' + err)
     })

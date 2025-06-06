@@ -1,6 +1,4 @@
 To do:
-- Allow booking cancellation from landing
-- Add court schedules (e.g. allow booking from 4pm -12mn)
 - Hide favorites if anonymous
 - Hide favorite stars if anonymous
 - Load events in future dates
@@ -14,6 +12,8 @@ To do:
 - Handle non-owner clicking on an event
 
 Done:
+- Add court schedules (e.g. allow booking from 4pm -12mn)
+- Allow booking cancellation from landing
 - Allow booking cancellation from checkout screen
 - Favorites display
 - Fix moment error on some operations

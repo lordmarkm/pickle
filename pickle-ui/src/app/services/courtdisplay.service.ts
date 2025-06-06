@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
 import { MasterCourt } from '@models';
 
 @Injectable({
@@ -8,6 +8,8 @@ import { MasterCourt } from '@models';
 export class CourtDisplayService {
   private displayedCourtsSubject = new BehaviorSubject<MasterCourt[]>([]);
   displayedCourts$ = this.displayedCourtsSubject.asObservable();
+  private refreshEventsSubject = new Subject<string>();
+  refreshEvents$ = this.refreshEventsSubject.asObservable();
 
   constructor() { }
 
@@ -23,5 +25,9 @@ export class CourtDisplayService {
     const current = this.displayedCourtsSubject.value;
     const updated = current.filter(c => c.id !== court.id);
     this.displayedCourtsSubject.next(updated);
+  }
+
+  triggerRefresh(courtId: string): void {
+    this.refreshEventsSubject.next(courtId);
   }
 }

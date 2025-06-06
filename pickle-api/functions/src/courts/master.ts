@@ -16,7 +16,9 @@ const defaultMaster = {
         {
           id: "indoor1",
           org: "ICB",
-          name: "Indoor 1"
+          name: "Indoor 1",
+          start: "08:00:00",
+          end: "12:00:00"
         }
       ]
     },
