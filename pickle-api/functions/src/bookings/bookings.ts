@@ -38,10 +38,13 @@ bookingsRouter.get("/", async (req: Request, res: Response) => {
       .where("date", "==", date)
       .get();
     const bookings = snapshot.docs.map(doc => {
-      const { createdByEmail, createdByName, ...rest } = doc.data();
+      const data = doc.data();
+      delete data.createdByEmail;
+      delete data.createdByName;
+      delete data.ttl;
       return {
         id: doc.id,
-        ...rest
+        ...data
       };
     });
     return res.json({
@@ -63,7 +66,7 @@ bookingsRouter.get("/", async (req: Request, res: Response) => {
 
 
 
-
+const twentyMins = 20 * 60 * 1000; // 20 minutes in milliseconds
 bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) => {
   const booking = req.body;
   const name = (req as any).name;
@@ -74,6 +77,7 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
   booking.createdByEmail = (req as any).email;
   booking.createdByName = name;
   booking.createdDate = new Date().toISOString();
+  booking.ttl = new Date(Date.now() + twentyMins);
 
   //TODO verify no overlap
 

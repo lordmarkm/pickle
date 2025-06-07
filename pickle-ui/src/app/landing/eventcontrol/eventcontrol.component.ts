@@ -5,6 +5,7 @@ import { BookingService, CourtDisplayService, AuthService } from '@services';
 import { MessageComponent } from 'app/components/message.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { unpaidBookingsTtlInMinutes } from '../../misc/constants';
 
 @Component({
   selector: 'app-eventcontrol',
@@ -19,6 +20,7 @@ export class EventcontrolComponent extends MessageComponent implements OnInit, O
   @Output() cancelEvent = new EventEmitter<void>();
   private destroy$ = new Subject<void>();
   owner = false;
+  unpaidBookingsTtlInMinutes = unpaidBookingsTtlInMinutes;
 
   constructor(private bookings: BookingService, private router: Router, private courtDisplayService: CourtDisplayService, private auth: AuthService) {
     super();

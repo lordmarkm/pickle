@@ -9,4 +9,4 @@ app.use(express.json()); // for parsing JSON request bodies
 app.use('/', bookingsRouter);
 app.use('/:id/pay', paymentsRouter);
 
-export const bookings = functions.https.onRequest(app);
+export const bookings = functions.https.onRequest({ region: 'asia-southeast1' },app);

@@ -1,13 +1,15 @@
 To do:
-- Actually cancel unpaid bookings after 15 minutes
-- Add beta banner
 - Test deployment of existing functions
-- Allow open play
-- Handle non-owner clicking on an event
-- Only include createdBy (userId) in publicly available api calls and remove email, name
 - Force user to only have 1 unpaid booking at a time (pay or cancel to book again)
+- Fix displayed courts on login/logout
+- Handle non-owner accessing event checkout & details page
+- Allow open play
 
 Done:
+- Add beta banner
+- Actually cancel unpaid bookings after 20 minutes
+- Handle non-owner clicking on an event
+- Only include createdBy (userId) in publicly available api calls and remove email, name
 - Handle funky favorites vs non-favorites checked/unchecked behavior
 - Handle event click (if owner, allow view, otherwise sorry message)
 - Prevent browsing to past dates in landing screen

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService, CourtService } from '@services';
 import { Booking, Court } from '@models';
 import { MessageComponent } from 'app/components/message.component';
+import { unpaidBookingsTtlInMinutes } from '../../misc/constants';
 
 @Component({
   selector: 'app-checkout',
@@ -14,6 +15,7 @@ export class CheckoutComponent extends MessageComponent implements OnInit {
   bookingId!: string;
   booking: Booking | null = null;
   court: Court | null = null;
+  unpaidBookingsTtlInMinutes = unpaidBookingsTtlInMinutes;
   constructor(private route: ActivatedRoute, private router: Router, private courts: CourtService, private bookings: BookingService) {
     super();
   }

@@ -1,6 +1,7 @@
 import { admin } from "../firebase";
 import {Router, Request, Response} from "express";
 import { authenticateToken } from "../auth/auth";
+import { FieldValue } from 'firebase-admin/firestore';
 
 export const paymentsRouter = Router({ mergeParams: true });
 const db = admin.firestore();
@@ -22,7 +23,10 @@ paymentsRouter.put("/", authenticateToken, async (req: Request, res: Response) =
     }
     booking.paid = true;
 
-    await docRef.update({ paid: true});
+    await docRef.update({
+      paid: true,
+      ttl: FieldValue.delete()
+    });
     return res.json({ id: doc.id, ...booking });
   } catch (error) {
     console.error('Error retrieving booking:', error);

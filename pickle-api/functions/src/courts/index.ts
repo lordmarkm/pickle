@@ -9,4 +9,4 @@ app.use(express.json()); // for parsing JSON request bodies
 app.use('/favorites', favoritesRouter);
 app.use('/master', masterRouter);
 
-export const courts = functions.https.onRequest(app);
+export const courts = functions.https.onRequest({ region: 'asia-southeast1' }, app);

@@ -17,7 +17,7 @@
   </div>
   <div *ngIf="error" style="color: red">{{error}}</div>
   <div *ngIf="message">{{message}}</div>
-  <p>This booking is created and will be confirmed upon payment. Unpaid bookings will be cancelled by the system after 15 minutes</p>
+  <p>This booking is created and will be confirmed upon payment. Unpaid bookings will be cancelled by the system after {{unpaidBookingsTtlInMinutes}} minutes</p>
 </div>
 
 <div class="calendar-wrapper">
