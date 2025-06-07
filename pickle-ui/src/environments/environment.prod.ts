@@ -10,5 +10,8 @@ export const environment = {
   },
   functions: {
     baseUrl: "https://asia-southeast1-dumaget-me.cloudfunctions.net"
+  },
+  recaptcha: {
+    siteKey: "6LcVr1grAAAAABcK3MW9w8MiTulX3HkTDiV-bD3r"
   }
 };

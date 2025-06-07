@@ -1,5 +1,6 @@
 import { admin } from "../firebase";
 import {Router, Request, Response} from "express";
+import { authenticateTokenOrRecaptcha } from "../auth/auth-or-recaptcha";
 
 export const masterRouter = Router();
 
@@ -46,8 +47,7 @@ const defaultMaster = {
 };
 
 // GET master list of all courts for the sidebar
-// TODO require recaptcha on public APIs to prevent automated abuse
-masterRouter.get("/", async (req: Request, res: Response) => {
+masterRouter.get("/", authenticateTokenOrRecaptcha, async (req: Request, res: Response) => {
   const db = admin.firestore();
   const col = db.collection("master");
 

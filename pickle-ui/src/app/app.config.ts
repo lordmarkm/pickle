@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -12,6 +12,9 @@ import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
+//Recaptcha
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from "ng-recaptcha-2";
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -20,6 +23,10 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
-    provideAnimations()
+    provideAnimations(),
+
+    // Add these:
+    importProvidersFrom(RecaptchaV3Module),
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.recaptcha.siteKey }
   ]
 };

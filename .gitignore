@@ -7,3 +7,4 @@
 .cproject
 .settings/
 .loadpath
+.runtimeconfig.json

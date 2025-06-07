@@ -10,5 +10,8 @@ export const environment = {
   },
   functions: {
     baseUrl: "http://127.0.0.1:5001/dumaget-me/asia-southeast1"
+  },
+  recaptcha: {
+    siteKey: "6LcVr1grAAAAABcK3MW9w8MiTulX3HkTDiV-bD3r"
   }
 };

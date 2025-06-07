@@ -1,6 +1,7 @@
 import { admin } from "../firebase";
 import {Router, Request, Response} from "express";
 import { authenticateToken } from "../auth/auth";
+import { authenticateTokenOrRecaptcha } from "../auth/auth-or-recaptcha";
 
 export const bookingsRouter = Router();
 const db = admin.firestore();
@@ -23,7 +24,7 @@ bookingsRouter.get('/:id', async (req, res) => {
   }
 });
 
-bookingsRouter.get("/", async (req: Request, res: Response) => {
+bookingsRouter.get("/", authenticateTokenOrRecaptcha, async (req: Request, res: Response) => {
   const courtId = req.query.courtId as string;
   const date = req.query.date as string;
   console.log(`Retrieving bookings. Court ID: ${courtId}, date: ${date}`);
