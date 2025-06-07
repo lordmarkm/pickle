@@ -1,11 +1,11 @@
 To do:
-- Map apis to api.beta.dumaget.me
+- Protect  APIs with recaptcha, but only if the user is anonymous
 - Force user to only have 1 unpaid booking at a time (pay or cancel to book again)
 - Fix displayed courts on login/logout
 - Handle non-owner accessing event checkout & details page
-- Protect  APIs with recaptcha
 - Allow open play
 - Manually filter out bookings w/ expired TTL
+- Bug: hide unhide calendar puts it back in current day even if the controls are on a future day
 
 Done:
 - Map to beta.dumaget.me
@@ -36,3 +36,6 @@ Done:
 - Get reference to user login
 - Get reference to court calendar
 - Simulate a google cloud function
+
+Deprioritized:
+- Map apis to api.beta.dumaget.me
