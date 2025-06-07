@@ -33,9 +33,9 @@ export class CourtService {
     );
   }
 
-  getFavorites(): Observable<any> {
+  getFavorites(refresh = false): Observable<any> {
     // Return the cached value if available
-    if (this.favoritesCache) {
+    if (this.favoritesCache && !refresh) {
       return of(this.favoritesCache);
     }
   
@@ -93,7 +93,7 @@ export class CourtService {
   }
 
   addFavoriteCourt(courtId: string): Observable<{ message: string }> {
-    return this.http.put<{ message: string }>(`${this.baseUrl}/favorites`, { courtId})
+    return this.http.put<{ message: string }>(`${this.baseUrl}/favorites`, { courtId })
       .pipe(
         tap(() => {
           const data = localStorage.getItem('checkedFavorites');

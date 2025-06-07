@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MasterCourt, Bookings, Booking, BookingRequest, EventColors } from '@models';
@@ -10,9 +10,10 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { EventApi } from '@fullcalendar/core';
 import moment from 'moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { filter, take, switchMap, tap } from 'rxjs/operators';
+import { filter, takeUntil, switchMap, tap } from 'rxjs/operators';
 import { dateFormat, dateTimeFormat, simpleTimeFormat, fcTimeFormat } from '../../misc/dateformats';
 import { CourtDisplayService } from '../../services/courtdisplay.service';
+import { Subject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -21,7 +22,7 @@ import { CourtDisplayService } from '../../services/courtdisplay.service';
   styleUrl: './courtcalendar.component.scss',
   imports: [ CommonModule, FullCalendarModule, MatTooltipModule ]
 })
-export class CourtcalendarComponent implements OnInit {
+export class CourtcalendarComponent implements OnInit, OnDestroy {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
   calendarApi!: Calendar;
   date: Date | null = null;
@@ -36,26 +37,36 @@ export class CourtcalendarComponent implements OnInit {
   schedStart?: string;
   schedEnd?: string;
   anonymous = true;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router, private bookings: BookingService, private courts: CourtService, private auth: AuthService, private courtDisplayService: CourtDisplayService) {}
   ngOnInit() {
     this.loadEvents();
-    this.auth.currentUser$.pipe(
-      tap(user => this.anonymous = !user),
-      filter(user => !!user),
-      switchMap(() => this.courts.isFavorite(this.court.id))
-    ).subscribe(favorite => {
-      this.favorite = favorite;
-    });
-    this.courtDisplayService.refreshEvents$.subscribe(courtId => {
-      if (courtId === this.court.id) {
-        this.loadEvents();
-      } else {
-        //console.log(`ignoring refresh event. evt id=${courtId}, my court id=${this.court.id}`)
-      }
-    });
+    this.auth.currentUser$
+      .pipe(
+        tap(user => this.anonymous = !user),
+        filter(user => !!user),
+        switchMap(() => this.courts.isFavorite(this.court.id)),
+      )
+      .subscribe(favorite => {
+        this.favorite = favorite;
+      });
+
+    this.courtDisplayService.refreshEvents$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(courtId => {
+        if (courtId === this.court.id) {
+          this.loadEvents();
+        } else {
+          //console.log(`ignoring refresh event. evt id=${courtId}, my court id=${this.court.id}`)
+        }
+      });
     this.schedStart = moment(this.court.start || '16:00:00', fcTimeFormat).format(simpleTimeFormat);
     this.schedEnd = moment(this.court.end || '22:00:00', fcTimeFormat).format(simpleTimeFormat);
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   loadEvents() {
     const date = this.date ?? new Date();

@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Booking, Court } from '@models';
 import { BookingService, CourtDisplayService, AuthService } from '@services';
 import { MessageComponent } from 'app/components/message.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-eventcontrol',
@@ -10,11 +12,12 @@ import { MessageComponent } from 'app/components/message.component';
   templateUrl: './eventcontrol.component.html',
   styleUrl: './eventcontrol.component.scss'
 })
-export class EventcontrolComponent extends MessageComponent implements OnInit {
+export class EventcontrolComponent extends MessageComponent implements OnInit, OnDestroy {
 
   @Input() booking!: Booking;
   @Input() court!: Court;
   @Output() cancelEvent = new EventEmitter<void>();
+  private destroy$ = new Subject<void>();
   owner = false;
 
   constructor(private bookings: BookingService, private router: Router, private courtDisplayService: CourtDisplayService, private auth: AuthService) {
@@ -22,11 +25,16 @@ export class EventcontrolComponent extends MessageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.currentUser$.subscribe(user => {
-      this.owner = user?.uid === this.booking?.createdBy;
-    });
+    this.auth.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.owner = user?.uid === this.booking?.createdBy;
+      });
   }
-
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   checkout() {
     this.setMessage('Redirecting to checkout page...');
     this.router.navigate(['/checkout'], {queryParams: {bookingId: this.booking.id}});

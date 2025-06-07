@@ -1,5 +1,5 @@
-<section *ngIf="master">
-<h3>Courts</h3>
+<section *ngIf="master && master?.orgs?.length">
+<h3>All Courts</h3>
 
 <div *ngFor="let org of master.orgs">
   <h3>{{ org.name }}</h3>

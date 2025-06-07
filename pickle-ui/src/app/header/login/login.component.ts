@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from '@angular/fire/auth';
 import { AuthService } from '@services';
 import { User } from '@angular/fire/auth';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   standalone: false,
@@ -9,13 +11,20 @@ import { User } from '@angular/fire/auth';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   user: User | null = null;
   constructor(private auth: Auth, private authService: AuthService) {}
   ngOnInit() {
-    this.authService.currentUser$.subscribe(u => {
-      this.user = u;
-    });
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(u => {
+        this.user = u;
+      });
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   loginWithGoogle() {
     const provider = new GoogleAuthProvider();

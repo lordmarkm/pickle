@@ -1,5 +1,4 @@
 To do:
-- Handle funky favorites vs non-favorites checked/unchecked behavior
 - Actually cancel unpaid bookings after 15 minutes
 - Add beta banner
 - Test deployment of existing functions
@@ -9,6 +8,7 @@ To do:
 - Force user to only have 1 unpaid booking at a time (pay or cancel to book again)
 
 Done:
+- Handle funky favorites vs non-favorites checked/unchecked behavior
 - Handle event click (if owner, allow view, otherwise sorry message)
 - Prevent browsing to past dates in landing screen
 - Load events in future dates
