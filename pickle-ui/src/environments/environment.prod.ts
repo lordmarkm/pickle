@@ -9,6 +9,6 @@ export const environment = {
     measurementId: "G-LV4Z0NXC4L"
   },
   functions: {
-    baseUrl: "https://asia-southeast1-dumaget-me.cloudfunctions.net/bookings"
+    baseUrl: "https://asia-southeast1-dumaget-me.cloudfunctions.net"
   }
 };

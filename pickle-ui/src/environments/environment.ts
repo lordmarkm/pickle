@@ -9,6 +9,6 @@ export const environment = {
     measurementId: "G-LV4Z0NXC4L"
   },
   functions: {
-    baseUrl: "http://127.0.0.1:5001/dumaget-me/us-central1"
+    baseUrl: "http://127.0.0.1:5001/dumaget-me/asia-southeast1"
   }
 };

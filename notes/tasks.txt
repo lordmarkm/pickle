@@ -1,11 +1,15 @@
 To do:
-- Test deployment of existing functions
+- Map to beta.dumaget.me
 - Force user to only have 1 unpaid booking at a time (pay or cancel to book again)
 - Fix displayed courts on login/logout
 - Handle non-owner accessing event checkout & details page
+- Protect  APIs with recaptcha
 - Allow open play
 
 Done:
+- Deploy angular app
+- Add cors
+- Test deployment of existing functions
 - Add beta banner
 - Actually cancel unpaid bookings after 20 minutes
 - Handle non-owner clicking on an event
