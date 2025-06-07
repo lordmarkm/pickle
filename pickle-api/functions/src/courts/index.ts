@@ -6,7 +6,7 @@ import { masterRouter } from './master';
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:4200', 'https://dumaget.me', 'https://dumaget-me.web.app'],
+  origin: ['http://localhost:4200', 'https://dumaget.me', 'https://beta.dumaget.me', 'https://dumaget-me.web.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
