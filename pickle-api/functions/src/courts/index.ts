@@ -3,6 +3,7 @@ import cors from 'cors';
 import { favoritesRouter } from './favorites';
 import { masterRouter } from './master';
 import { onRequest } from 'firebase-functions/v2/https';
+import { defineSecret } from 'firebase-functions/params';
 
 const app = express();
 app.use(cors({
@@ -15,9 +16,11 @@ app.use(express.json()); // for parsing JSON request bodies
 app.use('/favorites', favoritesRouter);
 app.use('/master', masterRouter);
 
+const recaptchaSecret = defineSecret("recaptcha");
 export const courts = onRequest(
   {
-    region: 'asia-southeast1'
+    region: 'asia-southeast1',
+    secrets: [recaptchaSecret]
   },
   app
 );

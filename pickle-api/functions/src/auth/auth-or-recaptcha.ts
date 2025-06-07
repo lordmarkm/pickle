@@ -1,6 +1,5 @@
 import { admin } from "../firebase";
 import { Request, Response, NextFunction } from "express";
-import * as functions from 'firebase-functions';
 
 export async function authenticateTokenOrRecaptcha(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
@@ -38,12 +37,16 @@ async function verifyAuthHeader(authHeader: string, req: Request, res: Response,
 
 async function verifyRecaptcha(recaptchaHeader: string, req: Request, res: Response, next: NextFunction) {
   try {
+    console.log('verifying recaptcha. header=', recaptchaHeader);
     // Verify recaptcha token with Google API
-    const recaptchaSecret = functions.config().recaptcha?.secret;
+    const recaptchaSecretKey = process.env.recaptcha;
+    if (!recaptchaSecretKey) {
+      return res.status(500).json({ error: "Failed recaptcha verification" });
+    }
     const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${encodeURIComponent(recaptchaSecret)}&response=${encodeURIComponent(recaptchaHeader)}`
+      body: `secret=${encodeURIComponent(recaptchaSecretKey)}&response=${encodeURIComponent(recaptchaHeader)}`
     });
 
     const data = await response.json();
@@ -63,6 +66,7 @@ async function verifyRecaptcha(recaptchaHeader: string, req: Request, res: Respo
 
     return next();
   } catch (error) {
+    console.error("Error verifying recaptcha:", error);
     return res.status(500).json({ error: "Error verifying recaptcha token" });
   }
 }
