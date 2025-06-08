@@ -1,13 +1,14 @@
 To do:
-- Only and check bookings that are not up for deletion (ttl > now)
-- Force user to only have 1 unpaid booking at a time (pay or cancel to book again)
+- Handle non-owner accessing event checkout & details page directly via URL
+- Start owner view
+  - Allow open play
 - Fix displayed courts on login/logout
-- Handle non-owner accessing event checkout & details page
-- Allow open play
-- Manually filter out bookings w/ expired TTL
-- Bug: hide unhide calendar puts it back in current day even if the controls are on a future day
 
 Done:
+- Bug: hide unhide calendar puts it back in current day even if the controls are on a future day
+- Manually filter out bookings w/ expired TTL
+- Only show and check bookings that are not up for deletion (ttl > now)
+- Force user to only have 1 unpaid booking at a time (pay or cancel to book again)
 - Protect  APIs with recaptcha, but only if the user is anonymous
 - Map to beta.dumaget.me
 - Deploy angular app

@@ -25,7 +25,7 @@ import { Subject } from 'rxjs';
 export class CourtcalendarComponent implements OnInit, OnDestroy {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
   calendarApi!: Calendar;
-  date: Date | null = null;
+  @Input() date!: Date;
   @Input() court!: MasterCourt;
   message: string | null = null;
   error: string | null = null;
@@ -44,6 +44,7 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
     this.loadEvents();
     this.auth.currentUser$
       .pipe(
+        takeUntil(this.destroy$),
         tap(user => this.anonymous = !user),
         filter(user => !!user),
         switchMap(() => this.courts.isFavorite(this.court.id)),

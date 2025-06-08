@@ -3,6 +3,7 @@ import cors from 'cors';
 import { bookingsRouter } from './bookings';
 import { paymentsRouter } from './payment';
 import { onRequest } from 'firebase-functions/v2/https';
+import { defineSecret } from 'firebase-functions/params';
 
 const app = express();
 app.use(cors({
@@ -15,9 +16,12 @@ app.use(express.json()); // for parsing JSON request bodies
 app.use('/', bookingsRouter);
 app.use('/:id/pay', paymentsRouter);
 
+const recaptchaSecret = defineSecret("recaptcha");
+
 export const bookings = onRequest(
   {
-    region: 'asia-southeast1'
+    region: 'asia-southeast1',
+    secrets: [recaptchaSecret]
   },
   app
 );

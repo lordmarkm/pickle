@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookingService, CourtService } from '@services';
+import { BookingService, CourtService, AuthService } from '@services';
 import { Booking, Court } from '@models';
 import { MessageComponent } from 'app/components/message.component';
 import { unpaidBookingsTtlInMinutes } from '../../misc/constants';
+import { Subject, combineLatest } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-checkout',
@@ -11,24 +13,43 @@ import { unpaidBookingsTtlInMinutes } from '../../misc/constants';
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })
-export class CheckoutComponent extends MessageComponent implements OnInit {
+export class CheckoutComponent extends MessageComponent implements OnInit, OnDestroy {
   bookingId!: string;
   booking: Booking | null = null;
   court: Court | null = null;
   unpaidBookingsTtlInMinutes = unpaidBookingsTtlInMinutes;
-  constructor(private route: ActivatedRoute, private router: Router, private courts: CourtService, private bookings: BookingService) {
+  private destroy$ = new Subject<void>();
+
+  constructor(private route: ActivatedRoute, private router: Router, private courts: CourtService, private bookings: BookingService,  private auth: AuthService) {
     super();
   }
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    const user$ = this.auth.currentUser$.pipe(
+      takeUntil(this.destroy$)
+    );
+  
+    const queryParams$ = this.route.queryParams.pipe(
+      takeUntil(this.destroy$)
+    );
+  
+    combineLatest([user$, queryParams$]).subscribe(([user, params]) => {
+      if (!user) {
+        this.setError('You must be logged in to access this page.');
+        return;
+      }
+  
       const bookingId = params['bookingId'];
       this.bookingId = bookingId;
       if (bookingId) {
         this.loadBooking();
       } else {
-        this.error = 'No booking id found. Click here to go back to the home page.';
+        this.setError('No booking ID found. Click here to go back to the home page.');
       }
     });
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   loadCourt() {
     this.courts.findOne(this.booking!.courtId).subscribe(court => {

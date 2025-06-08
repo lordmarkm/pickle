@@ -24,7 +24,7 @@
   </app-eventcontrol>
   <div class="calendar-container flex-row">
     <div *ngFor="let court of courts$ | async">
-      <app-courtcalendar [court]="court" (slotSelected)="onSlotSelected(court, $event)" (eventSelected)="onEventSelected(court, $event)" [@fadeInOut]></app-courtcalendar>
+      <app-courtcalendar [court]="court" [date]="date" (slotSelected)="onSlotSelected(court, $event)" (eventSelected)="onEventSelected(court, $event)" [@fadeInOut]></app-courtcalendar>
     </div>
   </div>
 </div>

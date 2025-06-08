@@ -9,8 +9,9 @@ export const bookingsRouter = Router();
 const db = admin.firestore();
 
 // --- FIND ONE ---
-bookingsRouter.get('/:id', async (req, res) => {
+bookingsRouter.get('/:id', authenticateToken, async (req, res) => {
   const bookingId = req.params.id;
+  const uid = (req as any).uid;
 
   try {
     const docRef = db.collection('bookings').doc(bookingId);
@@ -20,23 +21,26 @@ bookingsRouter.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Booking not found' });
     }
 
-    const data = doc.data();
+    const booking = doc.data();
 
     // Defensive check
-    if (!data || !data.start || !data.end) {
+    if (!booking || !booking.start || !booking.end) {
       return res.status(500).json({ error: 'Malformed booking data' });
+    }
+    if (booking.createdBy != uid) {
+      return res.status(403).json({ error: 'Access denied' });
     }
 
     // Clean and format
-    delete data.createdByEmail;
-    delete data.createdByName;
-    delete data.ttl;
+    delete booking.createdByEmail;
+    delete booking.createdByName;
+    delete booking.ttl;
 
     return res.json({
       id: doc.id,
-      ...data,
-      start: data.start.toDate().toISOString(),
-      end: data.end.toDate().toISOString()
+      ...booking,
+      start: booking.start.toDate().toISOString(),
+      end: booking.end.toDate().toISOString()
     });
   } catch (error) {
     console.error('Error retrieving booking:', error);
@@ -153,12 +157,11 @@ async function checkOverlap(booking: any) {
 }
 
 async function checkUnpaidBooking(uid: string): Promise<any | null> {
-  const now = new Date();
   const unpaidSnapshot = await db
     .collection("bookings")
     .where("createdBy", "==", uid)
     .where("paid", "==", false)
-    .where("ttl", ">", now)
+    .where("ttl", ">", new Date())
     .limit(1)
     .get();
 
