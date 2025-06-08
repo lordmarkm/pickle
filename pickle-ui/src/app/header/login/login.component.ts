@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-  loginWithGoogle() {
+  loginWithGoogle(evt: Event) {
+    evt.stopPropagation();
     const provider = new GoogleAuthProvider();
     signInWithPopup(this.auth, provider)
       .then(result => {

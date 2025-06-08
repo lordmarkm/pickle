@@ -1,6 +1,6 @@
 <!-- Show login buttons if NOT logged in -->
 <div *ngIf="!user">
-  <button (click)="loginWithGoogle()">Login with Google</button>
+  <button (click)="loginWithGoogle($event)">Login with Google</button>
   <button (click)="loginWithFacebook()">Login with Facebook</button>
 </div>
 
