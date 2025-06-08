@@ -1,10 +1,11 @@
 import { admin } from "../firebase";
 import {Router, Request, Response} from "express";
 import { authenticateToken } from "../auth/auth";
-import { FieldValue } from 'firebase-admin/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 
 export const paymentsRouter = Router({ mergeParams: true });
 const db = admin.firestore();
+const PERMANENT_TTL_TIMESTAMP = Timestamp.fromDate(new Date('2125-01-01T00:00:00Z')); // January 1, 2125 UTC
 
 paymentsRouter.put("/", authenticateToken, async (req: Request, res: Response) => {
   const bookingId = req.params.id;
@@ -21,12 +22,13 @@ paymentsRouter.put("/", authenticateToken, async (req: Request, res: Response) =
     if (booking.paid) {
         return res.status(400).json({ error: 'Booking is already paid '});
     }
-    booking.paid = true;
 
     await docRef.update({
       paid: true,
-      ttl: FieldValue.delete()
+      ttl: PERMANENT_TTL_TIMESTAMP
     });
+
+    booking.paid = true;
     return res.json({ id: doc.id, ...booking });
   } catch (error) {
     console.error('Error retrieving booking:', error);

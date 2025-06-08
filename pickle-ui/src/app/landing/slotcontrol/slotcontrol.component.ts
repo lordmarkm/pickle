@@ -43,8 +43,8 @@ export class SlotcontrolComponent extends MessageComponent implements OnInit, On
       return;
     }
     this.setMessage('Creating reservation...');
-    const start = moment(this.booking.start).format(dateTimeFormat);
-    const end = moment(this.booking.end).format(dateTimeFormat);
+    const start = this.booking.start.toISOString();
+    const end = this.booking.end.toISOString();
     const date = moment(this.booking.end).format(dateFormat);
     this.bookings.newBooking(this.court.id, date, start, end).subscribe({
       next: res => {

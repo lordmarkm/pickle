@@ -22,6 +22,7 @@ export class CheckoutcalendarComponent implements OnInit {
       this.calendarOptions = {
         events: [ booking ],
         initialView: 'timeGridDay',
+        initialDate: new Date(booking.date),
         allDaySlot: false,
         plugins: [ timeGridPlugin ],
         selectable: true,
