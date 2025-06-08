@@ -2,11 +2,20 @@
   <h1>Checkout</h1>
   <div class="flex-col gap5">
     <div>{{message}}</div>
-    <div *ngIf="error">{{error}}</div>
-    <div>{{checkoutMessage}}</div>
-    <div class="flex-row gap5 alignleft">
-      <button mat-raised-button color="accent" (click)="checkout()">Checkout now</button>
-      <button mat-flat-button color="default" (click)="cancel()">Cancel</button>
+
+    <ng-container *ngIf="error" @fadeInOut>
+      <div *ngIf="error" class="error">{{error}}</div>
+      <div class="flex-row gap5 alignleft slotcontrol-buttons">
+        <button mat-flat-button color="default" (click)="cancel()">Back to calendar</button>
+      </div>
+    </ng-container>
+
+    <div class="flex-column gap5" *ngIf="!error" @fadeInOut>
+      <p>{{checkoutMessage}}</p>
+      <div class="flex-row gap5 alignleft slotcontrol-buttons">
+        <button mat-raised-button color="accent" (click)="checkout()">Checkout now</button>
+        <button mat-flat-button color="default" (click)="cancel()">Cancel</button>
+      </div>
     </div>
   </div>
 </div>

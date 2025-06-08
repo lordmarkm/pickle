@@ -6,12 +6,14 @@ import { dateTimeFormat, dateFormat } from 'app/misc/dateformats';
 import { BookingService } from '@services';
 import { Router } from '@angular/router';
 import { optionsDate, optionsTime } from '../../misc/dateformats';
+import { fadeIn, fadeInOut } from 'app/misc/animations';
 
 @Component({
   selector: 'app-slotcontrol',
   standalone: false,
   templateUrl: './slotcontrol.component.html',
-  styleUrl: './slotcontrol.component.scss'
+  styleUrl: './slotcontrol.component.scss',
+  animations: [ fadeInOut, fadeIn]
 })
 export class SlotcontrolComponent extends MessageComponent implements OnInit, OnChanges {
 
@@ -51,7 +53,16 @@ export class SlotcontrolComponent extends MessageComponent implements OnInit, On
         this.router.navigate(['/checkout'], {queryParams: {bookingId: res.id}});
       },
       error: err => {
-        this.setError('Error creating reservation. Please try again later');
+        if (err.status === 409) {
+          const conflictingBooking = err.error?.booking;
+          if (conflictingBooking) {
+            this.setError(`You already have an unconfirmed booking and we only allow one of those at a time. Your unconfirmed booking is on ${conflictingBooking.date}`);
+          } else {
+            this.setError("This time slot is already taken. Please pick a different one.");
+          }
+        } else {
+          this.setError("Error creating reservation. Please try again later.");
+        }
       }
     });
   }

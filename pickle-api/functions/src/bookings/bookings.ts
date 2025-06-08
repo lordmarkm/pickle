@@ -3,10 +3,12 @@ import {Router, Request, Response} from "express";
 import { authenticateToken } from "../auth/auth";
 import { authenticateTokenOrRecaptcha } from "../auth/auth-or-recaptcha";
 import { Timestamp } from 'firebase-admin/firestore';
+import { twentyMins } from "../constants";
 
 export const bookingsRouter = Router();
 const db = admin.firestore();
 
+// --- FIND ONE ---
 bookingsRouter.get('/:id', async (req, res) => {
   const bookingId = req.params.id;
 
@@ -42,6 +44,9 @@ bookingsRouter.get('/:id', async (req, res) => {
   }
 });
 
+
+
+// --- FIND BY COURT ID AND DATE ---
 bookingsRouter.get("/", authenticateTokenOrRecaptcha, async (req: Request, res: Response) => {
   const courtId = req.query.courtId as string;
   const date = req.query.date as string;
@@ -88,11 +93,17 @@ bookingsRouter.get("/", authenticateTokenOrRecaptcha, async (req: Request, res: 
 
 
 
-
-const twentyMins = 20 * 60 * 1000; // 20 minutes in milliseconds
+// --- CREATE NEW ---
 bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) => {
   const booking = req.body;
   const name = (req as any).name;
+  if (!booking.courtId || !booking.date || !booking.start || !booking.end) {
+    return res.status(400).json({ error: 'Missing required booking fields' });
+  }
+  if (booking.id) {
+    return res.status(403).json({ error: 'Update forbidden' });
+  }
+
   booking.title = name;
   booking.paid = false;
   booking.createdBy = (req as any).uid;
@@ -105,33 +116,18 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
   console.log(`Booking save request. user: ${name} booking: `, booking);
 
   // --- OVERLAP VERIFICATION ---
-  try {
-    // Query for any existing bookings that overlap with the new one
-    const overlapSnapshot = await db
-      .collection("bookings")
-      .where("courtId", "==", booking.courtId)
-      .where("date", "==", booking.date)
-      .where("start", "<", booking.end)
-      .where("end", ">", booking.start)
-      .where("ttl", ">", new Date())
-      .get();
-
-    if (!overlapSnapshot.empty) {
-      console.log(`Overlap detected for courtId: ${booking.courtId}, date: ${booking.date}, new start: ${booking.start}, new end: ${booking.end}`);
-      overlapSnapshot.docs.forEach(doc => {
-          console.log('Conflicting booking:', doc.id, doc.data());
-      });
-      return res.status(409).json({ error: "Booking overlaps with an existing reservation." });
-    }
-    console.log('No overlap detected. Proceeding to save booking.');
-
-  } catch (error) {
-    console.error("Error checking for booking overlap:", error);
-    return res.status(500).json({ error: "Failed to check for booking overlap." });
+  const overlapExists = await checkOverlap(booking);
+  if (overlapExists) {
+    return res.status(409).json({ error: "Booking overlaps with an existing reservation." });
   }
 
-  if (booking.id) {
-    return res.status(403).json({ error: 'Update forbidden' });
+  // --- UNPAID BOOKING BY THE SAME USER ---
+  const unpaidBooking = await checkUnpaidBooking(booking.createdBy);
+  if (unpaidBooking) {
+    return res.status(409).json({ 
+      error: "You already have an unpaid booking.", 
+      booking: unpaidBooking 
+    });
   }
 
   try {
@@ -144,8 +140,41 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
   }
 });
 
+async function checkOverlap(booking: any) {
+  const overlapSnapshot = await db
+    .collection("bookings")
+    .where("courtId", "==", booking.courtId)
+    .where("date", "==", booking.date)
+    .where("start", "<", booking.end)
+    .where("end", ">", booking.start)
+    .where("ttl", ">", new Date())
+    .get();
+  return !overlapSnapshot.empty;
+}
 
+async function checkUnpaidBooking(uid: string): Promise<any | null> {
+  const now = new Date();
+  const unpaidSnapshot = await db
+    .collection("bookings")
+    .where("createdBy", "==", uid)
+    .where("paid", "==", false)
+    .where("ttl", ">", now)
+    .limit(1)
+    .get();
 
+  if (unpaidSnapshot.empty) {
+    return null;
+  }
+
+  const doc = unpaidSnapshot.docs[0];
+  const data = doc.data();
+  return {
+    id: doc.id,
+    ...data
+  };
+}
+
+// --- DELETE ---
 bookingsRouter.delete("/:id", authenticateToken, async (req: Request, res: Response) => {
   const bookingId = req.params.id;
   const uid = (req as any).uid; // optional: use to check ownership
