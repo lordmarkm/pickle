@@ -9,6 +9,10 @@ import { MessageComponent } from 'app/components/message.component';
 import { Router } from '@angular/router';
 import { fadeIn, fadeInOut } from 'app/misc/animations';
 import { Observable } from 'rxjs';
+import { mobileMaxWidth } from '../../misc/constants';
+import { MatDialog } from '@angular/material/dialog';
+import { EventselectComponent } from '../dialogs/eventselect/eventselect.component';
+import { SlotselectComponent } from '../dialogs/slotselect/slotselect.component';
 
 @Component({
   standalone: false,
@@ -31,13 +35,15 @@ export class LandingComponent extends MessageComponent implements OnInit {
   checkoutMessage?: string;
   selectionType?: 'slot' | 'event';
   atCurrentDate = true;
+  mobile = false;
 
-  constructor(private courtDisplay: CourtDisplayService, private bookings: BookingService, private router: Router) {
+  constructor(private courtDisplay: CourtDisplayService, private bookings: BookingService, private router: Router, private dialog: MatDialog) {
     super();
   }
 
   ngOnInit() {
     this.courts$ = this.courtDisplay.displayedCourts$;
+    this.mobile = window.innerWidth < mobileMaxWidth;
   }
   today() {
     this.date = moment().toDate();
@@ -59,14 +65,32 @@ export class LandingComponent extends MessageComponent implements OnInit {
     this.atCurrentDate = false;
   }
   onSlotSelected(court: Court, bookingRequest: BookingRequest) {
-    this.bookingRequest = bookingRequest;
-    this.court = court;
-    this.selectionType = 'slot';
+    if (this.mobile) {
+      this.dialog.open(SlotselectComponent, {
+        data: {
+          bookingRequest: bookingRequest,
+          court: court
+        }
+      });
+    } else {
+      this.bookingRequest = bookingRequest;
+      this.court = court;
+      this.selectionType = 'slot';
+    }
   }
   onEventSelected(court: Court, booking: Booking) {
-    this.booking = booking;
-    this.court = court;
-    this.selectionType = 'event';
+    if (this.mobile) {
+      this.dialog.open(EventselectComponent, {
+        data: {
+          booking: booking,
+          court: court
+        }
+      });
+    } else {
+      this.booking = booking;
+      this.court = court;
+      this.selectionType = 'event';
+    }
   }
   cancel() {
     delete this.booking;

@@ -9,7 +9,7 @@ import { Court, Master } from '@models';
 })
 export class SidebarComponent {
   master: Master | null = null;
-  isCollapsed = false;
+  isCollapsed = true;
   afterFavoritesDisplayed($event: Master) {
     this.master = $event;
   }

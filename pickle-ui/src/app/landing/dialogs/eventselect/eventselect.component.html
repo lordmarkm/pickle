@@ -1,0 +1,9 @@
+<div class="eventcontrol-wrapper">
+  <app-eventcontrol
+    *ngIf="booking && court"
+    [booking]="booking"
+    [court]="court"
+    (cancelEvent)="cancel()"
+  >
+  </app-eventcontrol>
+</div>

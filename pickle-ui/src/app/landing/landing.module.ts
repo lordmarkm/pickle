@@ -9,13 +9,17 @@ import { CourtcalendarComponent } from '../components/courtcalendar/courtcalenda
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 import { SlotcontrolComponent } from './slotcontrol/slotcontrol.component';
 import { EventcontrolComponent } from './eventcontrol/eventcontrol.component';
 import { BookingdetailsComponent } from '../components/bookingdetails/bookingdetails.component';
+import { EventselectComponent } from './dialogs/eventselect/eventselect.component';
+import { SlotselectComponent } from './dialogs/slotselect/slotselect.component';
 
 const MaterialModules = [
   MatButtonModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDialogModule
 ]
 
 @NgModule({
@@ -23,6 +27,8 @@ const MaterialModules = [
     LandingComponent,
     SlotcontrolComponent,
     EventcontrolComponent,
+    EventselectComponent,
+    SlotselectComponent
   ],
   imports: [
     ...MaterialModules,

@@ -20,6 +20,7 @@ export class SlotcontrolComponent extends MessageComponent implements OnInit, On
   @Input() booking!: BookingRequest;
   @Input() court!: Court;
   @Output() cancelEvent = new EventEmitter<void>();
+  @Output() bookingCreatedEvent = new EventEmitter<void>();
   checkoutMessage = '';
 
   constructor(private bookings: BookingService, private router: Router) {
@@ -50,6 +51,7 @@ export class SlotcontrolComponent extends MessageComponent implements OnInit, On
     const date = moment(this.booking.end).format(dateFormat);
     this.bookings.newBooking(this.court.id, date, start, end).subscribe({
       next: res => {
+        this.bookingCreatedEvent.emit();
         this.router.navigate(['/checkout'], {queryParams: {bookingId: res.id}});
       },
       error: err => {
