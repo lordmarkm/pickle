@@ -20,7 +20,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 65%;
   background-image: url('https://i.imgur.com/iKWVrUj.png');
   background-position: center 0%;
   background-repeat: no-repeat;
@@ -36,7 +36,7 @@
 @media (max-width: 1024px) {
   //mobile banner
   .banner {
-    background-size: 140%;
+    background-size: 120%;
   }
 }
 
