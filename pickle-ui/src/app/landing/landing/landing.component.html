@@ -1,8 +1,8 @@
 <div class="flex-row landing">
 <app-sidebar></app-sidebar>
 <div class="calendars-container flex-column">
-  <div class="calendar-controls flex-row" *ngIf="!bookingRequest && !booking" @fadeIn>
-    <h1>{{ date | date: 'MMMM d, yyyy'}}</h1>
+  <div class="calendar-controls flex-row my-4" *ngIf="!bookingRequest && !booking" @fadeIn>
+    <h1 class="text-xl font-bold my-4">{{ date | date: 'MMMM d, yyyy'}}</h1>
     <button mat-flat-button color="primary" matTooltip="Go to current day" (click)="today()">Today</button>
     <button mat-flat-button matTooltip="Go back 1 day" (click)="previousDay()" [disabled]="atCurrentDate"><i class="fa fa-chevron-left"></i></button>
     <button mat-flat-button matTooltip="Move forward 1 day" (click)="nextDay()"><i class="fa fa-chevron-right"></i></button>

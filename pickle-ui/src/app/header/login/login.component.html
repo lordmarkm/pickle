@@ -1,6 +1,6 @@
 <!-- Show login buttons if NOT logged in -->
 <div *ngIf="!user">
-  <button (click)="loginWithGoogle($event)">Login with Google</button>
+  <button mat-raised-button (click)="loginWithGoogle($event)" class="login-button"><mat-icon>login</mat-icon><span class="hidden lg:inline">Login</span></button>
 </div>
 
 <!-- Show profile picture if logged in -->

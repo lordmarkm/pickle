@@ -1,8 +1,8 @@
 <section class="p-1" *ngIf="master && master?.orgs?.length">
-<h3 class="text-l font-bold">All Courts</h3>
+<h3 class="text-lg font-bold">All Courts</h3>
 
 <div *ngFor="let org of master.orgs">
-  <h3>{{ org.name }}</h3>
+  <h3 class="text-m font-bold">{{ org.name }}</h3>
 
   <mat-list>
     <mat-list-item *ngFor="let court of org.courts">
