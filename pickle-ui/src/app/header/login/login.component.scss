@@ -1,0 +1,15 @@
+.profile-picture {
+  width: 40px; /* Adjust size as needed */
+  height: 40px;
+  border-radius: 50%; /* Makes it round */
+  object-fit: cover; /* Ensures image covers the area */
+}
+
+.profile-button {
+  padding: 0; /* Remove default button padding if using mat-icon-button */
+  line-height: 1; /* Adjust line height to center image */
+  height: auto; /* Allow height to adjust to content */
+  width: auto; /* Allow width to adjust to content */
+  border: none; /* Remove default button border */
+  background: none; /* Remove default button background */
+}

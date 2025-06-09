@@ -1,12 +1,29 @@
 <!-- Show login buttons if NOT logged in -->
 <div *ngIf="!user">
   <button (click)="loginWithGoogle($event)">Login with Google</button>
-  <button (click)="loginWithFacebook()">Login with Facebook</button>
 </div>
 
 <!-- Show profile picture if logged in -->
 <div *ngIf="user" class="flex-row">
-  <p>Welcome, {{ user.displayName }}</p>
-  <img [src]="user.photoURL" alt="Profile Picture" width="50" height="50" />
-  <button (click)="logout()">Logout</button>
+  <span class="mat-body-1 welcome-text">Welcome, {{ user.displayName }}</span>
+  <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+    <img [src]="user.photoURL" alt="Profile Picture" class="profile-picture" />
+  </button>
 </div>
+
+
+<!-- The menu template -->
+<mat-menu #profileMenu="matMenu">
+  <button mat-menu-item routerLink="/landing">
+    <mat-icon>person</mat-icon>
+    <span>Profile</span>
+  </button>
+  <button mat-menu-item routerLink="/owner">
+    <mat-icon>leaderboard</mat-icon>
+    <span>Owner dashboard</span>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
+</mat-menu>

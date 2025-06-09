@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { OwnerRoutingModule } from './owner-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { OwnerComponent } from './owner/owner.component';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    OwnerComponent
   ],
   imports: [
     CommonModule,
