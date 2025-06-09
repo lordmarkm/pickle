@@ -1,10 +1,11 @@
 To do:
-- Handle non-owner accessing event checkout & details page directly via URL
 - Start owner view
   - Allow open play
 - Fix displayed courts on login/logout
+- Responsive login page
 
 Done:
+- Handle non-owner accessing event checkout & details page directly via URL
 - Bug: hide unhide calendar puts it back in current day even if the controls are on a future day
 - Manually filter out bookings w/ expired TTL
 - Only show and check bookings that are not up for deletion (ttl > now)

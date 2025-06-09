@@ -3,14 +3,14 @@
   <div class="flex-col gap5">
     <div>{{message}}</div>
 
-    <ng-container *ngIf="error" @fadeInOut>
+    <ng-container *ngIf="error" @fadeIn>
       <div *ngIf="error" class="error">{{error}}</div>
       <div class="flex-row gap5 alignleft slotcontrol-buttons">
         <button mat-flat-button color="default" (click)="cancel()">Back to calendar</button>
       </div>
     </ng-container>
 
-    <div class="flex-column gap5" *ngIf="!error" @fadeInOut>
+    <div class="flex-column gap5" *ngIf="!error" @fadeIn>
       <p>{{checkoutMessage}}</p>
       <div class="flex-row gap5 alignleft slotcontrol-buttons">
         <button mat-raised-button color="accent" (click)="checkout()">Checkout now</button>

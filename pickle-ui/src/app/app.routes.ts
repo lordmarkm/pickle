@@ -21,4 +21,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./booking/booking.module').then(m => m.BookingModule)
   },
+  {
+    path: 'owner',
+    loadChildren: () =>
+      import('./owner/owner.module').then(m => m.OwnerModule)
+  }
 ];

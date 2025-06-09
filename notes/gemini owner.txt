@@ -1,0 +1,118 @@
+Okay, let's break down the owner view features into atomic development tasks, prioritizing them from foundational elements to advanced functionalities.
+
+**Priority Levels:**
+
+* **P0: Foundational / Prerequisites** - Must be done first for security and access (some may already be done based on previous discussions).
+* **P1: Core MVP (Minimum Viable Product)** - Essential features for an owner to manage daily operations.
+* **P2: Operational Control & Efficiency** - Features that significantly improve the owner's workflow.
+* **P3: User Insights & Basic Reporting** - Provides data for better decision-making.
+* **P4: Advanced Automation & Communication** - Enhances the app with proactive features.
+
+---
+
+### **P0: Foundational & Security (Prerequisites)**
+
+*(These tasks are crucial for the owner view to function securely. Some may have been covered in previous discussions.)*
+
+* **P0-1 (Backend):** Create Firebase Cloud Function (HTTPs Callable) to securely set/remove `owner: true` custom claims for a given user UID. (Ensure this function is itself secured, e.g., only callable by an authenticated admin user).
+* **P0-2 (Frontend):** Implement/Refine Angular `AuthService` to:
+    * Subscribe to Firebase Auth user state (`user`).
+    * On user change or login, force token refresh (`user.getIdTokenResult(true)`) to get latest custom claims.
+    * Expose an `isOwner$` observable (BehaviorSubject) based on the `owner` custom claim.
+* **P0-3 (Frontend):** Implement `OwnerGuard` (Angular route guard) that checks `authService.isOwner$` to protect owner-specific routes.
+* **P0-4 (Frontend):** Configure Angular Routing:
+    * Define an `/owner` route that loads `OwnerDashboardComponent`.
+    * Apply the `OwnerGuard` to the `/owner` route using `canActivate`.
+    * Optionally, use `@angular/fire/auth-guard` to redirect unauthenticated users to a login page.
+* **P0-5 (Frontend):** Create `OwnerDashboardComponent` (initial placeholder) for the owner view.
+* **P0-6 (Frontend):** Update `AppComponent` or main layout: Add UI element (e.g., `mat-button` or `mat-list-item`) to navigate to `/owner` when `authService.isOwner$` is true.
+
+---
+
+### **P1: Core MVP - Booking & Availability Management**
+
+* **P1-1 (Backend):** Create `getOwnerBookings` Firebase Cloud Function (HTTPs Callable or HTTP `onRequest`):
+    * Requires `courtId` and `date` as parameters (optional).
+    * Filters bookings by `courtId`, `date`, `ttl > now` (or `ttl` is far future for paid bookings), and `paid` status (optional).
+    * Returns all matched bookings, including owner/user details for each booking.
+    * Includes owner authorization check.
+* **P1-2 (Frontend):** `OwnerDashboardComponent` - Data Fetching:
+    * Integrate calling the `getOwnerBookings` API to populate the owner's booking list.
+    * Implement loading states and error handling for data fetching.
+* **P1-3 (Frontend):** `OwnerDashboardComponent` - Display Bookings:
+    * Display fetched bookings in a sortable, paginated table or list.
+    * Show relevant booking details: Court, Date, Time, User Name/Email, Paid Status.
+    * Use Material Design table (`mat-table`) for a structured view.
+* **P1-4 (Frontend):** `OwnerDashboardComponent` - Filtering UI:
+    * Add UI elements (e.g., `mat-select` for `courtId`, `mat-datepicker` for `date`, `mat-slide-toggle` for `paid` status) to filter the displayed bookings.
+    * Implement client-side or server-side filtering logic.
+* **P1-5 (Backend):** Create `blockCourtSlot` Firebase Cloud Function (HTTPs Callable):
+    * Takes `courtId`, `date`, `startTime`, `endTime`, `reason` as input.
+    * Saves this information to a new Firestore collection (e.g., `blocked_slots`).
+    * Includes owner authorization check.
+* **P1-6 (Frontend):** `OwnerDashboardComponent` - UI for Blocking Slots:
+    * Create a form or modal for owners to select a court, date range, and reason to block a slot.
+    * Integrate calling the `blockCourtSlot` API.
+* **P1-7 (Backend):** Modify existing `checkBookingAvailability` (or `createBooking`) logic:
+    * Ensure it queries the `blocked_slots` collection (or checks for blocked flags in the `bookings` collection if merged) to prevent guest bookings on blocked times.
+* **P1-8 (Frontend):** `OwnerDashboardComponent` - Display Blocked Slots:
+    * Show existing blocked slots clearly on the owner's booking calendar/view.
+
+---
+
+### **P2: Operational Control & Efficiency**
+
+* **P2-1 (Backend):** Create `updateBookingDetails` Firebase Cloud Function (HTTPs Callable):
+    * Takes `bookingId` and fields to update (`start`, `end`, `courtId`, `type`).
+    * Includes owner authorization and overlap validation logic against existing bookings (and blocked slots).
+* **P2-2 (Backend):** Create `cancelBookingByOwner` Firebase Cloud Function (HTTPs Callable):
+    * Takes `bookingId`.
+    * Updates the booking status to "canceled" (or deletes, based on policy).
+    * Includes owner authorization check.
+* **P2-3 (Frontend):** `OwnerDashboardComponent` - Booking Actions:
+    * Add "Edit" and "Cancel" buttons/icons next to each booking item in the list.
+* **P2-4 (Frontend):** Implement "Edit Booking" Modal/Form:
+    * Pre-populate the form with current booking data.
+    * Allow owner to modify time, court, type.
+    * Integrate calling `updateBookingDetails` API.
+* **P2-5 (Frontend):** Implement "Cancel Booking" Confirmation Dialog:
+    * Confirmation message before calling `cancelBookingByOwner` API.
+* **P2-6 (Backend):** Create `manualCreateBooking` Firebase Cloud Function (HTTPs Callable):
+    * Allows owner/staff to create a new booking (requires `courtId`, `date`, `start`, `end`, `user` details, etc.).
+    * Includes owner authorization and overlap validation.
+* **P2-7 (Frontend):** `OwnerDashboardComponent` - Manual Booking UI:
+    * Create a dedicated form or modal for owners to manually add bookings.
+* **P2-8 (Frontend):** `OwnerDashboardComponent` - Revenue Summary:
+    * Display a simple summary (e.g., `mat-card`) showing total revenue from paid bookings for the selected date range (Day/Week/Month). This could be calculated client-side from fetched P1-1 data or a simple backend aggregation.
+
+---
+
+### **P3: User Insights & Basic Reporting**
+
+* **P3-1 (Backend):** Create `getAllUsersWithBookingSummary` Firebase Cloud Function (HTTPs Callable):
+    * Retrieves a list of all users (from Firebase Auth or a `users` collection).
+    * Optionally, aggregates booking counts or total spend per user.
+* **P3-2 (Frontend):** Create `UserManagementComponent` (a new owner-only view):
+    * Displays a paginated list of all users, with basic contact info and possibly booking count.
+* **P3-3 (Frontend):** `UserManagementComponent` - User Booking History:
+    * Implement functionality to view a specific user's complete booking history (all statuses: paid, unpaid, canceled).
+* **P3-4 (Frontend):** `OwnerDashboardComponent` - Basic Utilization Charts:
+    * Integrate a charting library (e.g., Chart.js with `ng2-charts`) to visualize court utilization (e.g., bookings per court, peak booking hours).
+
+---
+
+### **P4: Advanced Automation & Communication**
+
+* **P4-1 (Backend):** Implement Firebase Cloud Functions triggered by booking changes (e.g., `onUpdate`, `onCreate` for `bookings` collection) to send automated email/SMS notifications to users for:
+    * Booking confirmations (if manually created by owner).
+    * Booking modifications.
+    * Booking cancellations.
+* **P4-2 (Frontend):** `OwnerDashboardComponent` - Global Announcement UI:
+    * Add a feature to compose and send a global announcement (e.g., court closures, special offers).
+* **P4-3 (Backend):** Create `sendGlobalAnnouncement` Firebase Cloud Function (HTTPs Callable):
+    * Takes announcement text.
+    * Sends notifications to all registered users (e.g., via email, FCM).
+* **P4-4 (Backend):** Refine Firestore Security Rules:
+    * Ensure robust rules are in place for all owner-specific collections/fields (e.g., `blocked_slots` can only be written by owners; `bookings` can only be updated/canceled by the owner or the original creator).
+* **P4-5 (Frontend):** `OwnerDashboardComponent` - Check-in/Check-out Feature:
+    * Add a "Check-in" button next to each booking in the owner's list, updating a `checkedIn: true` field in Firestore.
