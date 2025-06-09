@@ -1,20 +1,19 @@
-<section *ngIf="master && master?.orgs?.length">
-<h3>All Courts</h3>
+<section class="p-1" *ngIf="master && master?.orgs?.length">
+<h3 class="text-l font-bold">All Courts</h3>
 
 <div *ngFor="let org of master.orgs">
   <h3>{{ org.name }}</h3>
-  <ol>
-    <li *ngFor="let court of org.courts">
-      <div>
-        <input
-          type="checkbox"
-          [checked]="isChecked(court.id)"
-          (change)="onCheckUncheck(court, $event)"
-        />
+
+  <mat-list>
+    <mat-list-item *ngFor="let court of org.courts">
+      <mat-checkbox
+        [checked]="isChecked(court.id)"
+        (change)="onCheckUncheck(court, $event)"
+      >
         {{ court.name }}
-      </div>
-    </li>
-  </ol>
+      </mat-checkbox>
+    </mat-list-item>
+  </mat-list>
 </div>
 
 </section>

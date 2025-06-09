@@ -1,6 +1,7 @@
 import { Input, Component, OnInit } from '@angular/core';
 import { Court, Master, MasterCourt } from '@models';
 import { CourtService, CourtDisplayService } from '@services';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   standalone: false,
@@ -17,8 +18,8 @@ export class MasterComponent implements OnInit {
     return this.checkedCourts.has(courtId);
   }
 
-  onCheckUncheck(court: MasterCourt, evt: Event) {
-    const checked = (evt.target as HTMLInputElement).checked;
+  onCheckUncheck(court: MasterCourt, evt: MatCheckboxChange) {
+    const checked = evt.checked;
     if (checked) {
         this.courtDisplay.addDisplayedCourt(court);
         this.checkedCourts.add(court.id);

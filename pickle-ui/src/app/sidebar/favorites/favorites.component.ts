@@ -3,6 +3,7 @@ import { AuthService, CourtService, CourtDisplayService } from '@services';
 import { filter, tap, takeUntil } from 'rxjs/operators';
 import { forkJoin, Subject } from 'rxjs';
 import { MasterCourt, Master, MasterOrg } from '@models';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   standalone: false,
@@ -107,8 +108,8 @@ export class FavoritesComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCheckUncheck(court: MasterCourt, evt: Event) {
-    const checked = (evt.target as HTMLInputElement).checked;
+  onCheckUncheck(court: MasterCourt, evt: MatCheckboxChange) {
+    const checked = evt.checked;
     if (checked) {
       this.courtDisplay.addDisplayedCourt(court);
       this.checkedFavorites.add(court.id);
