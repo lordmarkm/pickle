@@ -5,6 +5,7 @@
 }
 .checkout-container {
   gap: 5px;
+  flex-wrap: wrap;
 }
 .calendar-controls {
   justify-content: flex-start;
@@ -12,4 +13,5 @@
 }
 .calendar-container {
   gap: 26px;
+  flex-wrap: wrap;
 }

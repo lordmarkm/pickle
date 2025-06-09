@@ -1,4 +1,5 @@
 To do:
+- Persistent sidebar state (collapsed or not)
 - Start owner view
   - Allow open play
 - Fix displayed courts on login/logout

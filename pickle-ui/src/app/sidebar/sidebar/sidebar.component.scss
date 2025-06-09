@@ -1,4 +1,9 @@
 .collapsible-sidebar {
+  position: fixed;
+  background-color: #f8f8f8;
+  top: 100px;
+  height: 100%;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   width: 300px;
@@ -7,6 +12,7 @@
 
   &.collapsed {
     width: 60px;
+    background-color: transparent;
 
     h4 {
       display: none;
