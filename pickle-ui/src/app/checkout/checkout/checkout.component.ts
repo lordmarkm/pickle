@@ -31,11 +31,20 @@ export class CheckoutComponent extends MessageComponent implements OnInit, OnDes
     const queryParams$ = this.route.queryParams.pipe(
       takeUntil(this.destroy$)
     );
-  
+
+    let unauthenticatedTimeout: any;
     combineLatest([user$, queryParams$]).subscribe(([user, params]) => {
-      if (!user) {
-        this.setError('You must be logged in to access this page.');
+      console.log('combineLatest. user=' + user);
+      if (user === null) {
+        this.setMessage('Loading authentication...');
+        unauthenticatedTimeout = setTimeout(() => {
+          this.setError('You must be logged in to access this page.');
+        }, 2000);
+        this.booking = null;
         return;
+      } else {
+        clearTimeout(unauthenticatedTimeout);
+        this.clear();
       }
   
       const bookingId = params['bookingId'];

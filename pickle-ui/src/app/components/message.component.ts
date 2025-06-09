@@ -12,6 +12,16 @@ export class MessageComponent {
     this.message = null;
     this.error = err;
   }
+  clearError() {
+    this.error = null;
+  }
+  clearMessage() {
+    this.message = null;
+  }
+  clear() {
+    this.clearError();
+    this.clearMessage();
+  }
   fromNow(date: any) {
     return moment(date).fromNow();
   }
