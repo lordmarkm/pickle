@@ -1,6 +1,6 @@
 .profile-picture {
-  width: 40px; /* Adjust size as needed */
-  height: 40px;
+  width: 60px; /* Adjust size as needed */
+  height: 60px;
   border-radius: 50%; /* Makes it round */
   object-fit: cover; /* Ensures image covers the area */
 }
@@ -12,4 +12,11 @@
   width: auto; /* Allow width to adjust to content */
   border: none; /* Remove default button border */
   background: none; /* Remove default button background */
+}
+
+@media (max-width: 1024px) {
+  //mobile banner
+  .welcome-text {
+    display: none;
+  }
 }

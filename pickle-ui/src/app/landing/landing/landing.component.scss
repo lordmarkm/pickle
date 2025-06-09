@@ -1,7 +1,6 @@
 .landing {
   justify-content: flex-start;
   align-items: start;
-  gap: 5px;
 }
 .checkout-container {
   gap: 5px;
@@ -14,4 +13,10 @@
 .calendar-container {
   gap: 26px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 1024px) {
+  .calendar-sub-container {
+    width: 100%;
+  }
 }

@@ -22,10 +22,22 @@
   align-items: center;
   width: 50%;
   background-image: url('https://i.imgur.com/iKWVrUj.png');
-  background-size: 40%;  
   background-position: center 0%;
   background-repeat: no-repeat;
   height: 200px;
+}
+
+@media (min-width: 1024px) {
+  //wide banner
+  .banner {
+    background-size: 40%;
+  }
+}
+@media (max-width: 1024px) {
+  //mobile banner
+  .banner {
+    background-size: 140%;
+  }
 }
 
 .banner img {

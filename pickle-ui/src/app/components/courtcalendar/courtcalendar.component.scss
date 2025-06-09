@@ -1,9 +1,6 @@
 h2 {
   margin-bottom: 5px;
 }
-.calendar-wrapper {
-  width: 400px;        /* fixed width */
-}
 ::ng-deep .fc-toolbar {
   display: none !important;
 }
@@ -23,4 +20,11 @@ h2 {
 }
 .gold {
   color: gold;
+}
+
+@media (min-width: 1024px) {
+  /* Desktop and large laptop styles go here */
+  .calendar-wrapper {
+    width: 400px;
+  }
 }
