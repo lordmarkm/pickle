@@ -1,5 +1,5 @@
-import { Input, Component, OnInit } from '@angular/core';
-import { Court, Master, MasterCourt } from '@models';
+import { Input, Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { Master, MasterCourt } from '@models';
 import { CourtService, CourtDisplayService } from '@services';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
@@ -9,7 +9,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   templateUrl: './master.component.html',
   styleUrl: './master.component.scss'
 })
-export class MasterComponent implements OnInit {
+export class MasterComponent implements OnInit, OnChanges {
   @Input() master: Master | null = null;
   checkedCourts = new Set<string>();
   constructor(private courts: CourtService, private courtDisplay: CourtDisplayService) {}
@@ -53,5 +53,10 @@ export class MasterComponent implements OnInit {
 
   ngOnInit() {
     this.loadCheckedCourts();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['master']) {
+      this.loadCheckedCourts();
+    }
   }
 }

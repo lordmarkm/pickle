@@ -4,6 +4,7 @@ To do:
   - Allow open play
 - Fix displayed courts on login/logout
 - Responsive login page
+- Hide date control & show welcome message if no courts selected
 
 Done:
 - Handle non-owner accessing event checkout & details page directly via URL

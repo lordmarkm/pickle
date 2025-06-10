@@ -4,6 +4,7 @@ import { environment } from 'environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { map, tap, finalize, shareReplay } from 'rxjs/operators';
 import { Master, MasterCourt } from '@models';
+import { localStorageNames } from 'app/misc/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -96,15 +97,29 @@ export class CourtService {
     return this.http.put<{ message: string }>(`${this.baseUrl}/favorites`, { courtId })
       .pipe(
         tap(() => {
-          const data = localStorage.getItem('checkedFavorites');
+          //Add to checked favorites localstorage
+          const checkedFavoritesLsItem = localStorage.getItem(localStorageNames.checkedFavorites);
           let checkedFavorites: Set<string>;
-          if (data) {
-            checkedFavorites = new Set(JSON.parse(data));
+          if (checkedFavoritesLsItem) {
+            checkedFavorites = new Set(JSON.parse(checkedFavoritesLsItem));
           } else {
             checkedFavorites = new Set();
           }
           checkedFavorites.add(courtId);
           localStorage.setItem('checkedFavorites', JSON.stringify(Array.from(checkedFavorites)));
+
+          //Remove from checked master localstorage
+          const checkedCourtsLsItem = localStorage.getItem(localStorageNames.checkedCourts);
+          let checkedCourts: Set<string>;
+          if (checkedCourtsLsItem) {
+            checkedCourts = new Set(JSON.parse(checkedCourtsLsItem));
+          } else {
+            checkedCourts = new Set();
+          }
+          checkedCourts.delete(courtId);
+          localStorage.setItem(localStorageNames.checkedCourts, JSON.stringify(Array.from(checkedCourts)));
+
+          //Notify the sidebar (FavoritesComponent)
           this.favoritesModified.next();
         })
       );
@@ -114,14 +129,26 @@ export class CourtService {
     return this.http.delete<{ message: string }>(`${this.baseUrl}/favorites/${courtId}`)
       .pipe(
         tap(() => {
-          const data = localStorage.getItem('checkedFavorites');
+          //Remove from checked favorites localstorage
+          const checkedFavoritesLsItem = localStorage.getItem(localStorageNames.checkedFavorites);
           let checkedFavorites: Set<string>;
-          if (data) {
-            checkedFavorites = new Set(JSON.parse(data));
+          if (checkedFavoritesLsItem) {
+            checkedFavorites = new Set(JSON.parse(checkedFavoritesLsItem));
             checkedFavorites.delete(courtId);
-            localStorage.setItem('checkedFavorites', JSON.stringify(Array.from(checkedFavorites)));
+            localStorage.setItem(localStorageNames.checkedFavorites, JSON.stringify(Array.from(checkedFavorites)));
             this.favoritesModified.next();
           }
+
+          //Add to checked master localstorage
+          const checkedCourtsLsItem = localStorage.getItem(localStorageNames.checkedCourts);
+          let checkedCourts: Set<string>;
+          if (checkedCourtsLsItem) {
+            checkedCourts = new Set(JSON.parse(checkedCourtsLsItem));
+          } else {
+            checkedCourts = new Set();
+          }
+          checkedCourts.add(courtId);
+          localStorage.setItem(localStorageNames.checkedCourts, JSON.stringify(Array.from(checkedCourts)));
         })
       );
   }
