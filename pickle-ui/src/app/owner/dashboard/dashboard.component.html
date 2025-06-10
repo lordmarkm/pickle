@@ -1,1 +1,69 @@
-<p>dashboard works!</p>
+<section *ngIf="anonymous">You must be logged in to view this page</section>
+
+<section *ngIf="!anonymous && loadingOrgs">
+  <ngx-skeleton-loader count="6"></ngx-skeleton-loader>
+</section>
+
+<section *ngIf="org">
+  You are the owner of {{org.name}}
+</section>
+
+<section *ngIf="!anonymous && !org">
+  <p>You have not yet registered an Org</p>
+  <p>Guide to org registration here</p>
+  <p>Note about the approval process</p>
+  <button mat-raised-button color="accent" (click)="registerOrg()">Register an Org now</button>
+<!-- mat-button (basic text button) -->
+<button mat-button color="primary">Text Primary</button>
+<button mat-button color="accent">Text Accent</button>
+<button mat-button color="warn">Text Warn</button>
+
+<!-- mat-raised-button (elevated button) -->
+<button mat-raised-button color="primary">Raised Primary</button>
+<button mat-raised-button color="accent">Raised Accent</button>
+<button mat-raised-button color="warn">Raised Warn</button>
+
+<!-- mat-flat-button (flat background color, no elevation) -->
+<button mat-flat-button color="primary">Flat Primary</button>
+<button mat-flat-button color="accent">Flat Accent</button>
+<button mat-flat-button color="warn">Flat Warn</button>
+
+<!-- mat-stroked-button (outlined button) -->
+<button mat-stroked-button color="primary">Stroked Primary</button>
+<button mat-stroked-button color="accent">Stroked Accent</button>
+<button mat-stroked-button color="warn">Stroked Warn</button>
+
+<!-- mat-icon-button (icon only, circular button) -->
+<button mat-icon-button color="primary" aria-label="Icon Primary">
+  <mat-icon>calendar_today</mat-icon>
+</button>
+<button mat-icon-button color="accent" aria-label="Icon Accent">
+  <mat-icon>favorite</mat-icon>
+</button>
+<button mat-icon-button color="warn" aria-label="Icon Warn">
+  <mat-icon>delete</mat-icon>
+</button>
+
+<!-- mat-fab (floating action button, circular) -->
+<button mat-fab color="primary" aria-label="FAB Primary">
+  <mat-icon>add</mat-icon>
+</button>
+<button mat-fab color="accent" aria-label="FAB Accent">
+  <mat-icon>edit</mat-icon>
+</button>
+<button mat-fab color="warn" aria-label="FAB Warn">
+  <mat-icon>close</mat-icon>
+</button>
+
+<!-- mat-mini-fab (smaller FAB) -->
+<button mat-mini-fab color="primary" aria-label="Mini FAB Primary">
+  <mat-icon>add</mat-icon>
+</button>
+<button mat-mini-fab color="accent" aria-label="Mini FAB Accent">
+  <mat-icon>edit</mat-icon>
+</button>
+<button mat-mini-fab color="warn" aria-label="Mini FAB Warn">
+  <mat-icon>close</mat-icon>
+</button>
+
+</section>

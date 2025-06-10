@@ -1,0 +1,12 @@
+.form-fields-wrapper {
+  gap: 10px;
+  padding: 5px;
+}/* For Angular Material M3 (v15+) and Tailwind CSS conflict */
+.mdc-notched-outline__notch {
+  border-right: none !important;
+}
+
+/* You might also need this for consistency, though less common for the line issue */
+.mdc-notched-outline__trailing {
+  border-left: none !important;
+}

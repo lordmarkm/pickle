@@ -28,3 +28,39 @@ orgRouter.get("/", authenticateToken, async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to fetch organization.", error: String(error) });
   }
 });
+
+
+
+
+
+// --- CREATE NEW ---
+orgRouter.post("/", authenticateToken, async (req: Request, res: Response) => {
+  const org = req.body;
+  const name = (req as any).name;
+  const uid = (req as any).uid;
+  if (!org.name || !org.address || !org.contactNo) {
+    return res.status(400).json({ error: 'Missing required booking fields' });
+  }
+  if (org.id) {
+    return res.status(403).json({ error: 'Update forbidden' });
+  }
+
+  //TODO check conflicting org name
+  //TODO check that user only has 1 org
+
+  org.owner = uid;
+  org.createdBy = uid;
+  org.createdByEmail = (req as any).email;
+  org.createdByName = name;
+  org.createdDate = new Date().toISOString();
+  console.log(`Org save request. user: ${name} org: `, org);
+
+  try {
+    const saved = await db.collection(collectionNames.org).add(org);
+    org.id = saved.id;
+    return res.json(org);
+  } catch (error) {
+    console.error("Error saving org:", error);
+    return res.status(500).json({ error: "Failed to save org"});
+  }
+});

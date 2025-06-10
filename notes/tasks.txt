@@ -2,6 +2,8 @@ To do:
 
 - Query org owned by user
 - If no org, allow org registration
+
+
   - Allow open play
 - Fix displayed courts on login/logout
 - Responsive login page
