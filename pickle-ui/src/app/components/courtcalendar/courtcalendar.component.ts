@@ -14,13 +14,14 @@ import { filter, takeUntil, switchMap, tap } from 'rxjs/operators';
 import { dateFormat, dateTimeFormat, simpleTimeFormat, fcTimeFormat } from '../../misc/dateformats';
 import { CourtDisplayService } from '../../services/courtdisplay.service';
 import { Subject } from 'rxjs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   standalone: true,
   selector: 'app-courtcalendar',
   templateUrl: './courtcalendar.component.html',
   styleUrl: './courtcalendar.component.scss',
-  imports: [ CommonModule, FullCalendarModule, MatTooltipModule ]
+  imports: [ CommonModule, FullCalendarModule, MatTooltipModule, NgxSkeletonLoaderModule ]
 })
 export class CourtcalendarComponent implements OnInit, OnDestroy {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;

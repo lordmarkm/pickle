@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
     provideAnimations(),
 
-    // Add these:
+    // Recaptcha
     importProvidersFrom(RecaptchaV3Module),
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: environment.recaptcha.siteKey }
   ]
