@@ -11,27 +11,45 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RegisterOrgDialogComponent } from './dialogs/register-org/register-org.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { OwnerSidebarComponent } from './sidebar/sidebar.component';
+import { MatCardModule } from '@angular/material/card';
+import { ErrorcardComponent } from '../components/errorcard/errorcard.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
+import { CourtsComponent } from './sidebar/courts/courts.component';
+import { CourtcalendarComponent } from '../components/courtcalendar/courtcalendar.component';
+import { RegisterCourtDialogComponent } from './dialogs/register-court/register-court.component';
 
 const MaterialModules = [
   MatButtonModule,
   MatIconModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatListModule
 ];
 
 @NgModule({
   declarations: [
     DashboardComponent,
     OwnerComponent,
-    RegisterOrgDialogComponent
+    RegisterOrgDialogComponent,
+    OwnerSidebarComponent,
+    CourtsComponent,
+    RegisterCourtDialogComponent
   ],
   imports: [
     ...MaterialModules,
     CommonModule,
     OwnerRoutingModule,
     ReactiveFormsModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+
+    //standalones
+    ErrorcardComponent,
+    CourtcalendarComponent,
   ]
 })
 export class OwnerModule { }

@@ -1,4 +1,5 @@
 export const collectionNames = {
+  court: "court",
   org: "org"
 };
 

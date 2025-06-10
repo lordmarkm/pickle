@@ -1,15 +1,13 @@
 To do:
-
-- Query org owned by user
-- If no org, allow org registration
-
-
+- Allow owner to create courts for his org
   - Allow open play
 - Fix displayed courts on login/logout
 - Responsive login page
 - Hide date control & show welcome message if no courts selected
 
 Done:
+- If no org, allow org registration
+- Query org owned by user
 - Skeleton loader for calendar
 - Start owner view
 - Persistent sidebar state (collapsed or not)

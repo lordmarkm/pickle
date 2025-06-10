@@ -5,6 +5,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { map, tap, finalize, shareReplay } from 'rxjs/operators';
 import { Master, MasterCourt } from '@models';
 import { localStorageNames } from 'app/misc/constants';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,12 @@ export class CourtService {
         return undefined;
       })
     );
+  }
+
+  findByOrgName(orgName: string): Observable<MasterCourt[]> {
+    const params = new HttpParams()
+      .set('orgName', orgName);
+    return this.http.get<MasterCourt[]>(`${this.baseUrl}/org`, { params });
   }
 
   getFavorites(refresh = false): Observable<any> {

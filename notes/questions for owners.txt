@@ -1,0 +1,4 @@
+1. What kind of control for booking schedule?
+   - x days ahead
+   - x months ahead
+   - no control

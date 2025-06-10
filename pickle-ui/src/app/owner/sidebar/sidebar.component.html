@@ -1,0 +1,16 @@
+<div class="flex-column collapsible-sidebar" [class.collapsed]="isCollapsed">
+
+<div class="flex-row header" (click)="toggleCollapse()">
+  <h4 class="text-m font-bold p-1" *ngIf="!isCollapsed">Hide {{org.name}}</h4>
+  <i 
+    class="fa-solid" 
+    [class.fa-chevron-left]="!isCollapsed" 
+    [class.fa-chevron-right]="isCollapsed"
+  ></i>
+  <h5 class="text-m font-bold p-1" *ngIf="isCollapsed">Show {{org.name}}</h5>
+</div>
+
+<app-errorcard *ngIf="error" [error]="error"></app-errorcard>
+<app-owner-sidebar-courts [orgCourts]="courts" [org]="org"></app-owner-sidebar-courts>
+
+</div>

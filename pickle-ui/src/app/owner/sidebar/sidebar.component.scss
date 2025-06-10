@@ -1,0 +1,36 @@
+.collapsible-sidebar {
+  position: fixed;
+  background-color: #f8f8f8;
+  top: 100px;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+
+  &.collapsed {
+    width: 100px;
+    background-color: transparent;
+
+    h4 {
+      display: none;
+    }
+
+    app-errorcard,
+    app-owner-sidebar-courts {
+      display: none;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    background: #f0f0f0;
+    gap: 5px;
+  }
+}

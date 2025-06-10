@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { baseRouter } from './court';
 import { favoritesRouter } from './favorites';
 import { masterRouter } from './master';
 import { onRequest } from 'firebase-functions/v2/https';
@@ -13,6 +14,7 @@ app.use(cors({
 }));
 app.use(express.json()); // for parsing JSON request bodies
 
+app.use('/', baseRouter);
 app.use('/favorites', favoritesRouter);
 app.use('/master', masterRouter);
 

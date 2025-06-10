@@ -1,4 +1,6 @@
-<section *ngIf="anonymous">You must be logged in to view this page</section>
+<app-owner-sidebar *ngIf="org" [org]="org"></app-owner-sidebar>
+
+<section *ngIf="anonymous" && !loadingOrgs>You must be logged in to view this page</section>
 
 <section *ngIf="!anonymous && loadingOrgs">
   <ngx-skeleton-loader count="6"></ngx-skeleton-loader>
@@ -6,9 +8,14 @@
 
 <section *ngIf="org">
   You are the owner of {{org.name}}
+  <div class="calendar-container flex-row">
+    <div *ngFor="let court of courts$ | async" class="calendar-sub-container">
+      <app-courtcalendar [court]="court" [date]="date" (slotSelected)="onSlotSelected(court, $event)" (eventSelected)="onEventSelected(court, $event)" [@fadeInOut]></app-courtcalendar>
+    </div>
+  </div>
 </section>
 
-<section *ngIf="!anonymous && !org">
+<section *ngIf="!anonymous && !org && !loadingOrgs">
   <p>You have not yet registered an Org</p>
   <p>Guide to org registration here</p>
   <p>Note about the approval process</p>

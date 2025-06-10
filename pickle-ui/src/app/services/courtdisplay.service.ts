@@ -13,7 +13,11 @@ export class CourtDisplayService {
 
   constructor() { }
 
-  addDisplayedCourt(court: MasterCourt): void {
+  setDisplayedCourts(courts: MasterCourt[]) {
+    this.displayedCourtsSubject.next(courts);
+  }
+
+  addDisplayedCourt(court: MasterCourt) {
     const current = this.displayedCourtsSubject.value;
     const exists = current.some(c => c.id === court.id);
     if (!exists) {

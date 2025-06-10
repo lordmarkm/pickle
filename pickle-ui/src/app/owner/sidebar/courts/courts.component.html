@@ -1,0 +1,30 @@
+<section>
+
+<h3 class="text-lg font-bold">Courts</h3>
+
+<div *ngIf="!masterCourts || masterCourts.length === 0">
+  No courts found
+</div>
+
+<mat-list *ngIf="masterCourts && masterCourts.length > 0">
+  <mat-list-item *ngFor="let court of masterCourts">
+    <mat-checkbox
+      [checked]="court.checked"
+      (change)="onCheckUncheck(court, $event)"
+    >
+      {{ court.name }} ({{ court.org }})
+    </mat-checkbox>
+  </mat-list-item>
+</mat-list>
+
+<button mat-button (click)="addCourt()">Add court</button>
+
+
+
+
+
+
+
+
+
+</section>

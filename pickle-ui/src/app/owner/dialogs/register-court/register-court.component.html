@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Create Court</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" mat-dialog-content>
+  <div class="flex-col form-fields-wrapper">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Organization</mat-label>
+      <input matInput [value]="org?.name" readonly />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Court Name</mat-label>
+      <input matInput formControlName="name" required />
+      <mat-error *ngIf="form.controls['name']?.hasError('required') && form.controls['name']?.touched">
+        Name is required.
+      </mat-error>
+      <mat-error *ngIf="form.controls['name']?.hasError('maxlength') && form.controls['name']?.touched">
+        Name must not exceed 20 characters.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" required />
+      <mat-error *ngIf="addressCtrl?.hasError('required') && addressCtrl?.touched">
+        Address is required
+      </mat-error>
+      <mat-error *ngIf="addressCtrl?.hasError('maxlength') && addressCtrl?.touched">
+        Address must not exceed 100 characters.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Contact no(s)</mat-label>
+      <input matInput formControlName="contactNo" required />
+      <mat-error *ngIf="contactNoCtrl?.hasError('required') && contactNoCtrl?.touched">
+        Contact number is required
+      </mat-error>
+      <mat-error *ngIf="contactNoCtrl?.hasError('maxlength') && contactNoCtrl?.touched">
+        Contact number must not exceed 50 characters.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+  </div>
+</form>
