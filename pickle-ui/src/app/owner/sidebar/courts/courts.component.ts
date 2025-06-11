@@ -61,11 +61,14 @@ export class CourtsComponent implements OnInit, OnDestroy {
   }
 
   addCourt() {
-    this.dialog.open(RegisterCourtDialogComponent, {
+    const dialogRef = this.dialog.open(RegisterCourtDialogComponent, {
       data: {
         org: this.org
       },
       width: displayConstants.dialogWidth
+    });
+    dialogRef.afterClosed().subscribe((court: Court) => {
+      console.log(court);
     });
   }
 

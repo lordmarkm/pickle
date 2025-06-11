@@ -11,3 +11,8 @@ export const localStorageNames = {
 export const displayConstants = {
   dialogWidth: '400px'
 }
+
+export const timedateFormats = {
+  timepicker: 'hh:mm a',
+  calendarTime: 'HH:mm:ss'
+}

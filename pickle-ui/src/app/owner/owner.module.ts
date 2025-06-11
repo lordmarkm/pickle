@@ -19,6 +19,7 @@ import { MatListModule } from '@angular/material/list';
 import { CourtsComponent } from './sidebar/courts/courts.component';
 import { CourtcalendarComponent } from '../components/courtcalendar/courtcalendar.component';
 import { RegisterCourtDialogComponent } from './dialogs/register-court/register-court.component';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 const MaterialModules = [
   MatButtonModule,
@@ -46,6 +47,7 @@ const MaterialModules = [
     OwnerRoutingModule,
     ReactiveFormsModule,
     NgxSkeletonLoaderModule,
+    NgxMatTimepickerModule,
 
     //standalones
     ErrorcardComponent,

@@ -1,6 +1,6 @@
 <app-owner-sidebar *ngIf="org" [org]="org"></app-owner-sidebar>
 
-<section *ngIf="anonymous" && !loadingOrgs>You must be logged in to view this page</section>
+<section *ngIf="anonymous && !loadingOrgs">You must be logged in to view this page</section>
 
 <section *ngIf="!anonymous && loadingOrgs">
   <ngx-skeleton-loader count="6"></ngx-skeleton-loader>

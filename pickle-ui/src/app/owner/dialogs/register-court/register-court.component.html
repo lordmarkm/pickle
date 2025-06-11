@@ -17,28 +17,22 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Address</mat-label>
-      <input matInput formControlName="address" required />
-      <mat-error *ngIf="addressCtrl?.hasError('required') && addressCtrl?.touched">
-        Address is required
-      </mat-error>
-      <mat-error *ngIf="addressCtrl?.hasError('maxlength') && addressCtrl?.touched">
-        Address must not exceed 100 characters.
-      </mat-error>
+      <mat-label>Start time</mat-label>
+      <input matInput [ngxMatTimepicker]="startPicker" formControlName="start" readonly>
+      <ngx-mat-timepicker #startPicker [hoursOnly]="true"></ngx-mat-timepicker>
+      <mat-icon matSuffix (click)="startPicker.open()">schedule</mat-icon>
     </mat-form-field>
-
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Contact no(s)</mat-label>
-      <input matInput formControlName="contactNo" required />
-      <mat-error *ngIf="contactNoCtrl?.hasError('required') && contactNoCtrl?.touched">
-        Contact number is required
-      </mat-error>
-      <mat-error *ngIf="contactNoCtrl?.hasError('maxlength') && contactNoCtrl?.touched">
-        Contact number must not exceed 50 characters.
-      </mat-error>
+      <mat-label>End time</mat-label>
+      <input matInput [ngxMatTimepicker]="minPicker" formControlName="end" readonly>
+      <ngx-mat-timepicker #minPicker [hoursOnly]="true"></ngx-mat-timepicker>
+      <mat-icon matSuffix (click)="minPicker.open()">schedule</mat-icon>
     </mat-form-field>
-  </div>
 
+  </div>
+  <mat-error *ngIf="form.errors?.['timeRange'] && (form.dirty || form.touched)">
+    End time must be after start time
+  </mat-error>
   <div mat-dialog-actions align="end">
     <button mat-button type="button" (click)="cancel()">Cancel</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
