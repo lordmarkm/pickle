@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { map, tap, finalize, shareReplay } from 'rxjs/operators';
-import { Master, MasterCourt } from '@models';
+import { Master, MasterCourt, Court } from '@models';
 import { localStorageNames } from 'app/misc/constants';
 import { HttpParams } from '@angular/common/http';
 
@@ -35,10 +35,8 @@ export class CourtService {
     );
   }
 
-  findByOrgName(orgName: string): Observable<MasterCourt[]> {
-    const params = new HttpParams()
-      .set('orgName', orgName);
-    return this.http.get<MasterCourt[]>(`${this.baseUrl}/org`, { params });
+  findByOrg(orgId: string): Observable<MasterCourt[]> {
+    return this.http.get<MasterCourt[]>(`${this.baseUrl}/org/${orgId}`);
   }
 
   getFavorites(refresh = false): Observable<any> {
@@ -159,4 +157,9 @@ export class CourtService {
         })
       );
   }
+
+  addNewCourt(court: Court) {
+    return this.http.post<Court>(this.baseUrl, court);
+  }
+
 }

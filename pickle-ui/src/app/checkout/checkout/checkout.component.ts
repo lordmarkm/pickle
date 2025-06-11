@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService, CourtService, AuthService } from '@services';
-import { Booking, Court } from '@models';
+import { Booking, MasterCourt } from '@models';
 import { MessageComponent } from 'app/components/message.component';
 import { unpaidBookingsTtlInMinutes } from '../../misc/constants';
 import { Subject, combineLatest } from 'rxjs';
@@ -16,7 +16,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 export class CheckoutComponent extends MessageComponent implements OnInit, OnDestroy {
   bookingId!: string;
   booking: Booking | null = null;
-  court: Court | null = null;
+  court: MasterCourt | null = null;
   unpaidBookingsTtlInMinutes = unpaidBookingsTtlInMinutes;
   private destroy$ = new Subject<void>();
 

@@ -64,3 +64,57 @@ orgRouter.post("/", authenticateToken, async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Failed to save org"});
   }
 });
+
+// --- CREATE COURT ---
+orgRouter.post("/:orgId/court", authenticateToken, async (req: Request, res: Response) => {
+  const court = req.body;
+  const name = (req as any).name;
+  const uid = (req as any).uid;
+  const orgId = req.params.orgId;
+  const org = await getOrg(orgId);
+  if (!org || !court.name || !court.start || !court.end) {
+    return res.status(400).json({ error: 'Missing required court fields' });
+  }
+  if (court.id) {
+    return res.status(403).json({ error: 'Update forbidden' });
+  }
+  if (org.owner !== uid) {
+    return res.status(403).json({ error: 'Only org owner can add courts' });
+  }
+
+  court.org = org.id;
+  court.orgName = org.name;
+  court.owner = uid;
+  court.createdBy = uid;
+  court.createdByEmail = (req as any).email;
+  court.createdByName = name;
+  court.createdDate = new Date().toISOString();
+  console.log(`Court save request. user: ${name} court: `, court);
+
+  try {
+    const saved = await db.collection(collectionNames.court).add(court);
+    court.id = saved.id;
+    return res.json(court);
+  } catch (error) {
+    console.error("Error saving court:", error);
+    return res.status(500).json({ error: "Failed to save court"});
+  }
+});
+
+
+export async function getOrg(orgId: string): Promise<any | null> {
+  try {
+    const doc = await db.collection(collectionNames.org).doc(orgId).get();
+    if (!doc.exists) {
+      return null;
+    }
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data
+    };
+  } catch (error) {
+    console.error("getOrg error:", error);
+    throw error;
+  }
+}

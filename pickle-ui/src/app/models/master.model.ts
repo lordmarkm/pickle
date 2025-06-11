@@ -10,7 +10,7 @@ export interface MasterOrg {
 export interface MasterCourt {
   id: string;
   name: string;
-  org: string;
+  orgName: string;
   checked?: boolean;
   start?: string; //'16:00:00' formatted for fullcalendar slotMinTime
   end?: string; //'22:00:00'

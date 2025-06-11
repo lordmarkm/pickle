@@ -1,5 +1,5 @@
 <h2 class="flex-row gap5 alignleft text-xl font-bold">
-  <span matTooltip="{{date | date: 'MMMM d, yyyy'}}">{{court.name}} ({{court.org}})</span>
+  <span matTooltip="{{date | date: 'MMMM d, yyyy'}}">{{court.name}} ({{court.orgName}})</span>
   <i *ngIf="!favorite && !anonymous" class="fa-regular fa-star pointer text-3xl" matTooltip="Add to favorites" (click)="addToFavorites()"></i>
   <i *ngIf="favorite && !anonymous" class="fa-solid fa-star pointer gold text-3xl" matTooltip="Remove from favorites" (click)="removeFromFavorites()" [class.spin]="spinning"></i>
 </h2>

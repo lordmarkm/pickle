@@ -1,6 +1,8 @@
 <section>
 
-<h3 class="text-lg font-bold">Courts</h3>
+<h3>Courts</h3>
+
+<app-errorcard *ngIf="error" [error]="error"></app-errorcard>
 
 <div *ngIf="!masterCourts || masterCourts.length === 0">
   No courts found
@@ -12,7 +14,7 @@
       [checked]="court.checked"
       (change)="onCheckUncheck(court, $event)"
     >
-      {{ court.name }} ({{ court.org }})
+      {{ court.name }}
     </mat-checkbox>
   </mat-list-item>
 </mat-list>

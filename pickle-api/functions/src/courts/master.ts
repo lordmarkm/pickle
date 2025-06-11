@@ -11,12 +11,12 @@ const defaultMaster = {
       courts: [
         {
           id: "icb-outdoor",
-          org: "ICB",
+          orgName: "ICB",
           name: "Outdoor"
         },
         {
           id: "indoor1",
-          org: "ICB",
+          orgName: "ICB",
           name: "Indoor 1",
           start: "08:00:00",
           end: "12:00:00"
@@ -28,7 +28,7 @@ const defaultMaster = {
       courts: [
         {
           id: "deco1",
-          org: "Deco",
+          orgName: "Deco",
           name: "Decourt 1"
         }
       ]
@@ -38,7 +38,7 @@ const defaultMaster = {
       courts: [
         {
           id: "de-outdoor",
-          org: "DE Apartments",
+          orgName: "DE Apartments",
           name: "DE Outdoor"
         }
       ]

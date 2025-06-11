@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
-import { AuthService, CourtService, CourtDisplayService } from '@services';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { AuthService, CourtService, CourtDisplayService, OrgService } from '@services';
 import { Subject } from 'rxjs';
 import { Court, MasterCourt, Org } from '@models';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { displayConstants, localStorageNames } from '../../../misc/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterCourtDialogComponent } from 'app/owner/dialogs/register-court/register-court.component';
+import { MessageComponent } from '@components';
 
 @Component({
   standalone: false,
@@ -13,9 +14,9 @@ import { RegisterCourtDialogComponent } from 'app/owner/dialogs/register-court/r
   templateUrl: './courts.component.html',
   styleUrl: './courts.component.scss'
 })
-export class CourtsComponent implements OnInit, OnDestroy {
+export class CourtsComponent extends MessageComponent implements OnInit, OnChanges, OnDestroy {
   @Input() org!: Org;
-  @Input() orgCourts!: Court[];
+  @Input() orgCourts!: { courts: Court[]; }
   masterCourts?: MasterCourt[];
   checkedCourts = new Set<string>();
 
@@ -25,17 +26,24 @@ export class CourtsComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private courts: CourtService,
     private courtDisplay: CourtDisplayService,
-    private dialog: MatDialog
-  ) {}
-
-  ngOnInit(): void {
-    this.masterCourts = this.orgCourts.map((court: Court) => ({
-      checked: true, // TODO: load from localStorage instead of always true
-      ...court
-    }));
-    this.courtDisplay.setDisplayedCourts(this.masterCourts);
+    private dialog: MatDialog,
+    private orgs: OrgService
+  ) {
+    super();
   }
 
+  ngOnInit(): void {
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('onChanges! orgCourts=' + this.orgCourts);
+    if (changes['orgCourts'] && this.orgCourts) {
+      this.masterCourts = this.orgCourts.courts.map((court: Court) => ({
+        checked: this.checkedCourts.has(court.id),
+        ...court
+      }));
+      this.courtDisplay.setDisplayedCourts(this.masterCourts);
+    }
+  }
   ngOnDestroy() {
   }
 
@@ -68,7 +76,16 @@ export class CourtsComponent implements OnInit, OnDestroy {
       width: displayConstants.dialogWidth
     });
     dialogRef.afterClosed().subscribe((court: Court) => {
-      console.log(court);
+      if (court) {
+        this.orgs.addNewCourt(court).subscribe({
+          next: court => {
+            this.orgCourts.courts.push(court);
+            this.masterCourts!.push({ checked: true, ...court });
+            this.checkedCourts.add(court.id);
+          },
+          error: err => this.setError('Create court failed: ' + err.message)
+        });
+      }
     });
   }
 

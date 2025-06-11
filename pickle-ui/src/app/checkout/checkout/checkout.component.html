@@ -7,7 +7,7 @@
       <div><strong>Date</strong></div><div>{{booking.start | date: 'MMMM d' }}</div>
       <div><strong>Start</strong></div><div>{{ booking.start | date: 'h:mm a' }}</div>
       <div><strong>End</strong></div><div>{{ booking.end | date: 'h:mm a' }}</div>
-      <div><strong>Location</strong></div><div>{{court?.org}}</div>
+      <div><strong>Location</strong></div><div>{{court?.orgName}}</div>
       <div><strong>Court</strong></div><div>{{court?.name}}</div>
       <div><strong>Paid</strong></div><div>{{booking.paid ? 'Yes' : 'No'}}</div>
       <div *ngIf="!booking.paid" class="flex-row gap5 alignleft" style="grid-column: 1 / -1;">
