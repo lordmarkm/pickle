@@ -9,6 +9,7 @@
 
 <section *ngIf="org" class="p-4">
   You are the owner of {{org.name}}
+  <app-calendarcontrol></app-calendarcontrol>
   <div class="calendar-container flex-row">
     <div *ngFor="let court of courts$ | async" class="calendar-sub-container">
       <app-courtcalendar [court]="court" [date]="date" (slotSelected)="onSlotSelected(court, $event)" (eventSelected)="onEventSelected(court, $event)" [@fadeInOut]></app-courtcalendar>

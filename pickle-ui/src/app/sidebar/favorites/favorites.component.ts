@@ -67,6 +67,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
   private loadCourtDataForUser(): void {
     this.anonymous = false;
+    this.courtDisplay.setDisplayedCourts([]);
 
     forkJoin({
       favorites: this.courts.getFavorites(true),

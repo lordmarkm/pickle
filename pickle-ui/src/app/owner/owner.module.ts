@@ -20,6 +20,7 @@ import { CourtsComponent } from './sidebar/courts/courts.component';
 import { CourtcalendarComponent } from '../components/courtcalendar/courtcalendar.component';
 import { RegisterCourtDialogComponent } from './dialogs/register-court/register-court.component';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { CalendarcontrolComponent } from '@components';
 
 const MaterialModules = [
   MatButtonModule,
@@ -52,6 +53,7 @@ const MaterialModules = [
     //standalones
     ErrorcardComponent,
     CourtcalendarComponent,
+    CalendarcontrolComponent
   ]
 })
 export class OwnerModule { }

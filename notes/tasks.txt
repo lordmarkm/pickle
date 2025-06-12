@@ -1,12 +1,13 @@
 To do:
-- Clear displayed courts when switching from owner to player
-- Allow owner to create courts for his org
-  - Allow open play
+- Allow open play by owner
 - Fix displayed courts on login/logout
 - Responsive login page
+- Create welcome page
 - Hide date control & show welcome message if no courts selected
 
 Done:
+- Clear displayed courts when switching from owner to player
+- Allow owner to create courts for his org
 - If no org, allow org registration
 - Query org owned by user
 - Skeleton loader for calendar
