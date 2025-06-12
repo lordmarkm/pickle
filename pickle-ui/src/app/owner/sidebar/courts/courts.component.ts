@@ -16,7 +16,7 @@ import { MessageComponent } from '@components';
 })
 export class CourtsComponent extends MessageComponent implements OnInit, OnChanges, OnDestroy {
   @Input() org!: Org;
-  @Input() orgCourts!: { courts: Court[]; }
+  @Input() orgCourts!: Court[];
   masterCourts?: MasterCourt[];
   checkedCourts = new Set<string>();
 
@@ -37,7 +37,7 @@ export class CourtsComponent extends MessageComponent implements OnInit, OnChang
   ngOnChanges(changes: SimpleChanges): void {
     console.log('onChanges! orgCourts=' + this.orgCourts);
     if (changes['orgCourts'] && this.orgCourts) {
-      this.masterCourts = this.orgCourts.courts.map((court: Court) => ({
+      this.masterCourts = this.orgCourts.map((court: Court) => ({
         checked: this.checkedCourts.has(court.id),
         ...court
       }));
@@ -79,7 +79,7 @@ export class CourtsComponent extends MessageComponent implements OnInit, OnChang
       if (court) {
         this.orgs.addNewCourt(court).subscribe({
           next: court => {
-            this.orgCourts.courts.push(court);
+            this.orgCourts.push(court);
             this.masterCourts!.push({ checked: true, ...court });
             this.checkedCourts.add(court.id);
           },

@@ -6,6 +6,7 @@ import { collectionNames } from "../constants";
 export const baseRouter = Router();
 const db = admin.firestore();
 
+// --- GET COURTS BY ORG ---
 baseRouter.get("/org/:orgId", authenticateTokenOrRecaptcha, async (req: Request, res: Response) => {
   const orgId = req.params.orgId;
   console.log(`Finding courts by org. Org: ${orgId}`);

@@ -27,7 +27,7 @@ export class OwnerSidebarComponent extends MessageComponent implements OnInit, O
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['org'] && this.org?.id) {
       this.courtsService.findByOrg(this.org.id).subscribe({
-        next: (courts: any) => this.courts = courts,
+        next: (courts: any) => this.courts = courts.courts,
         error: () => this.setError('Could not get courts for orgName=' + this.org?.name)
       });
     }

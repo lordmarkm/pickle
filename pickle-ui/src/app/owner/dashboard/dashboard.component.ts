@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService, OrgService } from '@services';
-import { Org, MasterCourt, Court, BookingRequest, Booking } from '@models';
+import { Org, MasterCourt, BookingRequest, Booking } from '@models';
 import { MessageComponent } from 'app/components/message.component';
 import { tap, filter, switchMap } from 'rxjs/operators';
 import { RegisterOrgDialogComponent } from '../dialogs/register-org/register-org.component';
@@ -27,7 +27,7 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
   bookingRequest?: BookingRequest;
   booking?: Booking;
   selectionType?: string;
-  court?: Court;
+  court?: MasterCourt;
 
   constructor(private orgs: OrgService, private auth: AuthService, private dialog: MatDialog, private courtDisplay: CourtDisplayService) {
     super();
@@ -80,7 +80,7 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
       }
     });
   }
-  onSlotSelected(court: Court, bookingRequest: BookingRequest) {
+  onSlotSelected(court: MasterCourt, bookingRequest: BookingRequest) {
     if (this.mobile) {
       /*
       this.dialog.open(SlotselectComponent, {
@@ -96,7 +96,7 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
       this.selectionType = 'slot';
     }
   }
-  onEventSelected(court: Court, booking: Booking) {
+  onEventSelected(court: MasterCourt, booking: Booking) {
     if (this.mobile) {
       /*
       this.dialog.open(EventselectComponent, {

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
-import { BookingRequest, Court } from '@models';
+import { BookingRequest, MasterCourt } from '@models';
 import { MessageComponent } from 'app/components/message.component';
 import moment from 'moment';
-import { dateTimeFormat, dateFormat } from 'app/misc/dateformats';
+import { dateFormat } from 'app/misc/dateformats';
 import { BookingService } from '@services';
 import { Router } from '@angular/router';
 import { optionsDate, optionsTime } from '../../misc/dateformats';
@@ -18,7 +18,7 @@ import { fadeIn, fadeInOut } from 'app/misc/animations';
 export class SlotcontrolComponent extends MessageComponent implements OnInit, OnChanges {
 
   @Input() booking!: BookingRequest;
-  @Input() court!: Court;
+  @Input() court!: MasterCourt;
   @Output() cancelEvent = new EventEmitter<void>();
   @Output() bookingCreatedEvent = new EventEmitter<void>();
   checkoutMessage = '';
@@ -37,7 +37,7 @@ export class SlotcontrolComponent extends MessageComponent implements OnInit, On
     const startTime = this.booking.start.toLocaleTimeString('en-PH', optionsTime);
     const endTime = this.booking.end.toLocaleTimeString('en-PH', optionsTime);
     const date = this.booking.end.toLocaleDateString('en-PH', optionsDate);
-    this.checkoutMessage = `Selected slot is available! From ${startTime} to ${endTime} on ${date} @ ${this.court.org} ${this.court.name}`;
+    this.checkoutMessage = `Selected slot is available! From ${startTime} to ${endTime} on ${date} @ ${this.court.orgName} ${this.court.name}`;
   }
 
   checkout() {

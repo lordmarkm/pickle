@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Booking, Court } from '@models';
+import { Booking, MasterCourt } from '@models';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,6 +12,6 @@ import { CommonModule } from '@angular/common';
 export class BookingdetailsComponent {
 
   @Input() booking!: Booking;
-  @Input() court!: Court;
+  @Input() court!: MasterCourt;
 
 }

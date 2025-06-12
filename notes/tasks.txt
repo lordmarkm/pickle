@@ -1,4 +1,5 @@
 To do:
+- Clear displayed courts when switching from owner to player
 - Allow owner to create courts for his org
   - Allow open play
 - Fix displayed courts on login/logout

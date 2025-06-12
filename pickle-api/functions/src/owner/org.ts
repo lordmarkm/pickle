@@ -6,6 +6,7 @@ import { collectionNames } from "../constants";
 export const orgRouter = Router();
 const db = admin.firestore();
 
+// --- GET OWNED ORG --
 orgRouter.get("/", authenticateToken, async (req: Request, res: Response) => {
   const uid = (req as any).uid;
   console.log(`Fetching org for UID: ${uid}`);

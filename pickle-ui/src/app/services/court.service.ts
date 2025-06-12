@@ -35,8 +35,8 @@ export class CourtService {
     );
   }
 
-  findByOrg(orgId: string): Observable<MasterCourt[]> {
-    return this.http.get<MasterCourt[]>(`${this.baseUrl}/org/${orgId}`);
+  findByOrg(orgId: string): Observable<{ courts: Court[] }> {
+    return this.http.get<{ courts: Court[] }>(`${this.baseUrl}/org/${orgId}`);
   }
 
   getFavorites(refresh = false): Observable<any> {

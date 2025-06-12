@@ -31,7 +31,7 @@ export class LandingComponent extends MessageComponent implements OnInit {
   @ViewChildren(CourtcalendarComponent) calendars!: QueryList<CourtcalendarComponent>;
   booking?: Booking;
   bookingRequest: BookingRequest | null = null;
-  court: Court | null = null;
+  court: MasterCourt | null = null;
   checkoutMessage?: string;
   selectionType?: 'slot' | 'event';
   atCurrentDate = true;
@@ -64,7 +64,7 @@ export class LandingComponent extends MessageComponent implements OnInit {
     this.calendars.forEach(c => c.setDate(this.date));
     this.atCurrentDate = false;
   }
-  onSlotSelected(court: Court, bookingRequest: BookingRequest) {
+  onSlotSelected(court: MasterCourt, bookingRequest: BookingRequest) {
     if (this.mobile) {
       this.dialog.open(SlotselectComponent, {
         data: {
@@ -78,7 +78,7 @@ export class LandingComponent extends MessageComponent implements OnInit {
       this.selectionType = 'slot';
     }
   }
-  onEventSelected(court: Court, booking: Booking) {
+  onEventSelected(court: MasterCourt, booking: Booking) {
     if (this.mobile) {
       this.dialog.open(EventselectComponent, {
         data: {

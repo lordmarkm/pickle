@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Booking, Court } from '@models';
+import { Booking, MasterCourt } from '@models';
 
 @Component({
   standalone: false,
@@ -10,10 +10,10 @@ import { Booking, Court } from '@models';
 })
 export class EventselectComponent {
   booking: Booking;
-  court: Court;
+  court: MasterCourt;
   constructor(
     public dialogRef: MatDialogRef<EventselectComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { booking: Booking; court: Court }
+    @Inject(MAT_DIALOG_DATA) public data: { booking: Booking; court: MasterCourt }
   ) {
     this.booking = data.booking;
     this.court = data.court;
