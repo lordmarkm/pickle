@@ -9,12 +9,14 @@ import { MatDialog } from '@angular/material/dialog';
 import moment from 'moment';
 import { Observable } from 'rxjs';
 import { CourtDisplayService } from '../../services/courtdisplay.service';
+import { fadeIn, fadeInOut } from 'app/misc/animations';
 
 @Component({
   selector: 'app-dashboard',
   standalone: false,
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
+  animations: [ fadeInOut, fadeIn]
 })
 export class DashboardComponent extends MessageComponent implements OnInit, OnDestroy {
   anonymous = false;

@@ -39,6 +39,7 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
   schedEnd?: string;
   anonymous = true;
   private destroy$ = new Subject<void>();
+  owner = false;
 
   constructor(private router: Router, private bookings: BookingService, private courts: CourtService, private auth: AuthService, private courtDisplayService: CourtDisplayService) {}
   ngOnInit() {
@@ -48,6 +49,7 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         tap(user => this.anonymous = !user),
         filter(user => !!user),
+        tap(user => this.owner = this.court.owner === user.uid),
         switchMap(() => this.courts.isFavorite(this.court.id)),
       )
       .subscribe(favorite => {

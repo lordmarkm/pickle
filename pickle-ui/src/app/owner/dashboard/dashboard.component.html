@@ -1,3 +1,4 @@
+<div class="flex-row dashboard">
 <app-owner-sidebar *ngIf="org" [org]="org"></app-owner-sidebar>
 
 <section *ngIf="anonymous && !loadingOrgs">You must be logged in to view this page</section>
@@ -6,7 +7,7 @@
   <ngx-skeleton-loader count="6"></ngx-skeleton-loader>
 </section>
 
-<section *ngIf="org">
+<section *ngIf="org" class="p-4">
   You are the owner of {{org.name}}
   <div class="calendar-container flex-row">
     <div *ngFor="let court of courts$ | async" class="calendar-sub-container">
@@ -74,3 +75,4 @@
 </button>
 
 </section>
+</div>
