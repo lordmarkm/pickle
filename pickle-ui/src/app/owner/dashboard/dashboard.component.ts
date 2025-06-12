@@ -10,6 +10,7 @@ import moment from 'moment';
 import { Observable } from 'rxjs';
 import { CourtDisplayService } from '../../services/courtdisplay.service';
 import { fadeIn, fadeInOut } from 'app/misc/animations';
+import { OwnerSlotselectComponent } from '../dialogs/slotselect/slotselect.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -83,20 +84,12 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
     });
   }
   onSlotSelected(court: MasterCourt, bookingRequest: BookingRequest) {
-    if (this.mobile) {
-      /*
-      this.dialog.open(SlotselectComponent, {
-        data: {
-          bookingRequest: bookingRequest,
-          court: court
-        }
-      });
-      */
-    } else {
-      this.bookingRequest = bookingRequest;
-      this.court = court;
-      this.selectionType = 'slot';
-    }
+    this.dialog.open(OwnerSlotselectComponent, {
+      data: {
+        bookingRequest: bookingRequest,
+        court: court
+      }
+    });
   }
   onEventSelected(court: MasterCourt, booking: Booking) {
     if (this.mobile) {

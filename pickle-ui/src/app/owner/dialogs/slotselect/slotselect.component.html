@@ -1,0 +1,10 @@
+<div class="slotcontrol-wrapper">
+  <app-owner-slotcontrol
+    *ngIf="bookingRequest && court"
+    [booking]="bookingRequest"
+    [court]="court"
+    (cancelEvent)="cancel()"
+    (bookingCreatedEvent)="onBookingCreatedEvent()"
+  >
+  </app-owner-slotcontrol>
+</div>

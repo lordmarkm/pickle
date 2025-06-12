@@ -21,6 +21,8 @@ import { CourtcalendarComponent } from '../components/courtcalendar/courtcalenda
 import { RegisterCourtDialogComponent } from './dialogs/register-court/register-court.component';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { CalendarcontrolComponent } from '@components';
+import { OwnerSlotselectComponent } from './dialogs/slotselect/slotselect.component';
+import { OwnerSlotcontrolComponent } from './dialogs/slotselect/slotcontrol/owner.slotcontrol.component';
 
 const MaterialModules = [
   MatButtonModule,
@@ -40,7 +42,9 @@ const MaterialModules = [
     RegisterOrgDialogComponent,
     OwnerSidebarComponent,
     CourtsComponent,
-    RegisterCourtDialogComponent
+    RegisterCourtDialogComponent,
+    OwnerSlotselectComponent,
+    OwnerSlotcontrolComponent
   ],
   imports: [
     ...MaterialModules,

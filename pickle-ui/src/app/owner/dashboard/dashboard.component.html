@@ -1,13 +1,15 @@
-<div class="flex-row dashboard">
 <app-owner-sidebar *ngIf="org" [org]="org"></app-owner-sidebar>
+<div class="flex-col dashboard p-4">
 
 <section *ngIf="anonymous && !loadingOrgs">You must be logged in to view this page</section>
+
+<h1 *ngIf="!anonymous">Owner dashboard</h1>
 
 <section *ngIf="!anonymous && loadingOrgs">
   <ngx-skeleton-loader count="6"></ngx-skeleton-loader>
 </section>
 
-<section *ngIf="org" class="p-4">
+<section *ngIf="org">
   You are the owner of {{org.name}}
   <app-calendarcontrol></app-calendarcontrol>
   <div class="calendar-container flex-row">
