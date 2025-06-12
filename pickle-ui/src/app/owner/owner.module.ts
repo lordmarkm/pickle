@@ -22,7 +22,7 @@ import { RegisterCourtDialogComponent } from './dialogs/register-court/register-
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { CalendarcontrolComponent } from '@components';
 import { OwnerSlotselectComponent } from './dialogs/slotselect/slotselect.component';
-import { OwnerSlotcontrolComponent } from './dialogs/slotselect/slotcontrol/owner.slotcontrol.component';
+import { BlockcontrolDialogComponent } from './dialogs/slotselect/blockcontrol/blockcontrol.component';
 
 const MaterialModules = [
   MatButtonModule,
@@ -44,7 +44,7 @@ const MaterialModules = [
     CourtsComponent,
     RegisterCourtDialogComponent,
     OwnerSlotselectComponent,
-    OwnerSlotcontrolComponent
+    BlockcontrolDialogComponent
   ],
   imports: [
     ...MaterialModules,

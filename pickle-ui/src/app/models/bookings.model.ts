@@ -15,7 +15,7 @@ export interface Booking {
   start: string;
   end: string;
   title: string;
-  type: 'Private' | 'Open Play';
+  type: 'Private' | 'Open Play' | 'Block';
   paid: boolean;
   color?: string;
   createdBy?: string;

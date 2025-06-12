@@ -49,7 +49,7 @@ export class SlotcontrolComponent extends MessageComponent implements OnInit, On
     const start = this.booking.start.toISOString();
     const end = this.booking.end.toISOString();
     const date = moment(this.booking.end).format(dateFormat);
-    this.bookings.newBooking(this.court.id, date, start, end).subscribe({
+    this.bookings.newPrivateBooking(this.court.id, date, start, end).subscribe({
       next: res => {
         this.bookingCreatedEvent.emit();
         this.router.navigate(['/checkout'], {queryParams: {bookingId: res.id}});

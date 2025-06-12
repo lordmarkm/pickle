@@ -23,7 +23,7 @@ export class BookingService {
     return this.http.get<Booking>(`${this.baseUrl}/${bookingId}`);
   }
 
-  newBooking(courtId: string, date: string, start: string, end: string) {
+  newPrivateBooking(courtId: string, date: string, start: string, end: string) {
     const booking: Booking = {
       title: 'New booking',
       courtId,
@@ -34,6 +34,10 @@ export class BookingService {
       paid: false
     };
     return this.http.post<Booking>(`${this.baseUrl}`, booking);
+  }
+
+  newBooking(booking: Booking) {
+    return this.http.post<Booking>(this.baseUrl, booking);
   }
 
   pay(bookingId: string) {

@@ -35,7 +35,6 @@ export class CourtsComponent extends MessageComponent implements OnInit, OnChang
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('onChanges! orgCourts=' + this.orgCourts);
     if (changes['orgCourts'] && this.orgCourts) {
       this.masterCourts = this.orgCourts.map((court: Court) => ({
         checked: this.checkedCourts.has(court.id),
