@@ -96,6 +96,7 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
         slotMaxTime: this.court.end ?? '22:00:00',
         slotDuration: '01:00:00',
         select: this.handleSelect.bind(this),
+        unselectCancel: 'button',
         unselect: () => {
           this.message = null;
         },
