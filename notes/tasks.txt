@@ -1,9 +1,12 @@
 To do:
+- Actually change the date when i click calendar control forward/back
 - Allow open play by owner
 - Fix displayed courts on login/logout
 - Responsive login page
 - Create welcome page
 - Hide date control & show welcome message if no courts selected
+- Allow delete time slot block
+- Add orgName to Booking and fix booking conflict error message
 
 Done:
 - Clear displayed courts when switching from owner to player

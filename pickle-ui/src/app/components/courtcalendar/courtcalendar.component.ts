@@ -76,10 +76,12 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
     const date = this.date ?? new Date();
     this.bookings.getBookings(this.court.id, moment(date).format(dateFormat)).subscribe((bookings: Bookings) => {
       bookings.bookings.forEach(booking => {
-        if (booking.paid) {
-            booking.color = EventColors.paid;
+        if (booking.type === 'Block') {
+          booking.color = EventColors.blocked;
+        } else if (booking.paid) {
+          booking.color = EventColors.paid;
         } else {
-            booking.color = EventColors.booked;
+          booking.color = EventColors.booked;
         }
       });
       this.calendarOptions = {

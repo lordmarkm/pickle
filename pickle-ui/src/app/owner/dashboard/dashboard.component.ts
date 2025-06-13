@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService, OrgService } from '@services';
 import { Org, MasterCourt, BookingRequest, Booking } from '@models';
@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { CourtDisplayService } from '../../services/courtdisplay.service';
 import { fadeIn, fadeInOut } from 'app/misc/animations';
 import { OwnerSlotselectComponent } from '../dialogs/slotselect/slotselect.component';
+import { CourtcalendarComponent } from 'app/components/courtcalendar/courtcalendar.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +32,7 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
   booking?: Booking;
   selectionType?: string;
   court?: MasterCourt;
+  @ViewChildren(CourtcalendarComponent) calendars!: QueryList<CourtcalendarComponent>;
 
   constructor(private orgs: OrgService, private auth: AuthService, private dialog: MatDialog, private courtDisplay: CourtDisplayService) {
     super();
@@ -84,12 +86,19 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
     });
   }
   onSlotSelected(court: MasterCourt, bookingRequest: BookingRequest) {
-    this.dialog.open(OwnerSlotselectComponent, {
+    const dialogRef = this.dialog.open(OwnerSlotselectComponent, {
       data: {
         bookingRequest: bookingRequest,
         court: court
       }
     });
+    dialogRef.afterClosed().subscribe({
+      next: retval => {
+        if (retval) {
+          this.courtDisplay.triggerRefresh(court.id);
+        }
+      }
+    })
   }
   onEventSelected(court: MasterCourt, booking: Booking) {
     if (this.mobile) {
@@ -107,7 +116,10 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
       this.selectionType = 'event';
     }
   }
-
+  onDateChange(evt: { date: Date, atCurrentDate: boolean }) {
+    this.date = evt.date;
+    this.calendars.forEach(c => c.setDate(this.date));
+  }
 
 
 

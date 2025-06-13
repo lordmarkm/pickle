@@ -1,7 +1,3 @@
-/**
- * List of bookings for the day
- */
-
 export interface Bookings {
   courtId: string;
   date: Date;
@@ -25,6 +21,7 @@ export interface Booking {
 export const EventColors = {
   booked: '#3788d8', // FC default blue
   paid: '#4CAF50',   // light green
+  blocked: '#b0b0b0' //light grey
 };
 
 export interface BookingRequest {

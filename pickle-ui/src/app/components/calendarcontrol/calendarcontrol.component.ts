@@ -14,7 +14,7 @@ export class CalendarcontrolComponent {
   date = moment().toDate();
   atCurrentDate = true;
 
-  @Output() dateControl = new EventEmitter<{ date: Date, atCurrentDate: boolean }>();
+  @Output() onDateChange = new EventEmitter<{ date: Date, atCurrentDate: boolean }>();
 
   constructor() {
     this.emitDateControl();
@@ -44,6 +44,6 @@ export class CalendarcontrolComponent {
   }
 
   private emitDateControl() {
-    this.dateControl.emit({ date: this.date, atCurrentDate: this.atCurrentDate });
+    this.onDateChange.emit({ date: this.date, atCurrentDate: this.atCurrentDate });
   }
 }

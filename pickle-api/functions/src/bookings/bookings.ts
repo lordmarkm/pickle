@@ -3,7 +3,8 @@ import {Router, Request, Response} from "express";
 import { authenticateToken } from "../auth/auth";
 import { authenticateTokenOrRecaptcha } from "../auth/auth-or-recaptcha";
 import { Timestamp } from 'firebase-admin/firestore';
-import { twentyMins } from "../constants";
+import { PERMANENT_TTL_TIMESTAMP, collectionNames, twentyMins } from "../constants";
+import { Court } from "../models/court";
 
 export const bookingsRouter = Router();
 const db = admin.firestore();
@@ -100,6 +101,9 @@ bookingsRouter.get("/", authenticateTokenOrRecaptcha, async (req: Request, res: 
 // --- CREATE NEW ---
 bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) => {
   const booking = req.body;
+  console.log("Booking save request", booking);
+
+  const uid = (req as any).uid;
   const name = (req as any).name;
   if (!booking.courtId || !booking.date || !booking.start || !booking.end) {
     return res.status(400).json({ error: 'Missing required booking fields' });
@@ -108,13 +112,31 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
     return res.status(403).json({ error: 'Update forbidden' });
   }
 
-  booking.title = name;
-  booking.paid = false;
+  switch (booking.type) {
+    case 'Private': {
+        handlePrivateBooking(name, booking);
+        const unpaidBooking = await checkUnpaidBooking(uid);
+        if (unpaidBooking) {
+          return res.status(409).json({ 
+            error: "You already have an unpaid booking.", 
+            booking: unpaidBooking 
+          });
+        }
+      }
+      break;
+    case 'Block':
+      try {
+        handleBlockBooking(uid, booking);
+      } catch (err: any) {
+        return res.status(403).json({ error: "Could not create time slot block: " + err.message });
+      }
+      break;
+  }
+
   booking.createdBy = (req as any).uid;
   booking.createdByEmail = (req as any).email;
   booking.createdByName = name;
   booking.createdDate = new Date().toISOString();
-  booking.ttl = new Date(Date.now() + twentyMins);
   booking.start = new Date(booking.start);
   booking.end = new Date(booking.end);
   console.log(`Booking save request. user: ${name} booking: `, booking);
@@ -123,15 +145,6 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
   const overlapExists = await checkOverlap(booking);
   if (overlapExists) {
     return res.status(409).json({ error: "Booking overlaps with an existing reservation." });
-  }
-
-  // --- UNPAID BOOKING BY THE SAME USER ---
-  const unpaidBooking = await checkUnpaidBooking(booking.createdBy);
-  if (unpaidBooking) {
-    return res.status(409).json({ 
-      error: "You already have an unpaid booking.", 
-      booking: unpaidBooking 
-    });
   }
 
   try {
@@ -143,6 +156,39 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
     return res.status(500).json({ error: "Failed to save booking"});
   }
 });
+
+function handlePrivateBooking(name: string, booking: any) {
+  booking.title = name;
+  booking.paid = false;
+  booking.ttl = new Date(Date.now() + twentyMins);
+}
+
+async function handleBlockBooking(uid: string, booking: any) {
+  const court = await getCourtByCourtId(booking.courtId);
+
+  if (!court) {
+    throw new Error("Court not found");
+  }
+
+  //Only the owner can create a time slot block
+  if (court.owner !== uid) {
+    throw new Error("Only the court owner can create a time slot block");
+  }
+
+  booking.paid = true;
+  booking.ttl = PERMANENT_TTL_TIMESTAMP;
+}
+
+async function getCourtByCourtId(courtId: string): Promise<Court | null> {
+  const courtDoc = await db.collection(collectionNames.court).doc(courtId).get();
+
+  if (!courtDoc.exists) return null;
+
+  return {
+    id: courtDoc.id,
+    ...courtDoc.data()
+  };
+}
 
 async function checkOverlap(booking: any) {
   const overlapSnapshot = await db

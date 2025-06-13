@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Booking, MasterCourt } from '@models';
 import { timedateFormats } from 'app/misc/constants';
+import { dateFormat } from 'app/misc/dateformats';
 import moment from 'moment';
+import { simpleTimeFormat } from '../../../../misc/dateformats';
 
 @Component({
   selector: 'app-blockcontrol',
@@ -14,18 +16,22 @@ import moment from 'moment';
 export class BlockcontrolDialogComponent implements AfterViewInit {
   form: FormGroup;
   @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
+  booking: any;
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<BlockcontrolDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) private data: { booking: Booking, court: MasterCourt }) {
 
-    const booking = data.booking;
+    this.booking = data.booking;
+    console.log(this.booking);
     this.form = this.fb.group({
       title: ['Private Event', [Validators.required, Validators.maxLength(20), Validators.minLength(4)]],
       type: 'Block',
-      start: moment(booking.start, timedateFormats.calendarTime).format('h:mm a'),
-      end: moment(booking.end, timedateFormats.calendarTime).format('h:mm a'),
-      court: data.court.name
+      startStr: moment(this.booking.start, timedateFormats.calendarTime).format(simpleTimeFormat),
+      endStr: moment(this.booking.end, timedateFormats.calendarTime).format(simpleTimeFormat),
+      court: data.court.name,
+      courtId: data.court.id,
+      date: moment(this.booking.end, timedateFormats.calendarTime).format(dateFormat)
     });
   }
   ngAfterViewInit() {
@@ -40,7 +46,9 @@ export class BlockcontrolDialogComponent implements AfterViewInit {
   submit() {
     if (this.form.valid) {
       const booking: Booking = this.form.value;
-      this.dialogRef.close(this.form.value);
+      booking.start = this.booking.start.toISOString();
+      booking.end = this.booking.end.toISOString();
+      this.dialogRef.close(booking);
     }
   }
   get titleCtrl() {

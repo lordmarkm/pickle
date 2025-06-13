@@ -62,7 +62,7 @@ export class OwnerSlotselectComponent extends MessageComponent {
       if (booking) {
         this.setMessage('Creating time slot block...');
         this.bookings.newBooking(booking).subscribe({
-          next: saved => this.dialogRef.close(),
+          next: saved => this.dialogRef.close(true),
           error: err => this.setError('Failed to create time slot block. error=' + err.message)
         });
       }
