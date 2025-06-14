@@ -6,6 +6,7 @@ import { BlockcontrolDialogComponent } from './blockcontrol/blockcontrol.compone
 import { displayConstants } from 'app/misc/constants';
 import { optionsDate, optionsTime } from 'app/misc/dateformats';
 import { MessageComponent } from '@components';
+import { OpenplaycontrolDialogComponent } from './openplaycontrol/openplaycontrol.component';
 
 @Component({
   standalone: false,
@@ -69,7 +70,29 @@ export class OwnerSlotselectComponent extends MessageComponent {
     });
   }
   openPlay() {
-    
+    if (!this.booking || !this.court) {
+      this.setError("Booking or Court not found");
+      return;
+    }
+
+    const opDialog = this.dialog.open(OpenplaycontrolDialogComponent, {
+      data: {
+        booking: this.booking,
+        court: this.court
+      },
+      width: displayConstants.dialogWidth
+    });
+
+    opDialog.afterClosed().subscribe((booking: Booking) => {
+      if (booking) {
+        console.log(booking);
+        this.setMessage('Creating open play...');
+        this.bookings.newBooking(booking).subscribe({
+          next: saved => this.dialogRef.close(true),
+          error: err => this.setError('Failed to create open play. error=' + err.message)
+        });
+      }
+    });
   }
   cancel(): void {
     this.dialogRef.close();

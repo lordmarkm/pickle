@@ -1,6 +1,6 @@
 import { Input, Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { Master, MasterCourt } from '@models';
-import { CourtService, CourtDisplayService } from '@services';
+import { CourtService, CourtDisplayService, AuthService } from '@services';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
@@ -12,7 +12,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 export class MasterComponent implements OnInit, OnChanges {
   @Input() master: Master | null = null;
   checkedCourts = new Set<string>();
-  constructor(private courts: CourtService, private courtDisplay: CourtDisplayService) {}
+  constructor(private courts: CourtService, private courtDisplay: CourtDisplayService, private authService: AuthService) {}
 
   isChecked(courtId: string): boolean {
     return this.checkedCourts.has(courtId);
@@ -40,14 +40,20 @@ export class MasterComponent implements OnInit, OnChanges {
     if (data) {
       this.checkedCourts = new Set(JSON.parse(data));
     }
+    const courts: MasterCourt[] = [];
     for (const courtId of this.checkedCourts) {
       this.courts.findOne(courtId).subscribe(court => {
         if (court) {
-          this.courtDisplay.addDisplayedCourt(court);
+          courts.push(court);
         } else {
-            this.checkedCourts.delete(courtId);
+          this.checkedCourts.delete(courtId);
         }
       });
+    }
+    if (this.authService.isSignedOut()) {
+      this.courtDisplay.setDisplayedCourts(courts);
+    } else {
+      this.courtDisplay.addDisplayedCourts(courts);
     }
   }
 

@@ -23,6 +23,7 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { CalendarcontrolComponent } from '@components';
 import { OwnerSlotselectComponent } from './dialogs/slotselect/slotselect.component';
 import { BlockcontrolDialogComponent } from './dialogs/slotselect/blockcontrol/blockcontrol.component';
+import { OpenplaycontrolDialogComponent } from './dialogs/slotselect/openplaycontrol/openplaycontrol.component';
 
 const MaterialModules = [
   MatButtonModule,
@@ -44,7 +45,8 @@ const MaterialModules = [
     CourtsComponent,
     RegisterCourtDialogComponent,
     OwnerSlotselectComponent,
-    BlockcontrolDialogComponent
+    BlockcontrolDialogComponent,
+    OpenplaycontrolDialogComponent
   ],
   imports: [
     ...MaterialModules,

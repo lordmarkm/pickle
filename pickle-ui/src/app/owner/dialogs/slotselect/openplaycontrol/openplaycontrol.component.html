@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Open Play</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" mat-dialog-content>
+  <div class="flex-col form-fields-wrapper">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Max Players</mat-label>
+      <input #maxPlayersInput matInput formControlName="maxPlayers" />
+      <mat-error *ngIf="maxPlayers?.hasError('required') && maxPlayers?.touched">
+        Maximum # of players is required.
+      </mat-error>
+      <mat-error *ngIf="(maxPlayers?.hasError('min') || maxPlayers?.hasError('max')) && maxPlayers?.touched">
+        Maximum # of players must between 4 and 100.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+      <mat-error *ngIf="titleCtrl?.hasError('required') && titleCtrl?.touched">
+        Title is required.
+      </mat-error>
+      <mat-error *ngIf="(titleCtrl?.hasError('minlength') || titleCtrl?.hasError('maxlength')) && titleCtrl?.touched">
+        Title must between 4 and 20 characters long.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Court</mat-label>
+      <input matInput formControlName="court" readonly />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Start time</mat-label>
+      <input matInput formControlName="startStr" readonly>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>End time</mat-label>
+      <input matInput formControlName="endStr" readonly>
+    </mat-form-field>
+
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+  </div>
+</form>

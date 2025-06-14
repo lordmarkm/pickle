@@ -17,6 +17,15 @@ export class CourtDisplayService {
     this.displayedCourtsSubject.next(courts);
   }
 
+  addDisplayedCourts(courts: MasterCourt[]) {
+    const current = this.displayedCourtsSubject.value;
+    const newCourts = courts.filter(court => !current.some(c => c.id === court.id));
+  
+    if (newCourts.length > 0) {
+      this.displayedCourtsSubject.next([...current, ...newCourts]);
+    }
+  }
+
   addDisplayedCourt(court: MasterCourt) {
     const current = this.displayedCourtsSubject.value;
     const exists = current.some(c => c.id === court.id);

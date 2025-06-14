@@ -78,6 +78,8 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
       bookings.bookings.forEach(booking => {
         if (booking.type === 'Block') {
           booking.color = EventColors.blocked;
+        } else if (booking.type === 'Open Play') {
+          booking.color = EventColors.op;
         } else if (booking.paid) {
           booking.color = EventColors.paid;
         } else {
@@ -96,7 +98,7 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
         slotMaxTime: this.court.end ?? '22:00:00',
         slotDuration: '01:00:00',
         select: this.handleSelect.bind(this),
-        unselectCancel: 'button',
+        unselectCancel: 'button:not(.unselect)',
         unselect: () => {
           this.message = null;
         },

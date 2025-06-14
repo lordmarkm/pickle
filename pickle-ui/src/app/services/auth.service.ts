@@ -21,6 +21,11 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  isSignedOut(): boolean {
+    const user = this.getUser();
+    return null == user;
+  }
+
   logout() {
     return signOut(this.auth)
       .then(() => this.currentUserSubject.next(null))

@@ -125,8 +125,9 @@ bookingsRouter.post("/", authenticateToken, async (req: Request, res: Response) 
       }
       break;
     case 'Block':
+    case 'Open Play':
       try {
-        handleBlockBooking(uid, booking);
+        handleBlockOrOpenPlayBooking(uid, booking);
       } catch (err: any) {
         return res.status(403).json({ error: "Could not create time slot block: " + err.message });
       }
@@ -163,7 +164,7 @@ function handlePrivateBooking(name: string, booking: any) {
   booking.ttl = new Date(Date.now() + twentyMins);
 }
 
-async function handleBlockBooking(uid: string, booking: any) {
+async function handleBlockOrOpenPlayBooking(uid: string, booking: any) {
   const court = await getCourtByCourtId(booking.courtId);
 
   if (!court) {

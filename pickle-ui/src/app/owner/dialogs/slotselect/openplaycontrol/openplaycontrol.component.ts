@@ -7,25 +7,26 @@ import { dateFormat, simpleTimeFormat } from 'app/misc/dateformats';
 import moment from 'moment';
 
 @Component({
-  selector: 'app-blockcontrol',
+  selector: 'app-openplaycontrol',
   standalone: false,
-  templateUrl: './blockcontrol.component.html',
-  styleUrl: './blockcontrol.component.scss'
+  templateUrl: './openplaycontrol.component.html',
+  styleUrl: './openplaycontrol.component.scss'
 })
-export class BlockcontrolDialogComponent implements AfterViewInit {
+export class OpenplaycontrolDialogComponent implements AfterViewInit {
   form: FormGroup;
-  @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('maxPlayersInput') maxPlayersInput!: ElementRef<HTMLInputElement>;
   booking: any;
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<BlockcontrolDialogComponent>, 
+    private dialogRef: MatDialogRef<OpenplaycontrolDialogComponent>, 
     @Inject(MAT_DIALOG_DATA) private data: { booking: Booking, court: MasterCourt }) {
 
     this.booking = data.booking;
     console.log(this.booking);
     this.form = this.fb.group({
-      title: ['Private Event', [Validators.required, Validators.maxLength(20), Validators.minLength(4)]],
-      type: 'Block',
+      title: ['Open Play', [Validators.required, Validators.maxLength(20), Validators.minLength(4)]],
+      maxPlayers: [20, [Validators.required, Validators.min(4), Validators.max(100)]],
+      type: 'Open Play',
       startStr: moment(this.booking.start, timedateFormats.calendarTime).format(simpleTimeFormat),
       endStr: moment(this.booking.end, timedateFormats.calendarTime).format(simpleTimeFormat),
       court: data.court.name,
@@ -35,8 +36,8 @@ export class BlockcontrolDialogComponent implements AfterViewInit {
   }
   ngAfterViewInit() {
     setTimeout(() => {
-      this.titleInput.nativeElement.focus();
-      this.titleInput.nativeElement.select();
+      this.maxPlayersInput.nativeElement.focus();
+      this.maxPlayersInput.nativeElement.select();
     });
   }
   cancel() {
@@ -52,5 +53,8 @@ export class BlockcontrolDialogComponent implements AfterViewInit {
   }
   get titleCtrl() {
     return this.form.get('title');
+  }
+  get maxPlayers() {
+    return this.form.get('maxPlayers');
   }
 }

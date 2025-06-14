@@ -21,7 +21,8 @@ export interface Booking {
 export const EventColors = {
   booked: '#3788d8', // FC default blue
   paid: '#4CAF50',   // light green
-  blocked: '#b0b0b0' //light grey
+  blocked: '#b0b0b0', //light grey
+  op: '#f58b4e' // light orange
 };
 
 export interface BookingRequest {
