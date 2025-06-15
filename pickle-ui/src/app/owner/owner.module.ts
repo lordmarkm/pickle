@@ -24,6 +24,7 @@ import { CalendarcontrolComponent } from '@components';
 import { OwnerSlotselectComponent } from './dialogs/slotselect/slotselect.component';
 import { BlockcontrolDialogComponent } from './dialogs/slotselect/blockcontrol/blockcontrol.component';
 import { OpenplaycontrolDialogComponent } from './dialogs/slotselect/openplaycontrol/openplaycontrol.component';
+import { BlockselectDialogComponent } from './dialogs/blockselect/blockselect.component';
 
 const MaterialModules = [
   MatButtonModule,
@@ -46,7 +47,8 @@ const MaterialModules = [
     RegisterCourtDialogComponent,
     OwnerSlotselectComponent,
     BlockcontrolDialogComponent,
-    OpenplaycontrolDialogComponent
+    OpenplaycontrolDialogComponent,
+    BlockselectDialogComponent
   ],
   imports: [
     ...MaterialModules,

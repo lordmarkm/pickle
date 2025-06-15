@@ -12,6 +12,8 @@ import { CourtDisplayService } from '../../services/courtdisplay.service';
 import { fadeIn, fadeInOut } from 'app/misc/animations';
 import { OwnerSlotselectComponent } from '../dialogs/slotselect/slotselect.component';
 import { CourtcalendarComponent } from 'app/components/courtcalendar/courtcalendar.component';
+import { displayConstants } from '../../misc/constants';
+import { BlockselectDialogComponent } from '../dialogs/blockselect/blockselect.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -101,6 +103,13 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
     })
   }
   onEventSelected(court: MasterCourt, booking: Booking) {
+    console.log(booking);
+    switch (booking.type) {
+      case 'Block':
+        this.handleBlockEventSelected(booking);
+        break;
+    }
+
     if (this.mobile) {
       /*
       this.dialog.open(EventselectComponent, {
@@ -116,6 +125,14 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
       this.selectionType = 'event';
     }
   }
+
+  handleBlockEventSelected(booking: Booking) {
+    this.dialog.open(BlockselectDialogComponent, {
+      data: {},
+      width: displayConstants.dialogWidth
+    })
+  }
+
   onDateChange(evt: { date: Date, atCurrentDate: boolean }) {
     this.date = evt.date;
     this.calendars.forEach(c => c.setDate(this.date));

@@ -1,6 +1,4 @@
 To do:
-- Create welcome page
-- Hide date control & show welcome message if no courts selected
 - Allow delete time slot block
 - Add orgName to Booking and fix booking conflict error message
 - Allow owner to cancel the blocks they made
@@ -10,6 +8,8 @@ To do:
 - Fix owner courts not preserving check/uncheck & show/unshow on refresh
 
 Done:
+- Hide date control & show welcome message if no courts selected
+- Create welcome page
 - Fix displayed courts on login/logout
 - Responsive login page
 - Allow open play by owner
