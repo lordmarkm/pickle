@@ -14,12 +14,15 @@ import { takeUntil } from 'rxjs/operators';
 export class LoginComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   user: User | null = null;
+  admin = false;
   constructor(private auth: Auth, private authService: AuthService) {}
   ngOnInit() {
     this.authService.currentUser$
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
         this.user = user;
+        this.admin = this.authService.isAdmin();
+        console.log('admin? ' + this.admin);
       });
   }
   ngOnDestroy() {

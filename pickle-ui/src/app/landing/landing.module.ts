@@ -15,6 +15,7 @@ import { EventcontrolComponent } from './eventcontrol/eventcontrol.component';
 import { BookingdetailsComponent } from '../components/bookingdetails/bookingdetails.component';
 import { EventselectComponent } from './dialogs/eventselect/eventselect.component';
 import { SlotselectComponent } from './dialogs/slotselect/slotselect.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 const MaterialModules = [
   MatButtonModule,
@@ -28,7 +29,8 @@ const MaterialModules = [
     SlotcontrolComponent,
     EventcontrolComponent,
     EventselectComponent,
-    SlotselectComponent
+    SlotselectComponent,
+    WelcomeComponent
   ],
   imports: [
     ...MaterialModules,

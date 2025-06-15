@@ -2,7 +2,7 @@
   <span matTooltip="{{date | date: 'MMMM d, yyyy'}}">{{court.name}} ({{court.orgName}})</span>
   <i *ngIf="!favorite && !anonymous" class="fa-regular fa-star pointer" matTooltip="Add to favorites" matTooltipPosition="above" (click)="addToFavorites()"></i>
   <i *ngIf="favorite && !anonymous" class="fa-solid fa-star pointer gold" matTooltip="Remove from favorites" matTooltipPosition="above" (click)="removeFromFavorites()" [class.spin]="spinning"></i>
-  <i *ngIf="owner" class="fa-solid fa-gear pointer" matTooltip="Court Settings" matTooltipPosition="above"></i>
+  <i *ngIf="owner" [matMenuTriggerFor]="courtSettingsMenu" matTooltipPosition="above" class="fa-solid fa-gear pointer" matTooltip="Court Settings"></i>
 </h2>
 <div>Schedule: {{schedStart}} to {{schedEnd}}</div>
 <div *ngIf="message">{{message}}</div>
@@ -11,3 +11,15 @@
   <full-calendar #fullcalendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
   <ngx-skeleton-loader count="6" *ngIf="!calendarOptions"></ngx-skeleton-loader>
 </div>
+
+<!-- The menu template -->
+<mat-menu #courtSettingsMenu="matMenu" xPosition="before" yPosition="below">
+  <button mat-menu-item routerLink="/landing">
+    <mat-icon>admin_panel_settings</mat-icon>
+    <span>Admin control</span>
+  </button>
+  <button mat-menu-item routerLink="/owner">
+    <mat-icon>settings</mat-icon>
+    <span>Court settings</span>
+  </button>
+</mat-menu>

@@ -15,13 +15,21 @@ import { dateFormat, dateTimeFormat, simpleTimeFormat, fcTimeFormat } from '../.
 import { CourtDisplayService } from '../../services/courtdisplay.service';
 import { Subject } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+
+const MaterialModules = [
+  MatTooltipModule,
+  MatMenuModule,
+  MatIconModule
+]
 
 @Component({
   standalone: true,
   selector: 'app-courtcalendar',
   templateUrl: './courtcalendar.component.html',
   styleUrl: './courtcalendar.component.scss',
-  imports: [ CommonModule, FullCalendarModule, MatTooltipModule, NgxSkeletonLoaderModule ]
+  imports: [ CommonModule, FullCalendarModule, NgxSkeletonLoaderModule, ...MaterialModules ]
 })
 export class CourtcalendarComponent implements OnInit, OnDestroy {
   @ViewChild('fullcalendar') calendarComponent!: FullCalendarComponent;
@@ -40,6 +48,7 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
   anonymous = true;
   private destroy$ = new Subject<void>();
   owner = false;
+  admin = false;
 
   constructor(private router: Router, private bookings: BookingService, private courts: CourtService, private auth: AuthService, private courtDisplayService: CourtDisplayService) {}
   ngOnInit() {
@@ -49,7 +58,10 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         tap(user => this.anonymous = !user),
         filter(user => !!user),
-        tap(user => this.owner = this.court.owner === user.uid),
+        tap(user => {
+          this.owner = this.court.owner === user.uid;
+          this.admin = this.auth.isAdmin();
+        }),
         switchMap(() => this.courts.isFavorite(this.court.id)),
       )
       .subscribe(favorite => {

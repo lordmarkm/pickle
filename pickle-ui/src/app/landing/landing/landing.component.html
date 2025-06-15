@@ -1,31 +1,36 @@
 <app-sidebar></app-sidebar>
 <div class="flex-row landing p-4">
 <div class="calendars-container flex-column">
-  <div class="calendar-controls flex-row my-4" *ngIf="!bookingRequest && !booking" @fadeIn>
-    <h1 class="text-xl font-bold my-4">{{ date | date: 'MMMM d, yyyy'}}</h1>
-    <button mat-flat-button color="primary" matTooltip="Go to current day" (click)="today()">Today</button>
-    <button mat-flat-button matTooltip="Go back 1 day" (click)="previousDay()" [disabled]="atCurrentDate"><i class="fa fa-chevron-left"></i></button>
-    <button mat-flat-button matTooltip="Move forward 1 day" (click)="nextDay()"><i class="fa fa-chevron-right"></i></button>
-  </div>
-  <app-slotcontrol
-    *ngIf="bookingRequest && court && selectionType === 'slot'"
-    [booking]="bookingRequest"
-    [court]="court"
-    (cancelEvent)="cancel()"
-    @fadeIn>
-  </app-slotcontrol>
-  <app-eventcontrol
-    *ngIf="booking && court && selectionType === 'event'"
-    [booking]="booking"
-    [court]="court"
-    (cancelEvent)="cancel()"
-    @fadeIn
-    >
-  </app-eventcontrol>
-  <div class="calendar-container flex-row">
-    <div *ngFor="let court of courts$ | async" class="calendar-sub-container">
-      <app-courtcalendar [court]="court" [date]="date" (slotSelected)="onSlotSelected(court, $event)" (eventSelected)="onEventSelected(court, $event)" [@fadeInOut]></app-courtcalendar>
+  <ng-container *ngIf="hasCourts else noCourts">
+    <div class="calendar-controls flex-row my-4" *ngIf="!bookingRequest && !booking" @fadeIn>
+      <h1 class="text-xl font-bold my-4">{{ date | date: 'MMMM d, yyyy'}}</h1>
+      <button mat-flat-button color="primary" matTooltip="Go to current day" (click)="today()">Today</button>
+      <button mat-flat-button matTooltip="Go back 1 day" (click)="previousDay()" [disabled]="atCurrentDate"><i class="fa fa-chevron-left"></i></button>
+      <button mat-flat-button matTooltip="Move forward 1 day" (click)="nextDay()"><i class="fa fa-chevron-right"></i></button>
     </div>
-  </div>
+    <app-slotcontrol
+      *ngIf="bookingRequest && court && selectionType === 'slot'"
+      [booking]="bookingRequest"
+      [court]="court"
+      (cancelEvent)="cancel()"
+      @fadeIn>
+    </app-slotcontrol>
+    <app-eventcontrol
+      *ngIf="booking && court && selectionType === 'event'"
+      [booking]="booking"
+      [court]="court"
+      (cancelEvent)="cancel()"
+      @fadeIn
+      >
+    </app-eventcontrol>
+    <div class="calendar-container flex-row">
+      <div *ngFor="let court of courts" class="calendar-sub-container">
+        <app-courtcalendar [court]="court" [date]="date" (slotSelected)="onSlotSelected(court, $event)" (eventSelected)="onEventSelected(court, $event)" [@fadeInOut]></app-courtcalendar>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noCourts>
+    <app-welcome></app-welcome>
+  </ng-template>
 </div>
 </div>

@@ -10,8 +10,9 @@
   <h5 class="text-m font-bold p-1" *ngIf="isCollapsed">Show courts</h5>
 </div>
 
+<div class="p-4">
 <app-favorites (master)="afterFavoritesDisplayed($event)"></app-favorites>
 <app-master [master]="master"></app-master>
-
+</div>
 
 </div>

@@ -22,7 +22,7 @@ import { SlotselectComponent } from '../dialogs/slotselect/slotselect.component'
   animations: [ fadeInOut, fadeIn]
 })
 export class LandingComponent extends MessageComponent implements OnInit {
-  courts$: Observable<MasterCourt[]> | null = null;
+  courts: MasterCourt[] | null = null;
   date = moment().toDate();
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridDay',
@@ -36,13 +36,17 @@ export class LandingComponent extends MessageComponent implements OnInit {
   selectionType?: 'slot' | 'event';
   atCurrentDate = true;
   mobile = false;
+  hasCourts = false;
 
   constructor(private courtDisplay: CourtDisplayService, private bookings: BookingService, private router: Router, private dialog: MatDialog) {
     super();
   }
 
   ngOnInit() {
-    this.courts$ = this.courtDisplay.displayedCourts$;
+    this.courtDisplay.displayedCourts$.subscribe(courts => {
+      this.courts = courts;
+      this.hasCourts = !!courts && courts.length > 0;
+    });
     this.mobile = window.innerWidth < mobileMaxWidth;
   }
   today() {

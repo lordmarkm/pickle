@@ -7,6 +7,7 @@ To do:
 - Autoselect for create court
 - Deselect slot after saving block/op event
 - Allow user to sign up for open play
+- Fix owner courts not preserving check/uncheck & show/unshow on refresh
 
 Done:
 - Fix displayed courts on login/logout
