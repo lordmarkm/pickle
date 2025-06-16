@@ -3,6 +3,7 @@ import cors from 'cors';
 import { onRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params';
 import admin from 'firebase-admin';
+import { courtsRouter } from './court';
 
 const app = express();
 app.use(cors({
@@ -11,6 +12,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Recaptcha-Token'],
 }));
 app.use(express.json()); // for parsing JSON request bodies
+app.use('/courts', courtsRouter);
 
 const recaptchaSecret = defineSecret("recaptcha");
 

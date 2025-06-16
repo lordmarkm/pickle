@@ -17,6 +17,9 @@ import { Subject } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { CourtsettingsComponent } from 'app/admin/dialogs/courtsettings/courtsettings.component';
+import { displayConstants } from 'app/misc/constants';
 
 const MaterialModules = [
   MatTooltipModule,
@@ -50,7 +53,8 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
   owner = false;
   admin = false;
 
-  constructor(private router: Router, private bookings: BookingService, private courts: CourtService, private auth: AuthService, private courtDisplayService: CourtDisplayService) {}
+  constructor(private router: Router, private bookings: BookingService, private courts: CourtService,
+              private auth: AuthService, private courtDisplayService: CourtDisplayService, private dialog: MatDialog) {}
   ngOnInit() {
     this.loadEvents();
     this.auth.currentUser$
@@ -200,5 +204,12 @@ export class CourtcalendarComponent implements OnInit, OnDestroy {
      next: res => this.setMessage(res.message),
      error: err => this.setError('Failed to remove favorite: ' + err.message)
    });
+  }
+  adminControl() {
+    this.dialog.open(CourtsettingsComponent, {
+      data: {
+        court: this.court
+      }
+    });
   }
 }

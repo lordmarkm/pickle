@@ -17,6 +17,7 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
     (req as any).uid = decodedToken.uid;
     (req as any).name = decodedToken.name || null;
     (req as any).email = decodedToken.email || null;
+    (req as any).admin = decodedToken.admin || null;
 
     return next();
   } catch (error) {

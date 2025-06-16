@@ -25,5 +25,10 @@ export const routes: Routes = [
     path: 'owner',
     loadChildren: () =>
       import('./owner/owner.module').then(m => m.OwnerModule)
+  },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./admin/admin.module').then(m => m.AdminModule)
   }
 ];

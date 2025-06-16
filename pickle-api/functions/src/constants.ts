@@ -2,7 +2,8 @@ import { Timestamp } from 'firebase-admin/firestore';
 
 export const collectionNames = {
   court: "court",
-  org: "org"
+  master: "master",
+  org: "org",
 };
 
 export const twentyMins = 20 * 60 * 1000; // 20 minutes in milliseconds

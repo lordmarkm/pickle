@@ -14,7 +14,7 @@
 
 <!-- The menu template -->
 <mat-menu #courtSettingsMenu="matMenu" xPosition="before" yPosition="below">
-  <button mat-menu-item routerLink="/landing">
+  <button mat-menu-item (click)="adminControl()">
     <mat-icon>admin_panel_settings</mat-icon>
     <span>Admin control</span>
   </button>

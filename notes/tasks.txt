@@ -1,10 +1,12 @@
 To do:
-- Autoselect for create court
+- Admin Add court to master
 - Allow user to sign up for open play
 - Fix owner courts not preserving check/uncheck & show/unshow on refresh
 - Allow add credits to wallet
+- Add expiry to cached master
 
 Done:
+- Autoselect for create court
 - Add orgName to Booking and fix booking conflict error message
 - Deselect slot after saving block/op event
 - Allow owner to cancel the blocks they made

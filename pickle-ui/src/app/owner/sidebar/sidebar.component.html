@@ -10,7 +10,9 @@
   <h5 class="text-m font-bold p-1" *ngIf="isCollapsed">Show {{org.name}}</h5>
 </div>
 
-<app-errorcard *ngIf="error" [error]="error"></app-errorcard>
-<app-owner-sidebar-courts [orgCourts]="courts" [org]="org"></app-owner-sidebar-courts>
+<div class="p-4">
+  <app-errorcard *ngIf="error" [error]="error"></app-errorcard>
+  <app-owner-sidebar-courts [orgCourts]="courts" [org]="org"></app-owner-sidebar-courts>
+</div>
 
 </div>

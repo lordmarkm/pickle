@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BlockselectComponent } from './blockselect.component';
+import { CourtsettingsComponent } from './courtsettings.component';
 
-describe('BlockselectComponent', () => {
-  let component: BlockselectComponent;
-  let fixture: ComponentFixture<BlockselectComponent>;
+describe('CourtsettingsComponent', () => {
+  let component: CourtsettingsComponent;
+  let fixture: ComponentFixture<CourtsettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BlockselectComponent]
+      declarations: [CourtsettingsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BlockselectComponent);
+    fixture = TestBed.createComponent(CourtsettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
