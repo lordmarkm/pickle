@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { AuthService, OrgService } from '@services';
+import { AuthService, OrgService, BookingService } from '@services';
 import { Org, MasterCourt, BookingRequest, Booking } from '@models';
 import { MessageComponent } from 'app/components/message.component';
 import { tap, filter, switchMap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { fadeIn, fadeInOut } from 'app/misc/animations';
 import { OwnerSlotselectComponent } from '../dialogs/slotselect/slotselect.component';
 import { CourtcalendarComponent } from 'app/components/courtcalendar/courtcalendar.component';
 import { displayConstants } from '../../misc/constants';
-import { BlockselectDialogComponent } from '../dialogs/blockselect/blockselect.component';
+import { BlockcontrolDialogComponent } from '../dialogs/blockcontrol/blockcontrol.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +36,7 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
   court?: MasterCourt;
   @ViewChildren(CourtcalendarComponent) calendars!: QueryList<CourtcalendarComponent>;
 
-  constructor(private orgs: OrgService, private auth: AuthService, private dialog: MatDialog, private courtDisplay: CourtDisplayService) {
+  constructor(private orgs: OrgService, private bookings: BookingService, private auth: AuthService, private dialog: MatDialog, private courtDisplay: CourtDisplayService) {
     super();
   }
   ngOnInit() {
@@ -106,7 +106,7 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
     console.log(booking);
     switch (booking.type) {
       case 'Block':
-        this.handleBlockEventSelected(booking);
+        this.handleBlockEventSelected(court, booking);
         break;
     }
 
@@ -126,11 +126,32 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
     }
   }
 
-  handleBlockEventSelected(booking: Booking) {
-    this.dialog.open(BlockselectDialogComponent, {
-      data: {},
+  handleBlockEventSelected(court: MasterCourt, booking: Booking) {
+    console.log(booking);
+    const blockControlDialog = this.dialog.open(BlockcontrolDialogComponent, {
+      data: {
+        booking: booking,
+        court: court
+      },
       width: displayConstants.dialogWidth
-    })
+    });
+    blockControlDialog.afterClosed().subscribe((booking: Booking) => {
+      if (booking && booking.deleted) {
+        this.bookings.deleteBooking(booking).subscribe({
+          next: () => {
+            this.setMessage('Time slot block deleted');
+            this.courtDisplay.triggerRefresh(court.id);
+          },
+          error: err => this.setError('Failed to delete time slot block. erorr=' + err.mesasge)
+        })
+      } else if (booking) {
+        this.setMessage('Creating time slot block...');
+        this.bookings.updateBooking(booking).subscribe({
+          next: () => this.setMessage('Booking updated'),
+          error: err => this.setError('Failed to upate time slot block. error=' + err.message)
+        });
+      }
+    });
   }
 
   onDateChange(evt: { date: Date, atCurrentDate: boolean }) {

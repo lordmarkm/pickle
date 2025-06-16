@@ -26,8 +26,13 @@
     </mat-form-field>
 
   </div>
-  <div mat-dialog-actions align="end">
+  <div *ngIf="existingBooking" mat-dialog-actions align="end">
     <button mat-button type="button" (click)="cancel()">Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+    <button mat-button type="button" (click)="delete()">Delete block</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Update</button>
+  </div>
+  <div *ngIf="!existingBooking" mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" class="unselect">Create block</button>
   </div>
 </form>

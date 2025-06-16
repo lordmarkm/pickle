@@ -11,6 +11,7 @@
 
 <section *ngIf="org">
   You are the owner of {{org.name}}
+  <app-errorcard *ngIf="error || message" [error]="error" [message]="message"></app-errorcard>
   <app-calendarcontrol (onDateChange)="onDateChange($event)"></app-calendarcontrol>
   <div class="calendar-container flex-row">
     <div *ngFor="let court of courts$ | async" class="calendar-sub-container">

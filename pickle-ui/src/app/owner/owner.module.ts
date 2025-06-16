@@ -22,7 +22,7 @@ import { RegisterCourtDialogComponent } from './dialogs/register-court/register-
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { CalendarcontrolComponent } from '@components';
 import { OwnerSlotselectComponent } from './dialogs/slotselect/slotselect.component';
-import { BlockcontrolDialogComponent } from './dialogs/slotselect/blockcontrol/blockcontrol.component';
+import { BlockcontrolDialogComponent } from './dialogs/blockcontrol/blockcontrol.component';
 import { OpenplaycontrolDialogComponent } from './dialogs/slotselect/openplaycontrol/openplaycontrol.component';
 import { BlockselectDialogComponent } from './dialogs/blockselect/blockselect.component';
 

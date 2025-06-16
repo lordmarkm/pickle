@@ -16,6 +16,7 @@ export interface Booking {
   color?: string;
   createdBy?: string;
   createdDate?: string;
+  deleted?: boolean;
 }
 
 export const EventColors = {

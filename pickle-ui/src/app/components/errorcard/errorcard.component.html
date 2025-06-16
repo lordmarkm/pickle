@@ -1,7 +1,15 @@
-<div class="error-container">
+<div *ngIf="error" class="error-container">
   <mat-card appearance="outlined" class="error-card">
     <mat-card-content>
       {{ error }}
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div *ngIf="message" class="message-container">
+  <mat-card appearance="outlined" class="message-card">
+    <mat-card-content>
+      {{ message }}
     </mat-card-content>
   </mat-card>
 </div>

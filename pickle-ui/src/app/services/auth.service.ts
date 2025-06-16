@@ -12,10 +12,8 @@ export class AuthService {
   constructor(private auth: Auth) {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        // Wrap in async IIFE to allow use of await
         (async () => {
           const token = await getIdTokenResult(user, true);
-          console.log(token.claims);
           this.admin = token.claims['admin'] === true;
           this.currentUserSubject.next(user);
         })();

@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Booking, BookingRequest, Court } from '@models';
 import { BookingService } from '@services';
-import { BlockcontrolDialogComponent } from './blockcontrol/blockcontrol.component';
+import { BlockcontrolDialogComponent } from '../blockcontrol/blockcontrol.component';
 import { displayConstants } from 'app/misc/constants';
 import { optionsDate, optionsTime } from 'app/misc/dateformats';
 import { MessageComponent } from '@components';

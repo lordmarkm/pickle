@@ -1,6 +1,6 @@
 //for backend storage
 export const dateFormat = 'YYYY-MMM-DD';
-export const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ss';
+export const dateTimeFormat = 'YYYY-MM-DDTHH:mm:ssZ';
 
 //simple, easily readable
 export const simpleTimeFormat = 'h a';

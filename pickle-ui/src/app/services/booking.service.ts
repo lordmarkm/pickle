@@ -40,6 +40,14 @@ export class BookingService {
     return this.http.post<Booking>(this.baseUrl, booking);
   }
 
+  updateBooking(booking: Booking) {
+    return this.http.put<Booking>(`${this.baseUrl}/${booking.id}`, booking);
+  }
+
+  deleteBooking(booking: Booking) {
+    return this.http.delete<Booking>(`${this.baseUrl}/${booking.id}`);
+  }
+
   pay(bookingId: string) {
     return this.http.put<Booking>(`${this.baseUrl}/${bookingId}/pay`, {});
   }

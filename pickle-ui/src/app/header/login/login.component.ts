@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe(user => {
         this.user = user;
         this.admin = this.authService.isAdmin();
-        console.log('admin? ' + this.admin);
       });
   }
   ngOnDestroy() {
