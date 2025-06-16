@@ -7,6 +7,8 @@ export interface Bookings {
 export interface Booking {
   id?: string;
   courtId: string;
+  orgName?: string;
+  courtName?: string;
   date: string;
   start: string;
   end: string;

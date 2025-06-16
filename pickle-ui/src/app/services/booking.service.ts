@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Bookings, Booking } from '@models';
 import { environment } from 'environments/environment';
 import { HttpParams } from '@angular/common/http';
+import { MasterCourt } from '../models/master.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +24,13 @@ export class BookingService {
     return this.http.get<Booking>(`${this.baseUrl}/${bookingId}`);
   }
 
-  newPrivateBooking(courtId: string, date: string, start: string, end: string) {
+  newPrivateBooking(court: MasterCourt, date: string, start: string, end: string) {
+    const { id, name, orgName } = court;
     const booking: Booking = {
       title: 'New booking',
-      courtId,
+      courtId: id,
+      courtName: name,
+      orgName,
       date,
       start,
       end,

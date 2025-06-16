@@ -224,6 +224,41 @@ async function checkUnpaidBooking(uid: string): Promise<any | null> {
   };
 }
 
+
+
+// --- UPDATE ---
+bookingsRouter.put("/:id", authenticateToken, async (req: Request, res: Response) => {
+  const bookingId = req.params.id;
+  const { title } = req.body;
+  const uid = (req as any).uid;
+
+  if (!title) {
+    return res.status(400).json({ error: 'Missing required field: title' });
+  }
+
+  try {
+    const docRef = db.collection("bookings").doc(bookingId);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    const data = doc.data();
+    if (!data || data.createdBy !== uid) {
+      return res.status(403).json({ error: 'You are not authorized to update this booking' });
+    }
+
+    await docRef.update({ title });
+
+    return res.json({ message: "Booking updated successfully", id: bookingId, title });
+  } catch (error) {
+    console.error("Error updating booking:", error);
+    return res.status(500).json({ error: "Failed to update booking" });
+  }
+});
+
+
 // --- DELETE ---
 bookingsRouter.delete("/:id", authenticateToken, async (req: Request, res: Response) => {
   const bookingId = req.params.id;

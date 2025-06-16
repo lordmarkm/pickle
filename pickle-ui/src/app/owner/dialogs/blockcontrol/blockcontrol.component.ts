@@ -24,15 +24,16 @@ export class BlockcontrolDialogComponent implements AfterViewInit {
 
     this.booking = data.booking;
     this.existingBooking = this.booking.id;
-    console.log(this.booking);
     this.form = this.fb.group({
-      title: ['Private Event', [Validators.required, Validators.maxLength(20), Validators.minLength(4)]],
+      title: [this.booking.title || 'Private Event', [Validators.required, Validators.maxLength(20), Validators.minLength(4)]],
       type: 'Block',
       startStr: moment(this.booking.start, dateTimeFormat).format(simpleTimeFormat),
       endStr: moment(this.booking.end, dateTimeFormat).format(simpleTimeFormat),
       court: data.court.name,
       courtId: data.court.id,
-      date: moment(this.booking.end, timedateFormats.calendarTime).format(dateFormat)
+      date: moment(this.booking.end, timedateFormats.calendarTime).format(dateFormat),
+      courtName: data.court.name,
+      orgName: data.court.orgName
     });
   }
   ngAfterViewInit() {

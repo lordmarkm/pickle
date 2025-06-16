@@ -3,18 +3,18 @@
 <form [formGroup]="form" (ngSubmit)="submit()" mat-dialog-content>
   <div class="flex-col form-fields-wrapper">
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Organization</mat-label>
-      <input matInput [value]="org?.name" readonly />
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Court Name</mat-label>
-      <input matInput formControlName="name" required />
+      <input #nameInput matInput formControlName="name" required />
       <mat-error *ngIf="nameCtrl?.hasError('required') && form.controls['name']?.touched">
         Name is required.
       </mat-error>
       <mat-error *ngIf="(nameCtrl?.hasError('minlength') || nameCtrl?.hasError('maxlength')) && form.controls['name']?.touched">
         Name must between 4 and 20 characters long.
       </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Organization</mat-label>
+      <input matInput [value]="org?.name" readonly />
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Start time</mat-label>

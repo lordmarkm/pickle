@@ -103,7 +103,6 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
     })
   }
   onEventSelected(court: MasterCourt, booking: Booking) {
-    console.log(booking);
     switch (booking.type) {
       case 'Block':
         this.handleBlockEventSelected(court, booking);
@@ -127,7 +126,6 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
   }
 
   handleBlockEventSelected(court: MasterCourt, booking: Booking) {
-    console.log(booking);
     const blockControlDialog = this.dialog.open(BlockcontrolDialogComponent, {
       data: {
         booking: booking,
@@ -147,7 +145,10 @@ export class DashboardComponent extends MessageComponent implements OnInit, OnDe
       } else if (booking) {
         this.setMessage('Creating time slot block...');
         this.bookings.updateBooking(booking).subscribe({
-          next: () => this.setMessage('Booking updated'),
+          next: () => {
+            this.setMessage('Booking updated');
+            this.courtDisplay.triggerRefresh(court.id);
+          },
           error: err => this.setError('Failed to upate time slot block. error=' + err.message)
         });
       }

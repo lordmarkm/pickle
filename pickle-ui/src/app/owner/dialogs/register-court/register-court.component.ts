@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Inject, Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Org, Court } from '@models';
@@ -12,7 +12,8 @@ import moment from 'moment';
   templateUrl: './register-court.component.html',
   styleUrl: './register-court.component.scss'
 })
-export class RegisterCourtDialogComponent {
+export class RegisterCourtDialogComponent implements AfterViewInit {
+  @ViewChild('nameInput') nameInput!: ElementRef<HTMLInputElement>;
   org?: Org;
   form: FormGroup;
   constructor(
@@ -38,6 +39,12 @@ export class RegisterCourtDialogComponent {
       court.end = moment(court.end, timedateFormats.timepicker).format(timedateFormats.calendarTime);
       this.dialogRef.close(this.form.value);
     }
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.nameInput.nativeElement.focus();
+      this.nameInput.nativeElement.select();
+    });
   }
   get nameCtrl() {
     return this.form.get('name');
